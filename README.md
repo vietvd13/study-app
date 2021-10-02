@@ -1,1 +1,1 @@
-# study-app
+# Study App

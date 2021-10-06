@@ -10,7 +10,7 @@ use Symfony\Component\Console\Exception\InvalidArgumentException;
 use Symfony\Component\Console\Input\InputOption;
 
 
-class RepositoryMakeCommand extends BaseCommand
+class ModuleMakeCommand extends BaseCommand
 {
 
     /**

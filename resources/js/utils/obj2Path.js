@@ -3,7 +3,7 @@
  * @param {Object} obj
  * @returns String
  */
- export function obj2Path(obj) {
+export function obj2Path(obj) {
     if (!obj) {
         return '';
     }

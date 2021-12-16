@@ -8,7 +8,7 @@ import getters from './getters';
 Vue.use(Vuex);
 
 const modules = {
-    app
+    app,
 };
 
 const store = new Vuex.Store({

@@ -13,6 +13,10 @@ import i18n from '@/lang';
 // Store
 import store from '@/store';
 
+// Event bus
+import Bus from '@/eventBus';
+Vue.use(Bus);
+
 // Component library
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue';
 import 'bootstrap/dist/css/bootstrap.css';
@@ -29,9 +33,9 @@ import '@/scss/_index.scss';
 Vue.config.productionTip = false;
 
 new Vue({
-  el: '#app',
-  router,
-  store,
-  i18n,
-  render: h => h(App),
+    el: '#app',
+    router,
+    store,
+    i18n,
+    render: h => h(App),
 });

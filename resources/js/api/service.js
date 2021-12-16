@@ -42,7 +42,7 @@ service.interceptors.response.use(
 
         if (isCheckTitle && isCheckContent) {
             MakeToast({
-                variant: 'Warning',
+                variant: i18n.t('TOAST.WARNING'),
                 title: i18n.t(error.response.data.title),
                 content: i18n.t(error.response.data.message),
             });

@@ -3,7 +3,11 @@ import VueRouter from 'vue-router';
 
 Vue.use(VueRouter);
 
-export const constantRoutes = [];
+import Login from './modules/login';
+
+export const constantRoutes = [
+    Login,
+];
 
 export const asyncRoutes = [];
 

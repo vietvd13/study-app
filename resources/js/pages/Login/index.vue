@@ -1,0 +1,67 @@
+<template>
+    <div class="page-login">
+        <b-container>
+            <div class="login-form col-xl-6 col-lg-6 mx-auto">
+                <div class="login-form-content">
+                    <b-row>
+                    <b-col>
+                        <!-- Title -->
+                        <div class="login-form-content__header">
+                        <h1>{{ $t('LOGIN.TITLE') }}</h1>
+                        </div>
+
+                        <!-- Account -->
+                        <div class="login-form-content__body">
+                        <div class="item-input">
+                            <b-form-input
+                            v-model="User.account"
+                            type="text"
+                            spellcheck="false"
+                            :placeholder="$t('LOGIN.PLACEHOLDER_ACCOUNT')"
+                            />
+                        </div>
+
+                        <div class="item-input">
+                            <b-form-input
+                            v-model="User.password"
+                            type="password"
+                            spellcheck="false"
+                            :placeholder="$t('LOGIN.PLACEHOLDER_PASSWORD')"
+                            />
+                        </div>
+                        </div>
+
+                        <div class="login-form-content__footer">
+                        <b-row>
+                            <b-col>
+                            <b-button>{{ $t('LOGIN.BUTTON_LOGIN') }}</b-button>
+                            </b-col>
+                        </b-row>
+                        </div>
+
+                    </b-col>
+                    </b-row>
+                </div>
+            </div>
+        </b-container>
+    </div>
+</template>
+
+<script>
+export default {
+    name: 'Login',
+    data() {
+        return {
+            User: {
+                account: '',
+                password: '',
+            },
+        };
+    },
+};
+</script>
+
+<style lang="scss" scoped>
+@import '@/scss/_variables';
+@import '@/scss/modules/_login';
+</style>

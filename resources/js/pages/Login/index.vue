@@ -5,6 +5,10 @@
                 <div class="login-form-content">
                     <b-row>
                         <b-col>
+                            <div class="login-form-content__logo">
+                                <b-img center :src="Logo" alt="Logo"></b-img>
+                            </div>
+
                             <!-- Title -->
                             <div class="login-form-content__header">
                                 <h1>{{ $t('LOGIN.TITLE') }}</h1>
@@ -54,15 +58,19 @@
 </template>
 
 <script>
+import Logo from '@/assets/images/student.png';
+
 export default {
     name: 'Login',
     data() {
         return {
+            Logo,
             User: {
                 account: '',
                 password: '',
             },
             showPassword: false,
+            rememberMe: false,
         };
     },
 };

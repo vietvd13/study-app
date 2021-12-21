@@ -24,6 +24,7 @@
                                         spellcheck="false"
                                         autofocus
                                         @keyup.enter="doLogin()"
+                                        :disabled="isProcess"
                                     />
                                 </div>
 
@@ -37,9 +38,10 @@
                                             name="password"
                                             autocomplete="off"
                                             @keyup.enter="doLogin()"
+                                            :disabled="isProcess"
                                         />
                                         <b-input-group-append is-text v-if="User.password">
-                                            <i @click="showPassword = !showPassword" :class="showPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
+                                            <i :disabled="isProcess" @click="showPassword = !showPassword" :class="handleShowPassword()"></i>
                                         </b-input-group-append>
                                     </b-input-group>
                                 </div>
@@ -48,7 +50,10 @@
                             <div class="login-form-content__footer">
                                 <b-row>
                                     <b-col>
-                                        <b-button @click="doLogin()">{{ $t('LOGIN.BUTTON_LOGIN') }}</b-button>
+                                        <b-button @click="doLogin()" :disabled="isProcess">
+                                            <i v-if="isProcess" class="fad fa-spinner-third fa-spin"></i>
+                                            {{ $t('LOGIN.BUTTON_LOGIN') }}
+                                        </b-button>
                                     </b-col>
                                 </b-row>
                             </div>
@@ -74,16 +79,31 @@ export default {
                 password: '',
             },
             showPassword: false,
+            isProcess: false,
         };
     },
     methods: {
         doLogin() {
+            this.isProcess = true;
+
             const Account = {
                 account: this.User.account || '',
                 password: this.User.password || '',
             }
 
             console.log(Account);
+        },
+
+        handleShowPassword() {
+            if (this.isProcess) {
+                this.showPassword = false;
+            }
+
+            if (this.showPassword) {
+                return 'fas fa-eye-slash';
+            }
+
+            return 'fas fa-eye';
         }
     },
 };

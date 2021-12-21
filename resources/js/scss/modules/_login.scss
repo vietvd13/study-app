@@ -36,10 +36,11 @@
                 .item-input {
                     i {
                         font-size: 16px;
+                        color: $mirage;
                     }
 
                     input {
-                        font-weight: 500;
+                        font-weight: 500 !important;
                     }
 
                     .input-group-append {

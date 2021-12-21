@@ -20,8 +20,10 @@
                                     <b-form-input
                                         v-model="User.account"
                                         type="text"
-                                        spellcheck="false"
                                         :placeholder="$t('LOGIN.PLACEHOLDER_ACCOUNT')"
+                                        spellcheck="false"
+                                        autofocus
+                                        @keyup.enter="doLogin()"
                                     />
                                 </div>
 
@@ -30,11 +32,13 @@
                                         <b-form-input
                                             v-model="User.password"
                                             :type="showPassword ? 'text' : 'password'"
-                                            spellcheck="false"
-                                            autocomplete="new-password"
                                             :placeholder="$t('LOGIN.PLACEHOLDER_PASSWORD')"
+                                            spellcheck="false"
+                                            name="password"
+                                            autocomplete="off"
+                                            @keyup.enter="doLogin()"
                                         />
-                                        <b-input-group-append is-text>
+                                        <b-input-group-append is-text v-if="User.password">
                                             <i @click="showPassword = !showPassword" :class="showPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
                                         </b-input-group-append>
                                     </b-input-group>
@@ -44,7 +48,7 @@
                             <div class="login-form-content__footer">
                                 <b-row>
                                     <b-col>
-                                        <b-button>{{ $t('LOGIN.BUTTON_LOGIN') }}</b-button>
+                                        <b-button @click="doLogin()">{{ $t('LOGIN.BUTTON_LOGIN') }}</b-button>
                                     </b-col>
                                 </b-row>
                             </div>
@@ -70,8 +74,17 @@ export default {
                 password: '',
             },
             showPassword: false,
-            rememberMe: false,
         };
+    },
+    methods: {
+        doLogin() {
+            const Account = {
+                account: this.User.account || '',
+                password: this.User.password || '',
+            }
+
+            console.log(Account);
+        }
     },
 };
 </script>

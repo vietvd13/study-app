@@ -5,8 +5,8 @@ const Login = {
     component: () => import(/* webpackChunkName: "Login" */ '@/pages/Login/index.vue'),
     meta: {
         title: 'ROUTER.LOGIN',
-        icon: '',
-    },
+        icon: ''
+    }
 };
 
 export default Login;

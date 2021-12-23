@@ -9,11 +9,11 @@ const baseURL = process.env.MIX_BASE_API;
 
 const service = axios.create({
     baseURL: baseURL,
-    timeout: 100000,
+    timeout: 100000
 });
 
 service.interceptors.request.use(
-    config => {
+    (config) => {
         const token = getToken();
         config.headers['Accept-Language'] = getLanguage();
 
@@ -27,16 +27,16 @@ service.interceptors.request.use(
 
         return config;
     },
-    error => {
+    (error) => {
         Promise.reject(error);
     }
 );
 
 service.interceptors.response.use(
-    response => {
+    (response) => {
         return response.data;
     },
-    error => {
+    (error) => {
         const isCheckTitle = i18n.te(error.response.data.title);
         const isCheckContent = i18n.te(error.response.data.message);
 
@@ -44,7 +44,7 @@ service.interceptors.response.use(
             MakeToast({
                 variant: i18n.t('TOAST.WARNING'),
                 title: i18n.t(error.response.data.title),
-                content: i18n.t(error.response.data.message),
+                content: i18n.t(error.response.data.message)
             });
         }
 

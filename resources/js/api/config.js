@@ -5,7 +5,7 @@ export default {
         return await service({
             url: URL,
             method: 'GET',
-            params: PARAMS,
+            params: PARAMS
         });
     },
     async postRequest(URL, DATA, PARAMS) {
@@ -13,7 +13,7 @@ export default {
             url: URL,
             method: 'POST',
             data: DATA,
-            params: PARAMS,
+            params: PARAMS
         });
     },
     async putRequest(URL, DATA, PARAMS) {
@@ -21,7 +21,7 @@ export default {
             url: URL,
             method: 'PUT',
             data: DATA,
-            params: PARAMS,
+            params: PARAMS
         });
     },
     async deleteRequest(URL, DATA, PARAMS) {
@@ -29,7 +29,7 @@ export default {
             url: URL,
             method: 'DELETE',
             data: DATA,
-            params: PARAMS,
+            params: PARAMS
         });
-    },
+    }
 };

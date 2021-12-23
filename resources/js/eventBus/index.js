@@ -47,5 +47,5 @@ export default {
         const bus = new EventBus();
 
         Vue.prototype.$bus = bus;
-    },
+    }
 };

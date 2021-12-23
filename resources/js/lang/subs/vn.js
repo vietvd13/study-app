@@ -13,4 +13,4 @@ export default {
         PLACEHOLDER_PASSWORD: 'Mật khẩu',
         BUTTON_LOGIN: 'Đăng nhập'
     }
-}
+};

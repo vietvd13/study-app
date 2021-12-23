@@ -1,19 +1,19 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
+import Vue from 'vue';
+import Vuex from 'vuex';
 
-import app from './modules/app'
+import app from './modules/app';
 
-import getters from './getters'
+import getters from './getters';
 
-Vue.use(Vuex)
+Vue.use(Vuex);
 
 const modules = {
     app
-}
+};
 
 const store = new Vuex.Store({
     modules,
     getters
-})
+});
 
-export default store
+export default store;

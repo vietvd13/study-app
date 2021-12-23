@@ -20,9 +20,7 @@
 									<b-form-input
 										v-model="User.account"
 										type="text"
-										:placeholder="
-											$t('LOGIN.PLACEHOLDER_ACCOUNT')
-										"
+										:placeholder="$t('LOGIN.PLACEHOLDER_ACCOUNT')"
 										spellcheck="false"
 										autofocus
 										@keyup.enter="doLogin()"
@@ -34,29 +32,18 @@
 									<b-input-group>
 										<b-form-input
 											v-model="User.password"
-											:type="
-												showPassword
-													? 'text'
-													: 'password'
-											"
-											:placeholder="
-												$t('LOGIN.PLACEHOLDER_PASSWORD')
-											"
+											:type="showPassword ? 'text' : 'password'"
+											:placeholder="$t('LOGIN.PLACEHOLDER_PASSWORD')"
 											spellcheck="false"
 											name="password"
 											autocomplete="off"
 											@keyup.enter="doLogin()"
 											:disabled="isProcess"
 										/>
-										<b-input-group-append
-											is-text
-											v-if="User.password"
-										>
+										<b-input-group-append is-text v-if="User.password">
 											<i
 												:disabled="isProcess"
-												@click="
-													showPassword = !showPassword
-												"
+												@click="showPassword = !showPassword"
 												:class="handleShowPassword()"
 											></i>
 										</b-input-group-append>
@@ -67,16 +54,10 @@
 							<div class="login-form-content__footer">
 								<b-row>
 									<b-col>
-										<b-button
-											@click="doLogin()"
-											:disabled="isProcess"
-										>
+										<b-button @click="doLogin()" :disabled="isProcess">
 											<i
 												v-if="isProcess"
-												class="
-													fad
-													fa-spinner-third fa-spin
-												"
+												class="fad fa-spinner-third fa-spin"
 											></i>
 											{{ $t('LOGIN.BUTTON_LOGIN') }}
 										</b-button>
@@ -101,10 +82,10 @@
 				Logo,
 				User: {
 					account: '',
-					password: '',
+					password: ''
 				},
 				showPassword: false,
-				isProcess: false,
+				isProcess: false
 			};
 		},
 		methods: {
@@ -113,7 +94,7 @@
 
 				const Account = {
 					account: this.User.account || '',
-					password: this.User.password || '',
+					password: this.User.password || ''
 				};
 
 				console.log(Account);
@@ -129,8 +110,8 @@
 				}
 
 				return 'fas fa-eye';
-			},
-		},
+			}
+		}
 	};
 </script>
 

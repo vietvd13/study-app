@@ -7,6 +7,6 @@ const Login = {
         title: 'ROUTER.LOGIN',
         icon: ''
     }
-}
+};
 
-export default Login
+export default Login;

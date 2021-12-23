@@ -13,4 +13,4 @@ export default {
         PLACEHOLDER_PASSWORD: 'Enter your password',
         BUTTON_LOGIN: 'Login'
     }
-}
+};

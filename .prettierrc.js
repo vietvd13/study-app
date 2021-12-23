@@ -1,8 +1,8 @@
 module.exports = {
     printWidth: 100,
     tabWidth: 4,
-    useTabs: false,
-    semi: false,
+    useTabs: true,
+    semi: true,
     vueIndentScriptAndStyle: true,
     singleQuote: true,
     quoteProps: 'as-needed',
@@ -16,4 +16,8 @@ module.exports = {
     proseWrap: 'never',
     htmlWhitespaceSensitivity: 'strict',
     endOfLine: 'lf',
+    cssEnable: [
+        'css',
+        'sass'
+    ]
 };

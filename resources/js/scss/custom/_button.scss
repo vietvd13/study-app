@@ -1,17 +1,17 @@
 .btn {
-	border: none;
+    border: none;
 
-	&:focus {
-		box-shadow: none;
-	}
+    &:focus {
+        box-shadow: none;
+    }
 
-	&:active {
-		box-shadow: none;
-	}
+    &:active {
+        box-shadow: none;
+    }
 
-	&:active {
-		&:focus {
-			box-shadow: none;
-		}
-	}
+    &:active {
+        &:focus {
+            box-shadow: none;
+        }
+    }
 }

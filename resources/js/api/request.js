@@ -1,4 +1,4 @@
-import request from './config';
+import request from "./config";
 
 export function getOne(url) {
     return request.getRequest(url);

@@ -8,8 +8,12 @@
 		"hot": "mix watch --hot",
 		"prod": "npm run production",
 		"production": "mix --production",
-		"postinstall": "npm run prod"
+		"postinstall": "npm run prod",
+		"prepare": "husky install"
 	},
+    "lint-staged": {
+        "**/*": "prettier --write --ignore-unknown"
+    },
 	"devDependencies": {
 		"@popperjs/core": "^2.10.2",
 		"axios": "^0.21",
@@ -17,7 +21,9 @@
 		"babel-plugin-syntax-jsx": "^6.18.0",
 		"babel-plugin-transform-vue-jsx": "^3.7.0",
 		"bootstrap": "^4.6.0",
+		"husky": "^7.0.4",
 		"laravel-mix": "^6.0.6",
+		"lint-staged": "^12.1.4",
 		"lodash": "^4.17.19",
 		"postcss": "^8.1.14",
 		"prettier": "2.5.1",

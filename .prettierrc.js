@@ -1,5 +1,5 @@
 module.exports = {
-    printWidth: 100,
+    printWidth: 80,
     tabWidth: 4,
     useTabs: true,
     semi: true,
@@ -10,7 +10,7 @@ module.exports = {
     trailingComma: 'none',
     jsxBracketSameLine: false,
     jsxSingleQuote: false,
-    arrowParens: 'always',
+    arrowParens: 'avoid',
     insertPragma: false,
     requirePragma: false,
     proseWrap: 'never',

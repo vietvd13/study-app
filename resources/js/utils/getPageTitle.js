@@ -1,4 +1,4 @@
-import i18n from '@/lang';
+import i18n from "@/lang";
 
 const TITLE = process.env.MIX_APP_TITLE;
 

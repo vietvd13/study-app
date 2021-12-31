@@ -1,27 +1,27 @@
-import axios from 'axios';
-import i18n from '@/lang';
-import router from '@/router';
-import { getToken } from '@/utils/handleToken';
-import { getLanguage } from '@/lang/helper/getLang';
-import { MakeToast } from '@/toast/toastMessage';
+import axios from "axios";
+import i18n from "@/lang";
+import router from "@/router";
+import { getToken } from "@/utils/handleToken";
+import { getLanguage } from "@/lang/helper/getLang";
+import { MakeToast } from "@/toast/toastMessage";
 
 const baseURL = process.env.MIX_BASE_API;
 
 const service = axios.create({
     baseURL: baseURL,
-    timeout: 100000
+    timeout: 100000,
 });
 
 service.interceptors.request.use(
     (config) => {
         const token = getToken();
-        config.headers['Accept-Language'] = getLanguage();
+        config.headers["Accept-Language"] = getLanguage();
 
         if (token) {
-            config.headers['Authorization'] = token;
+            config.headers["Authorization"] = token;
         } else {
-            if (router.currentRoute.path !== '/login') {
-                router.push({ path: '/login' });
+            if (router.currentRoute.path !== "/login") {
+                router.push({ path: "/login" });
             }
         }
 
@@ -42,9 +42,9 @@ service.interceptors.response.use(
 
         if (isCheckTitle && isCheckContent) {
             MakeToast({
-                variant: i18n.t('TOAST.WARNING'),
+                variant: i18n.t("TOAST.WARNING"),
                 title: i18n.t(error.response.data.title),
-                content: i18n.t(error.response.data.message)
+                content: i18n.t(error.response.data.message),
             });
         }
 

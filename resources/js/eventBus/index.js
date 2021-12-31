@@ -1,4 +1,4 @@
-import Vue from 'vue';
+import Vue from "vue";
 
 class EventBus {
     constructor() {
@@ -47,5 +47,5 @@ export default {
         const bus = new EventBus();
 
         Vue.prototype.$bus = bus;
-    }
+    },
 };

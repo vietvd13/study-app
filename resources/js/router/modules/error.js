@@ -2,7 +2,7 @@ const errorRoute = {
 	path: '/page-not-found',
 	name: 'PageNotFound',
 	meta: {
-		title: 'ROUTER.LOGIN',
+		title: 'ROUTER.PAGE_NOT_FOUND',
 		icon: ''
 	},
 	hidden: true,

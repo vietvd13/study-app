@@ -7,9 +7,7 @@ const errorRoute = {
 	},
 	hidden: true,
 	component: () =>
-		import(
-			/* webpackChunkName: "Page Not Found" */ '@/pages/PageNotFound/index.vue'
-		)
+		import(/* webpackChunkName: "Page Not Found" */ '@/pages/PageNotFound/index.vue')
 };
 
 export default errorRoute;

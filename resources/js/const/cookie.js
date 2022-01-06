@@ -1,5 +1,5 @@
-const LANGUAGE = "StudyAppLanguage";
+const LANGUAGE = 'StudyAppLanguage';
 
 export default {
-    LANGUAGE,
+	LANGUAGE
 };

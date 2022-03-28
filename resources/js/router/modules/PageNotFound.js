@@ -1,4 +1,4 @@
-const errorRoute = {
+const PageNotFound = {
 	path: '/page-not-found',
 	name: 'PageNotFound',
 	meta: {
@@ -10,4 +10,4 @@ const errorRoute = {
 		import(/* webpackChunkName: "Page Not Found" */ '@/pages/PageNotFound/index.vue')
 };
 
-export default errorRoute;
+export default PageNotFound;

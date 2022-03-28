@@ -3,14 +3,19 @@ import VueRouter from 'vue-router';
 
 Vue.use(VueRouter);
 
-import Login from './modules/login';
-import errorRoute from './modules/error';
+import Login from './modules/Login';
+import Dashboard from './modules/Dashboard';
+import Account from './modules/Account';
+import PageNotFound from './modules/PageNotFound';
 
 export const constantRoutes = [
 	Login,
-	errorRoute,
+	Dashboard,
+	Account,
+	PageNotFound,
 	{
 		path: '*',
+		hidden: true,
 		redirect: { name: 'PageNotFound' }
 	}
 ];

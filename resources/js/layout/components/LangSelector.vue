@@ -13,6 +13,8 @@
 </template>
 
 <script>
+	import { MakeToast } from '@/toast/toastMessage';
+
 	export default {
 		name: 'LangSelector',
 		methods: {

@@ -16,6 +16,9 @@ export default {
 		PLACEHOLDER_PASSWORD: 'Enter your password',
 		BUTTON_LOGIN: 'Login'
 	},
+	ACCOUNT: {
+		LABEL_FILTER_FULLNAME: 'Fullname'
+	},
 	PAGE_NOT_FOUND: {
 		DETAIL: "We can't seem to find the page you're looking for",
 		GO_TO_HOME: 'Go To Home Page'

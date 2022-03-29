@@ -9,6 +9,11 @@ import Account from './modules/Account';
 import PageNotFound from './modules/PageNotFound';
 
 export const constantRoutes = [
+	{
+		path: '/',
+		hidden: true,
+		redirect: { name: 'Dashboard' }
+	},
 	Login,
 	Dashboard,
 	Account,

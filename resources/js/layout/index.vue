@@ -44,4 +44,12 @@
 <style lang="scss">
 	@import '@/scss/_variables.scss';
 	@import '@/scss/modules/_layout.scss';
+
+	#wrapper {
+		#page-content-wrapper {
+			.app-main {
+				background-color: $seashell;
+			}
+		}
+	}
 </style>

@@ -3,6 +3,8 @@
 	border-color: $athens-gray;
 
 	&:focus {
+		box-shadow: none;
+		border-color: $green-haze;
 		background-color: $athens-gray;
 	}
 }

@@ -12,13 +12,6 @@
 
 	.login-form {
 		.login-form-content {
-			&__logo {
-				img {
-					height: 150px;
-					width: auto;
-				}
-			}
-
 			&__header {
 				text-align: center;
 
@@ -65,7 +58,7 @@
 					margin-top: 20px;
 					border-radius: 0.25 rem;
 					padding: 10px 0;
-					background-color: $pizazz;
+					background-color: $green-haze;
 					font-weight: 600;
 
 					i {

@@ -1,3 +1,13 @@
+// Table sorting
+$b-table-sort-icon-bg-width: 0.65em !default;
+$b-table-sort-icon-bg-height: 1em !default;
+$b-table-sort-icon-bg-not-sorted: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='101' height='101' view-box='0 0 101 101' preserveAspectRatio='none'><path fill='white' opacity='.3' d='M51 1l25 23 24 22H1l25-22zM51 101l25-23 24-22H1l25 22z'/></svg>") !default;
+$b-table-sort-icon-bg-ascending: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='101' height='101' view-box='0 0 101 101' preserveAspectRatio='none'><path fill='white' d='M51 1l25 23 24 22H1l25-22z'/><path fill='white' opacity='.3' d='M51 101l25-23 24-22H1l25 22z'/></svg>") !default;
+$b-table-sort-icon-bg-descending: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='101' height='101' view-box='0 0 101 101' preserveAspectRatio='none'><path fill='white' opacity='.3' d='M51 1l25 23 24 22H1l25-22z'/><path fill='white' d='M51 101l25-23 24-22H1l25 22z'/></svg>") !default;
+$b-table-sort-icon-bg-dark-not-sorted: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='101' height='101' view-box='0 0 101 101' preserveAspectRatio='none'><path fill='white' opacity='.3' d='M51 1l25 23 24 22H1l25-22zM51 101l25-23 24-22H1l25 22z'/></svg>") !default;
+$b-table-sort-icon-bg-dark-ascending: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='101' height='101' view-box='0 0 101 101' preserveAspectRatio='none'><path fill='white' d='M51 1l25 23 24 22H1l25-22z'/><path fill='white' opacity='.3' d='M51 101l25-23 24-22H1l25 22z'/></svg>") !default;
+$b-table-sort-icon-bg-dark-descending: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='101' height='101' view-box='0 0 101 101' preserveAspectRatio='none'><path fill='white' opacity='.3' d='M51 1l25 23 24 22H1l25-22z'/><path fill='white' d='M51 101l25-23 24-22H1l25 22z'/></svg>") !default;
+
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
 
 // Font
@@ -5,10 +15,19 @@ $font-roboto: 'Roboto', sans-serif;
 
 // Color
 $white: #ffffff;
+$seashell: #f1f1f1;
 $athens-gray: #f3f5f8;
+$geyser: #dee2e6;
 $mystic: #dee4ec;
 $mirage: #171c27;
 $black: #000000;
-$astronaut: #242368;
-$pizazz: #fb8c00;
-$robins-egg-blue: #06c1d4;
+$shark: #303133;
+$charade: #282a35;
+$green-haze: #04aa6d;
+
+$primary: #007bff;
+$secondary: #6c757d;
+$success: #28a745;
+$info: #17a2b8;
+$warning: #ffc107;
+$danger: #dc3545;

@@ -1,7 +1,5 @@
 <template>
-	<div class="view-page">
-		<router-view :key="key" />
-	</div>
+	<router-view :key="key" />
 </template>
 
 <script>
@@ -14,9 +12,3 @@
 		}
 	};
 </script>
-
-<style lang="scss" scoped>
-	.view-page {
-		margin: 10px;
-	}
-</style>

@@ -1,6 +1,10 @@
 @import '_variables';
+@import '../../../node_modules/bootstrap/scss/bootstrap.scss';
+@import '../../../node_modules/bootstrap-vue/src/index.scss';
 
 @import './config/config';
 
 @import './custom/_input';
 @import './custom/_button';
+@import './custom/select';
+@import './custom/pagination';

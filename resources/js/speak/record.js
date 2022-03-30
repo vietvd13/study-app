@@ -1,16 +1,15 @@
 import AudioRecorder from 'audio-recorder-polyfill';
 import mpegEncoder from 'audio-recorder-polyfill/mpeg-encoder';
+import { TIME_RECORD } from './config';
 import {
-	getIsRecord,
-	setStartRecord,
-	setEndRecord,
-	getStatusPermission,
-	setHasPermission,
-	setNotHasPermission,
-	getStatusProccess,
-	setStartProcess,
-	setEndProcess
+	getPermission,
+	setPermission,
+	getRecord,
+	setRecord,
+	getProccess,
+	setProcess
 } from './helper';
+import CONST_TOGGLE_STATUS from '@/const/toggle_status';
 
 AudioRecorder.encoder = mpegEncoder;
 AudioRecorder.prototype.mimeType = 'audio/mpeg';
@@ -19,100 +18,90 @@ import { postNavigation } from '@/api/modules/navigation';
 
 let recorder;
 
-navigator.mediaDevices
-	.getUserMedia({ audio: true })
-	.then(stream => {
-		recorder = new MediaRecorder(stream);
-		// clearRecord();
-		setHasPermission();
-
-		recorder.addEventListener('dataavailable', async e => {
-			try {
-				var dom = document.getElementById('audio');
-
-				console.log(dom);
-
-				console.log(e.data);
-
-				dom.src = URL.createObjectURL(e.data);
-
-				setStartProcess();
-
-				let DATA = new FormData();
-
-				DATA.append('user_voice', e.data);
-
-				const res = await postNavigation('/navigation/voice', DATA);
-				console.log(e.data);
-
-				console.log(res);
-
-				setEndProcess();
-				console.log('BBBB');
-			} catch (error) {
-				console.log(error);
-			}
-		});
-	})
-	.catch(error => {
-		setNotHasPermission();
-		console.log(error);
-	});
-
 export function handleRecord(key) {
 	window.onkeydown = event => {
 		if ((event.code === key.code || event.keyCode === key.keyCode) && event.ctrlKey) {
 			event.preventDefault();
 
-			if (getStatusPermission() === '1') {
+			if (
+				getRecord() === CONST_TOGGLE_STATUS.STATUS_OFF &&
+				getProccess() === CONST_TOGGLE_STATUS.STATUS_OFF
+			) {
 				handleStartRecord();
 			}
 		}
 	};
 
 	window.onkeyup = event => {
-		if ((event.code === key.code || event.keyCode === key.keyCode) && event.ctrlKey) {
+		if (event.code === key.code || event.keyCode === key.keyCode || event.ctrlKey) {
 			event.preventDefault();
-
-			if (getStatusPermission() === '1') {
-				handleEndRecord();
-			}
+			handleEndRecord();
 		}
 	};
 }
 
+function initRecord() {
+	navigator.mediaDevices
+		.getUserMedia({ audio: true })
+		.then(stream => {
+			recorder = new MediaRecorder(stream);
+
+			recorder.addEventListener('dataavailable', async event => {
+				sendData(event);
+			});
+
+			setPermission(CONST_TOGGLE_STATUS.STATUS_ON);
+			recorder.start(TIME_RECORD);
+		})
+		.catch(error => {
+			setPermission(CONST_TOGGLE_STATUS.STATUS_OFF);
+			console.log(error);
+		});
+}
+
+function domTest(event) {
+	var dom = document.getElementById('audio');
+
+	dom.src = URL.createObjectURL(event.data);
+}
+
+async function sendData(event) {
+	try {
+		domTest(event);
+		setProcess(CONST_TOGGLE_STATUS.STATUS_ON);
+
+		// let DATA = new FormData();
+
+		// DATA.append('user_voice', data.data);
+
+		// const res = await postNavigation('/navigation/voice', DATA);
+		// console.log(res);
+
+		setProcess(CONST_TOGGLE_STATUS.STATUS_OFF);
+	} catch (error) {
+		console.log(error);
+	}
+}
+
 function handleStartRecord() {
-	if (getIsRecord() === '0') {
-		setStartRecord();
-
-		startRecord();
-
+	if (getRecord() === CONST_TOGGLE_STATUS.STATUS_OFF) {
 		console.log('Start Record');
 
-		setTimeout(() => {
-			if (getIsRecord() === '1') {
-				handleEndRecord();
-			}
-		}, 10000);
+		setRecord(CONST_TOGGLE_STATUS.STATUS_ON);
+		initRecord();
 	}
 }
 
 function handleEndRecord() {
-	setEndRecord();
-	endRecord();
-	clearRecord();
+	if (
+		getPermission() === CONST_TOGGLE_STATUS.STATUS_ON &&
+		getRecord() === CONST_TOGGLE_STATUS.STATUS_ON
+	) {
+		console.log('End Record');
 
-	console.log('End Record');
-}
-
-function startRecord() {
-	recorder.start();
-}
-
-function endRecord() {
-	recorder.stop();
-}
-
-function clearRecord() {
-	recorder.stream.getTracks().forEach(i => i.stop());
+		clearTimeout();
+		setRecord(CONST_TOGGLE_STATUS.STATUS_OFF);
+		recorder.stop();
+		recorder.stream.getTracks().forEach(i => i.stop());
+	}
 }

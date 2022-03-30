@@ -1,62 +1,58 @@
 import Cookies from 'js-cookie';
+import CONST_COOKIE from '@/const/cookie';
+import CONST_TOGGLE_STATUS from '@/const/toggle_status';
 
-const STATUS_PERMISSION = 'STATUS_PERMISSION';
-const STATUS_RECORD = 'STATUS_RECORD';
-const STATUS_PROCESS = 'STATUS_PROCESS';
+export function checkStatus(status) {
+	return CONST_TOGGLE_STATUS.LIST_STATUS_TOGGLE.includes(status);
+}
 
 // STATUS_PERMISSION
-export function getStatusPermission() {
-	const GET_STATUS_PERMISSION = Cookies.get(STATUS_PERMISSION);
+export function getPermission() {
+	const GET_STATUS_PERMISSION = Cookies.get(CONST_COOKIE.STATUS_PERMISSION);
 
 	if (GET_STATUS_PERMISSION) {
 		return GET_STATUS_PERMISSION;
 	}
 
-	return '0';
+	return CONST_TOGGLE_STATUS.STATUS_OFF;
 }
 
-export function setHasPermission() {
-	Cookies.set(STATUS_PERMISSION, '1');
-}
-
-export function setNotHasPermission() {
-	Cookies.set(STATUS_PERMISSION, '0');
+export function setPermission(status) {
+	if (checkStatus(status)) {
+		Cookies.set(CONST_COOKIE.STATUS_PERMISSION, status);
+	}
 }
 
 // STATUS_RECORD
-export function getIsRecord() {
-	const GET_STATUS_RECORD = Cookies.get(STATUS_RECORD);
+export function getRecord() {
+	const GET_STATUS_RECORD = Cookies.get(CONST_COOKIE.STATUS_RECORD);
 
 	if (GET_STATUS_RECORD) {
 		return GET_STATUS_RECORD;
 	}
 
-	return '0';
+	return CONST_TOGGLE_STATUS.STATUS_OFF;
 }
 
-export function setStartRecord() {
-	Cookies.set(STATUS_RECORD, '1');
-}
-
-export function setEndRecord() {
-	Cookies.set(STATUS_RECORD, '0');
+export function setRecord(status) {
+	if (checkStatus(status)) {
+		Cookies.set(CONST_COOKIE.STATUS_RECORD, status);
+	}
 }
 
 // STATUS_PROCESS
-export function getStatusProccess() {
-	const GET_STATUS_PROCESS = Cookies.get(STATUS_PROCESS);
+export function getProccess() {
+	const GET_STATUS_PROCESS = Cookies.get(CONST_COOKIE.STATUS_PROCESS);
 
 	if (GET_STATUS_PROCESS) {
 		return GET_STATUS_PROCESS;
 	}
 
-	return '0';
+	return CONST_TOGGLE_STATUS.STATUS_OFF;
 }
 
-export function setStartProcess() {
-	Cookies.set(STATUS_PROCESS, '1');
-}
-
-export function setEndProcess() {
-	Cookies.set(STATUS_PROCESS, '0');
+export function setProcess(status) {
+	if (checkStatus(status)) {
+		Cookies.set(CONST_COOKIE.STATUS_PROCESS, status);
+	}
 }

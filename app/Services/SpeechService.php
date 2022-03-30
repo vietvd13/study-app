@@ -46,6 +46,16 @@ class SpeechService extends BaseService implements SpeechServiceInterface
             ]
         );
         $res = json_decode($response->body());
-        return $res->data->intents[0];
+        if ($res->data->intents[0]->confidence > 0.5){
+            return [
+                'status' => 200,
+                'action' => $res->data->intents[0]->label
+            ];
+        } else if ($res->data->intents[0]->confidence <= 0.5) {
+            return [
+                'status' => 500,
+                'message' => 'undifined the voice request'
+            ];
+        }
     }
 }

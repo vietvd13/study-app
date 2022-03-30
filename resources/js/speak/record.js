@@ -2,7 +2,7 @@ import { getIsRecord, setStartRecord, setEndRecord } from './helper';
 
 export function handleRecord(key) {
 	window.onkeydown = event => {
-		if (event.code === key.code || event.keyCode === key.keyCode) {
+		if ((event.code === key.code || event.keyCode === key.keyCode) && event.ctrlKey) {
 			event.preventDefault();
 
 			startRecord();
@@ -10,7 +10,7 @@ export function handleRecord(key) {
 	};
 
 	window.onkeyup = event => {
-		if (event.code === key.code || event.keyCode === key.keyCode) {
+		if ((event.code === key.code || event.keyCode === key.keyCode) && event.ctrlKey) {
 			event.preventDefault();
 
 			endRecord();

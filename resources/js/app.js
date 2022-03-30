@@ -2,6 +2,7 @@ import 'core-js';
 import Vue from 'vue';
 import App from '@/pages/App.vue';
 import '@/permission';
+import '@/speak';
 import router from '@/router';
 import i18n from '@/lang';
 import store from '@/store';

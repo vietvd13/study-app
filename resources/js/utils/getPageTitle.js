@@ -7,7 +7,7 @@ export default function getPageTitle(key) {
 
 	if (HASKEY) {
 		const PAGENAME = i18n.t(`${key}`);
-		return `${PAGENAME} | ${TITLE}`;
+		return `${PAGENAME} - ${TITLE}`;
 	}
 
 	return `${TITLE}`;

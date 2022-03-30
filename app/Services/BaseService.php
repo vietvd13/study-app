@@ -1,14 +1,8 @@
 <?php
-namespace Services;
+namespace Service;
 use App\Services\Contracts\BaseServiceInterface;
+use Illuminate\Support\Facades\Storage;
 abstract class BaseService implements BaseServiceInterface {
-    protected $repository;
-
-    public function __construct(BaseServiceInterface $repository)
-    {
-        $this->repository = $repository;
-    }
-
     /**
      * Retrieve all data
      *
@@ -16,8 +10,23 @@ abstract class BaseService implements BaseServiceInterface {
      *
      * @return mixed
      */
+
     public function all($columns = ['*']) {
-        return $this->repository->model->all();
+        return $this->repository->all();
+    }
+
+
+    /**
+     * Retrieve find 1
+     *
+     * @param null $limit
+     * @param array $columns
+     *
+     * @return mixed
+     */
+
+    public function find($id) {
+        return $this->repository->find($id);
     }
 
     /**
@@ -29,7 +38,7 @@ abstract class BaseService implements BaseServiceInterface {
      * @return mixed
      */
     public function paginate($limit = null, $columns = ['*']) {
-        return $this->repository->model->paginate($limit, $columns);
+        return $this->repository->paginate($limit, $columns);
     }
 
      /**
@@ -41,7 +50,7 @@ abstract class BaseService implements BaseServiceInterface {
      * @return mixed
      */
     public function show($id, $columns = ['*']) {
-        return $this->repository->model->find($id, $columns);
+        return $this->repository->find($id, $columns);
     }
 
     /**
@@ -52,7 +61,7 @@ abstract class BaseService implements BaseServiceInterface {
      * @return mixed
      */
     public function create(array $attributes) {
-        return $this->repository->model->create($attributes);
+        return $this->repository->create($attributes);
     }
 
     /**
@@ -64,7 +73,7 @@ abstract class BaseService implements BaseServiceInterface {
      * @return mixed
      */
     public function update(array $attributes, $id) {
-        return $this->repository->model->update($attributes, $id);
+        return $this->repository->update($attributes, $id);
     }
 
     /**
@@ -75,6 +84,44 @@ abstract class BaseService implements BaseServiceInterface {
      * @return int
      */
     public function delete($id) {
-        return $this->repository->model->delete($id);
+        return $this->repository->delete($id);
     }
+
+    /**
+     * Upload a file
+     *
+     * @param @file
+     *
+     * @return boolean
+     */
+
+    public function uploadFile($file, $fileName, $path = "ideafiles")
+    {
+        if ($file) {
+            return $file->storeAs($path,
+                "{$fileName}.{$file->getClientOriginalExtension()}"
+            );
+        }
+    }
+
+    /**
+     * Detatch a file
+     *
+     * @param @file
+     *
+     * @return boolean
+     */
+
+    // public function detatchFile($file, array $attributes = [])
+    // {
+
+    // }
+
+    // public static function readFile() {
+
+    // }
+
+    // public static function downloadFile() {
+
+    // }
 }

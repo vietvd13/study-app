@@ -1,8 +1,8 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: autoDump
- * Year: 2022-02-26
+ * Created by TienNamNguyen.
+ * User: namnt
+ * Year: 2022-03-29
  */
 
 namespace App\Http\Requests;
@@ -10,7 +10,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Route;
 
-class IdeaRequest extends FormRequest
+class SpeechRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

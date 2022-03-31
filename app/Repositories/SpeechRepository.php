@@ -1,36 +1,34 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: autoDump
- * Year: 2022-02-26
+ * Created by TienNamNguyen.
+ * User: namnt
+ * Year: 2022-03-29
  */
 
 namespace Repository;
 
-use App\Models\Idea;
-use App\Repositories\Contracts\IdeaRepositoryInterface;
+use App\Models\Speech;
+use App\Repositories\Contracts\SpeechRepositoryInterface;
 use Repository\BaseRepository;
 use Illuminate\Foundation\Application;
-use Illuminate\Support\Facades\Auth;
 
-class IdeaRepository extends BaseRepository implements IdeaRepositoryInterface
+class SpeechRepository extends BaseRepository implements SpeechRepositoryInterface
 {
 
      public function __construct(Application $app)
      {
          parent::__construct($app);
-
      }
 
     /**
        * Instantiate model
        *
-       * @param Idea $model
+       * @param Speech $model
        */
 
     public function model()
     {
-        return Idea::class;
+        return Speech::class;
     }
 
 

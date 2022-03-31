@@ -1,0 +1,33 @@
+.pagination {
+	.page-link {
+		background-color: $white;
+		color: $shark;
+		padding: 0.4rem 0.6rem;
+		font-weight: 500;
+		font-size: 15px;
+
+		&:hover {
+			background-color: $athens-gray;
+			border-color: $geyser;
+			color: $shark;
+		}
+
+		&:focus {
+			box-shadow: none;
+		}
+	}
+
+	.page-item.disable {
+		color: $shark;
+	}
+
+	.page-item.active .page-link {
+		color: $white;
+		background: $green-haze;
+		border-color: $green-haze;
+	}
+}
+
+.b-pagination-pills .page-item .page-link {
+	border-radius: 4px !important;
+}

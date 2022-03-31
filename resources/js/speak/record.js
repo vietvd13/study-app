@@ -11,6 +11,8 @@ import {
 } from './helper';
 import CONST_TOGGLE_STATUS from '@/const/toggle_status';
 import { handleRequestNavigation } from './request';
+import { playSound } from './sound';
+import CONST_SOUND from './const';
 
 AudioRecorder.encoder = mpegEncoder;
 AudioRecorder.prototype.mimeType = 'audio/mpeg';
@@ -63,7 +65,7 @@ async function sendData(event) {
 	try {
 		setProcess(CONST_TOGGLE_STATUS.STATUS_ON);
 
-		handleRequestNavigation(event);
+		// handleRequestNavigation(event);
 
 		setProcess(CONST_TOGGLE_STATUS.STATUS_OFF);
 	} catch (error) {
@@ -71,16 +73,16 @@ async function sendData(event) {
 	}
 }
 
-function handleStartRecord() {
+async function handleStartRecord() {
 	if (getRecord() === CONST_TOGGLE_STATUS.STATUS_OFF) {
 		console.log('Start Record');
-
 		setRecord(CONST_TOGGLE_STATUS.STATUS_ON);
+		await playSound(CONST_SOUND.SOUND_START_RECORD);
 		initRecord();
 	}
 }
 
-function handleEndRecord() {
+async function handleEndRecord() {
 	if (
 		getPermission() === CONST_TOGGLE_STATUS.STATUS_ON &&
 		getRecord() === CONST_TOGGLE_STATUS.STATUS_ON
@@ -90,5 +92,6 @@ function handleEndRecord() {
 		setRecord(CONST_TOGGLE_STATUS.STATUS_OFF);
 		recorder.stop();
 		recorder.stream.getTracks().forEach(i => i.stop());
+		await playSound(CONST_SOUND.SOUND_END_RECORD);
 	}
 }

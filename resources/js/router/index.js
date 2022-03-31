@@ -6,6 +6,7 @@ Vue.use(VueRouter);
 import Login from './modules/Login';
 import Dashboard from './modules/Dashboard';
 import Account from './modules/Account';
+import Test from './modules/Test';
 import PageNotFound from './modules/PageNotFound';
 
 export const constantRoutes = [
@@ -17,6 +18,7 @@ export const constantRoutes = [
 	Login,
 	Dashboard,
 	Account,
+	Test,
 	PageNotFound,
 	{
 		path: '*',

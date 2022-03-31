@@ -8,7 +8,8 @@ export default {
 		LOGIN: 'Account Login',
 		PAGE_NOT_FOUND: 'Page Not Found',
 		DASHBOARD: 'Dashboard',
-		ACCOUNT: 'Account Management'
+		ACCOUNT: 'Account Management',
+		TEST: 'Test Management'
 	},
 	LOGIN: {
 		TITLE: 'Account Login',

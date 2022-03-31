@@ -34,7 +34,7 @@ service.interceptors.request.use(
 
 service.interceptors.response.use(
 	response => {
-		return response;
+		return response.data;
 	},
 	error => {
 		const isCheckTitle = i18n.te(error.response.data.title);

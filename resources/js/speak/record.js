@@ -49,6 +49,11 @@ function initRecord() {
 			recorder = new MediaRecorder(stream);
 
 			recorder.addEventListener('dataavailable', async event => {
+				console.log(event);
+
+				let dom = document.getElementById('test');
+				dom.src = URL.createObjectURL(event.data);
+
 				sendData(event);
 			});
 
@@ -65,7 +70,7 @@ async function sendData(event) {
 	try {
 		setProcess(CONST_TOGGLE_STATUS.STATUS_ON);
 
-		// handleRequestNavigation(event);
+		handleRequestNavigation(event);
 
 		setProcess(CONST_TOGGLE_STATUS.STATUS_OFF);
 	} catch (error) {
@@ -76,6 +81,7 @@ async function sendData(event) {
 async function handleStartRecord() {
 	if (getRecord() === CONST_TOGGLE_STATUS.STATUS_OFF) {
 		console.log('Start Record');
+
 		setRecord(CONST_TOGGLE_STATUS.STATUS_ON);
 		await playSound(CONST_SOUND.SOUND_START_RECORD);
 		initRecord();

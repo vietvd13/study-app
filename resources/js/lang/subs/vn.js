@@ -8,7 +8,8 @@ export default {
 		LOGIN: 'Đăng nhập tài khoản',
 		PAGE_NOT_FOUND: 'Trang không tồn tại',
 		DASHBOARD: 'Dashboard',
-		ACCOUNT: 'Quản lý tài khoản'
+		ACCOUNT: 'Quản lý tài khoản',
+		TEST: 'Quản lý bài kiểm tra'
 	},
 	LOGIN: {
 		TITLE: 'Đăng nhập tài khoản',

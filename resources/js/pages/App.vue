@@ -10,7 +10,7 @@
 		created() {
 			console.log(
 				'%cStudy App',
-				'font-size: 20px; padding: 5px 10px 5px 10px; border-radius: .25rem; color: #55AEEE; background-color: #0F0049; text-align: center;'
+				'font-size: 20px; padding: 5px 10px 5px 10px; border-radius: .25rem; color: #04aa6d; background-color: #282a35; text-align: center;'
 			);
 		}
 	};

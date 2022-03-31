@@ -10,11 +10,11 @@ import {
 	setProcess
 } from './helper';
 import CONST_TOGGLE_STATUS from '@/const/toggle_status';
+import { handleRequestNavigation } from './request';
 
 AudioRecorder.encoder = mpegEncoder;
 AudioRecorder.prototype.mimeType = 'audio/mpeg';
 window.MediaRecorder = AudioRecorder;
-import { postNavigation } from '@/api/modules/navigation';
 
 let recorder;
 
@@ -59,23 +59,11 @@ function initRecord() {
 		});
 }
 
-function domTest(event) {
-	var dom = document.getElementById('audio');
-
-	dom.src = URL.createObjectURL(event.data);
-}
-
 async function sendData(event) {
 	try {
-		domTest(event);
 		setProcess(CONST_TOGGLE_STATUS.STATUS_ON);
 
-		// let DATA = new FormData();
-
-		// DATA.append('user_voice', data.data);
-
-		// const res = await postNavigation('/navigation/voice', DATA);
-		// console.log(res);
+		handleRequestNavigation(event);
 
 		setProcess(CONST_TOGGLE_STATUS.STATUS_OFF);
 	} catch (error) {
@@ -99,7 +87,6 @@ function handleEndRecord() {
 	) {
 		console.log('End Record');
 
-		clearTimeout();
 		setRecord(CONST_TOGGLE_STATUS.STATUS_OFF);
 		recorder.stop();
 		recorder.stream.getTracks().forEach(i => i.stop());

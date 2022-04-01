@@ -8,12 +8,12 @@
 namespace Repository;
 
 use App\Models\Classes;
-use App\Repositories\Contracts\classRepositoryInterface;
+use App\Repositories\Contracts\ClassRepositoryInterface;
 use Repository\BaseRepository;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Auth;
 
-class classRepository extends BaseRepository implements classRepositoryInterface
+class ClassRepository extends BaseRepository implements ClassRepositoryInterface
 {
 
      public function __construct(Application $app)

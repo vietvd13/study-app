@@ -17,7 +17,7 @@ use App\Services\Contracts\SpeechServiceInterface;
 use Service\SpeechService;
 
 use App\Repositories\Contracts\ClassRepositoryInterface;
-use Repository\classRepository;
+use Repository\ClassRepository;
 
 use Service\ClassService;
 use App\Services\Contracts\ClassServiceInterface;
@@ -47,7 +47,7 @@ class AppServiceProvider extends ServiceProvider
         // end Speech
 
         // class
-        $this->app->bind(ClassRepositoryInterface::class, classRepository::class);
+        $this->app->bind(ClassRepositoryInterface::class, ClassRepository::class);
         $this->app->bind(ClassServiceInterface::class, ClassService::class);
         // end class
 

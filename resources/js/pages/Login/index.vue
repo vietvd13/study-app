@@ -5,6 +5,11 @@
 				<div class="login-form-content">
 					<b-row>
 						<b-col>
+							<!-- Logo -->
+							<div class="login-form-content__logo">
+								<b-img center :src="Logo" alt="Logo"></b-img>
+							</div>
+
 							<!-- Title -->
 							<div class="login-form-content__header">
 								<h1>{{ $t('LOGIN.TITLE') }}</h1>
@@ -50,7 +55,11 @@
 							<div class="login-form-content__footer">
 								<b-row>
 									<b-col>
-										<b-button @click="doLogin()" :disabled="isProcess">
+										<b-button
+											class="btn-custom"
+											@click="doLogin()"
+											:disabled="isProcess"
+										>
 											<i
 												v-if="isProcess"
 												class="fad fa-spinner-third fa-spin"
@@ -69,10 +78,13 @@
 </template>
 
 <script>
+	import Logo from '@/assets/images/logo.png';
+
 	export default {
 		name: 'Login',
 		data() {
 			return {
+				Logo,
 				User: {
 					account: '',
 					password: ''

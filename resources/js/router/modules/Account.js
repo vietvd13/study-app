@@ -5,7 +5,7 @@ const Account = {
 	name: 'Account',
 	meta: {
 		title: 'ROUTER.ACCOUNT',
-		icon: 'fas fa-user-alt'
+		icon: 'fad fa-user-alt'
 	},
 	component: Layout,
 	redirect: { name: 'AccountIndex' },

@@ -9,6 +9,8 @@ export default {
 		PAGE_NOT_FOUND: 'Page Not Found',
 		DASHBOARD: 'Dashboard',
 		ACCOUNT: 'Account Management',
+		CLASSES: 'Classes Management',
+		COURSE: 'Course Management',
 		TEST: 'Test Management'
 	},
 	LOGIN: {
@@ -40,6 +42,7 @@ export default {
 		LABEL_FORM_EMAIL: 'Email',
 		LABEL_FORM_ROLE: 'Role',
 		LABEL_FORM_PASSWORD: 'Password',
+		LABEL_FORM_BLIND: 'Blind students',
 
 		BUTTON_SUBMIT: 'Submit',
 		BUTTON_CANCEL: 'Cancel'

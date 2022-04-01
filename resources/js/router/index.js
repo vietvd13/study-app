@@ -6,6 +6,8 @@ Vue.use(VueRouter);
 import Login from './modules/Login';
 import Dashboard from './modules/Dashboard';
 import Account from './modules/Account';
+import Classes from './modules/Classes';
+import Course from './modules/Course';
 import Test from './modules/Test';
 import PageNotFound from './modules/PageNotFound';
 
@@ -18,6 +20,8 @@ export const constantRoutes = [
 	Login,
 	Dashboard,
 	Account,
+	Classes,
+	Course,
 	Test,
 	PageNotFound,
 	{

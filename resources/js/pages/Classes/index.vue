@@ -1,64 +1,38 @@
 <template>
-	<div class="account">
-		<div class="account__header">
+	<div class="classes">
+		<div class="classes__header">
 			<b-card>
 				<b-row>
-					<b-col cols="12" sm="12" md="6" lg="6" xl="3">
+					<b-col cols="12" sm="12" md="6" lg="4" xl="4">
 						<div class="form-item">
-							<label for="filter-fullname">{{
-								$t('ACCOUNT.LABEL_FILTER_FULLNAME')
-							}}</label>
+							<label for="filter-name">Name</label>
 							<b-form-input
-								id="filter-fullname"
-								v-model="isFilter.fullname"
-								:placeholder="$t('ACCOUNT.PLACEHOLDER_FILTER_FULLNAME')"
-							></b-form-input>
-						</div>
-					</b-col>
-
-					<b-col cols="12" sm="12" md="6" lg="6" xl="3">
-						<div class="form-item">
-							<label for="filter-role">{{ $t('ACCOUNT.LABEL_FILTER_ROLE') }}</label>
-							<b-form-select
-								id="filter-role"
-								v-model="isFilter.role"
-								:options="listRole"
+								id="filter-name"
+								v-model="isFilter.name"
+								:placeholder="`Enter name`"
 							/>
 						</div>
 					</b-col>
 
-					<b-col cols="12" sm="12" md="6" lg="6" xl="3">
+					<b-col cols="12" sm="12" md="6" lg="4" xl="4">
 						<div class="form-item">
-							<label for="filter-phone">{{
-								$t('ACCOUNT.LABEL_FILTER_TELEPHONE')
-							}}</label>
-							<b-form-input
-								id="filter-phone"
-								v-model="isFilter.phone"
-								:placeholder="$t('ACCOUNT.PLACEHOLDER_FILTER_TELEPHONE')"
-							></b-form-input>
-						</div>
-					</b-col>
-
-					<b-col cols="12" sm="12" md="6" lg="6" xl="3">
-						<div class="form-item">
-							<label for="filter-email">{{ $t('ACCOUNT.LABEL_FILTER_EMAIL') }}</label>
-							<b-form-input
-								id="filter-email"
-								v-model="isFilter.email"
-								:placeholder="$t('ACCOUNT.PLACEHOLDER_FILTER_EMAIL')"
-							></b-form-input>
+							<label for="filter-level">Filter Level</label>
+							<b-form-select
+								id="filter-level"
+								v-model="isFilter.level"
+								:options="listLevel"
+							/>
 						</div>
 					</b-col>
 				</b-row>
 			</b-card>
 		</div>
 
-		<div class="account__content">
+		<div class="classes__content">
 			<b-card>
 				<b-row>
 					<b-col>
-						<div class="d-flex justify-content-end account__content__add">
+						<div class="d-flex justify-content-end classes__content__add">
 							<b-button @click="onClickAdd()" class="btn-custom">
 								<i class="fas fa-plus-circle"></i>
 								<span>{{ $t('ACCOUNT.BUTTON_ADD_NEW') }}</span>
@@ -66,31 +40,22 @@
 						</div>
 					</b-col>
 				</b-row>
-
 				<b-row>
 					<b-col>
 						<b-table
 							bordered
 							striped
 							responsive
-							:no-sort-reset="true"
+							no-sort-reset
 							no-local-sorting
 							show-empty
-							id="table-account"
+							id="table-classes"
 							:fields="fields"
 							:items="items"
+							:total-rows="pagination.total"
 							:per-page="pagination.perPage"
-							:current-page="pagination.page"
+							aria-controls="table-classes"
 						>
-							<template #cell(status)="data">
-								<b-badge v-if="data.item.status === 1" variant="success">
-									Active
-								</b-badge>
-								<b-badge v-if="data.item.status === 0" variant="danger">
-									Inactive
-								</b-badge>
-							</template>
-
 							<template #cell(actions)="data">
 								<div class="td-actions">
 									<div class="actions-edit">
@@ -102,7 +67,6 @@
 											<i class="fas fa-pencil-alt"></i>
 										</b-button>
 									</div>
-
 									<div class="actions-delete">
 										<b-button
 											variant="danger"
@@ -114,7 +78,6 @@
 									</div>
 								</div>
 							</template>
-
 							<template #empty>
 								<span class="d-flex justify-content-center">No data</span>
 							</template>
@@ -133,7 +96,7 @@
 							v-model="pagination.page"
 							:total-rows="pagination.total"
 							:per-page="pagination.perPage"
-							aria-controls="table-account"
+							aria-controls="table-classes"
 						/>
 					</b-col>
 				</b-row>
@@ -146,60 +109,22 @@
 			no-close-on-esc
 			no-close-on-backdrop
 			hide-header-close
-			body-class="modal-account-content"
-			footer-class="modal-account-footer"
+			body-class="modal-classes-content"
+			footer-class="modal-classes-footer"
 		>
 			<template #modal-header>
-				<div class="modal-account-header">
-					<h5 v-if="isAction === 'ADD'">{{ $t('ACCOUNT.MODAL_TITLE_ADD') }}</h5>
-					<h5 v-if="isAction === 'UPDATE'">{{ $t('ACCOUNT.MODAL_TITLE_UPDATE') }}</h5>
-				</div>
+				<h5 v-if="isAction === 'ADD'">Create new classes</h5>
+				<h5 v-if="isAction === 'UPDATE'">Update an classes</h5>
 			</template>
 
-			<template #default>
-				<div class="item-input">
-					<label for="form-fullname">{{ $t('ACCOUNT.LABEL_FORM_FULLNAME') }}</label>
-					<b-form-input id="form-fullname" v-model="isUser.fullname"></b-form-input>
-				</div>
-
-				<div class="item-input">
-					<label for="form-code">{{ $t('ACCOUNT.LABEL_FORM_CODE') }}</label>
-					<b-form-input id="form-code" v-model="isUser.code"></b-form-input>
-				</div>
-
-				<div class="item-input">
-					<label for="form-telephone">{{ $t('ACCOUNT.LABEL_FORM_TELEPHONE') }}</label>
-					<b-form-input id="form-telephone" v-model="isUser.telephone"></b-form-input>
-				</div>
-
-				<div class="item-input">
-					<label for="form-email">{{ $t('ACCOUNT.LABEL_FORM_EMAIL') }}</label>
-					<b-form-input id="form-email" v-model="isUser.email"></b-form-input>
-				</div>
-
-				<div class="item-input">
-					<label for="form-role">{{ $t('ACCOUNT.LABEL_FORM_ROLE') }}</label>
-					<b-form-select id="form-role" v-model="isUser.role" :options="listRole" />
-				</div>
-
-				<div class="item-input">
-					<label for="form-password">{{ $t('ACCOUNT.LABEL_FORM_PASSWORD') }}</label>
-					<b-form-input id="form-password" v-model="isUser.password"></b-form-input>
-				</div>
-
-				<div class="item-input">
-					<b-form-checkbox id="form-blind" v-model="isUser.blind" name="blind">
-						{{ $t('ACCOUNT.LABEL_FORM_BLIND') }}
-					</b-form-checkbox>
-				</div>
-			</template>
+			<template #default> </template>
 
 			<template #modal-footer>
 				<b-button variant="outline-danger" @click="onClickCancelModalForm()">{{
-					$t('ACCOUNT.BUTTON_CANCEL')
+					'Cancel'
 				}}</b-button>
 				<b-button class="btn-custom" @click="onClickSumbitModalForm()">{{
-					$t('ACCOUNT.BUTTON_SUBMIT')
+					'Submit'
 				}}</b-button>
 			</template>
 		</b-modal>
@@ -213,11 +138,11 @@
 			footer-class="modal-delete-footer"
 		>
 			<template #modal-header>
-				<h5>{{ $t('ACCOUNT.MODAL_TITLE_DELETE') }}</h5>
+				<h5>{{ 'Delete an classes' }}</h5>
 			</template>
 
 			<template #default>
-				<p>{{ $t('ACCOUNT.CONTENT_MODAL_DELETE') }}</p>
+				<p>{{ 'Are you sure?' }}</p>
 			</template>
 
 			<template #modal-footer>
@@ -238,65 +163,44 @@
 	const ACTION_UPDATE = 'UPDATE';
 
 	export default {
-		name: 'Account',
+		name: 'Classes',
 		data() {
 			return {
-				isUser: {
-					fullname: '',
-					code: '',
-					telephone: '',
-					email: '',
-					role: null,
-					blind: false,
-					password: ''
+				isClass: {
+					name: '',
+					level: null
 				},
 
 				isFilter: {
-					fullname: '',
-					role: null,
-					phone: '',
-					email: ''
+					name: '',
+					level: null
 				},
 
-				listRole: [
+				listLevel: [
 					{
 						value: null,
 						text: 'Please select'
 					},
 					{
 						value: 1,
-						text: 'Teacher'
+						text: 'Level 1'
 					},
 					{
 						value: 2,
-						text: 'Student'
+						text: 'Level 2'
 					}
 				],
 
 				items: [
 					{
 						id: 1,
-						student_id: 'GCH18154',
-						fullname: 'Vũ Đức Việt',
-						phone: '0984264170',
-						email: 'vietvdgch18154@fpt.edu.vn',
-						status: 1
+						name: 'Chemistry',
+						level: 1
 					},
 					{
 						id: 2,
-						student_id: 'GCH18154',
-						fullname: 'Vũ Đức Việt',
-						phone: '0984264170',
-						email: 'vietvdgch18154@fpt.edu.vn',
-						status: 1
-					},
-					{
-						id: 3,
-						student_id: 'GCH18154',
-						fullname: 'Vũ Đức Việt',
-						phone: '0984264170',
-						email: 'vietvdgch18154@fpt.edu.vn',
-						status: 0
+						name: 'Physics',
+						level: 1
 					}
 				],
 
@@ -316,45 +220,24 @@
 			fields() {
 				return [
 					{
-						key: 'student_id',
-						label: 'Student ID',
+						key: 'name',
+						label: 'Name',
 						sortable: true,
 						thClass: 'base-th',
 						tdClass: 'base-td'
 					},
 					{
-						key: 'fullname',
-						label: 'Fullname',
-						sortable: true,
-						thClass: 'base-th',
-						tdClass: 'base-td'
-					},
-					{
-						key: 'phone',
-						label: 'Phone',
-						sortable: true,
-						thClass: 'base-th',
-						tdClass: 'base-td'
-					},
-					{
-						key: 'email',
-						label: 'Email',
-						sortable: true,
-						thClass: 'base-th',
-						tdClass: 'base-td'
-					},
-					{
-						key: 'status',
-						label: 'Status',
+						key: 'level',
+						label: 'Level',
 						sortable: true,
 						thClass: 'base-th',
 						tdClass: 'base-td'
 					},
 					{
 						key: 'actions',
-						label: 'Actions',
-						thClass: 'base-th',
-						tdClass: 'base-td'
+						lebael: 'Actions',
+						thClass: 'base-th base-actions',
+						tdClass: 'base-td base-actions'
 					}
 				];
 			}
@@ -404,7 +287,7 @@
 <style lang="scss" scoped>
 	@import '@/scss/_variables';
 
-	.account {
+	.classes {
 		padding: 10px;
 
 		&__header {
@@ -417,6 +300,8 @@
 		}
 
 		&__content {
+			margin-bottom: 10px;
+
 			&__add {
 				margin-bottom: 10px;
 
@@ -429,9 +314,7 @@
 				}
 			}
 
-			margin-bottom: 10px;
-
-			::v-deep table#table-account {
+			::v-deep table#table-classes {
 				thead {
 					tr {
 						th.base-th {
@@ -447,6 +330,10 @@
 					tr {
 						td.base-td {
 							text-align: center;
+						}
+
+						td.base-td.base-actions {
+							width: 200px;
 						}
 
 						td {
@@ -474,14 +361,5 @@
 				}
 			}
 		}
-	}
-
-	.modal-account-content {
-		.item-input {
-			margin-bottom: 10px;
-		}
-	}
-
-	.modal-account-footer {
 	}
 </style>

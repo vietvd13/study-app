@@ -51,8 +51,8 @@ function initRecord() {
 			recorder.addEventListener('dataavailable', async event => {
 				console.log(event);
 
-				let dom = document.getElementById('test');
-				dom.src = URL.createObjectURL(event.data);
+				// let dom = document.getElementById('test');
+				// dom.src = URL.createObjectURL(event.data);
 
 				sendData(event);
 			});

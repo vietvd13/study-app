@@ -57,7 +57,7 @@
 				<b-row>
 					<b-col>
 						<div class="d-flex justify-content-end account__content__add">
-							<b-button variant="primary" size="sm">
+							<b-button variant="primary" @click="onClickAddUser()">
 								<i class="fas fa-plus-circle"></i>
 								<span>Add</span>
 							</b-button>
@@ -129,6 +129,10 @@
 				</b-row>
 			</b-card>
 		</div>
+
+		<b-modal v-model="visibleModal" size="lg">
+			<h1>Modal</h1>
+		</b-modal>
 	</div>
 </template>
 
@@ -190,7 +194,9 @@
 					page: 1,
 					perPage: 20,
 					total: 1
-				}
+				},
+
+				visibleModal: false
 			};
 		},
 		computed: {
@@ -238,6 +244,11 @@
 						tdClass: 'base-td'
 					}
 				];
+			}
+		},
+		methods: {
+			onClickAddUser() {
+				this.visibleModal = true;
 			}
 		}
 	};

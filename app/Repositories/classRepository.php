@@ -7,7 +7,7 @@
 
 namespace Repository;
 
-use App\Models\class;
+use App\Models\Classes;
 use App\Repositories\Contracts\classRepositoryInterface;
 use Repository\BaseRepository;
 use Illuminate\Foundation\Application;
@@ -30,7 +30,7 @@ class classRepository extends BaseRepository implements classRepositoryInterface
 
     public function model()
     {
-        return class::class;
+        return Classes::class;
     }
 
 

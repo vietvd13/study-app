@@ -18,7 +18,31 @@ export default {
 		BUTTON_LOGIN: 'Login'
 	},
 	ACCOUNT: {
-		LABEL_FILTER_FULLNAME: 'Fullname'
+		LABEL_FILTER_FULLNAME: 'Fullname',
+		LABEL_FILTER_ROLE: 'Role',
+		LABEL_FILTER_TELEPHONE: 'Telephone',
+		LABEL_FILTER_EMAIL: 'Email',
+
+		PLACEHOLDER_FILTER_FULLNAME: 'Enter fullname',
+		PLACEHOLDER_FILTER_TELEPHONE: 'Enter telephone',
+		PLACEHOLDER_FILTER_EMAIL: 'Enter email',
+
+		BUTTON_ADD_NEW: 'Add new',
+
+		MODAL_TITLE_ADD: 'Add new account',
+		MODAL_TITLE_UPDATE: 'Update an account',
+		MODAL_TITLE_DELETE: 'Delete an account',
+		CONTENT_MODAL_DELETE: 'You will delete an account from the system. Are you sure?',
+
+		LABEL_FORM_FULLNAME: 'Fullname',
+		LABEL_FORM_CODE: 'Code',
+		LABEL_FORM_TELEPHONE: 'Telephone',
+		LABEL_FORM_EMAIL: 'Email',
+		LABEL_FORM_ROLE: 'Role',
+		LABEL_FORM_PASSWORD: 'Password',
+
+		BUTTON_SUBMIT: 'Submit',
+		BUTTON_CANCEL: 'Cancel'
 	},
 	PAGE_NOT_FOUND: {
 		DETAIL: "We can't seem to find the page you're looking for",

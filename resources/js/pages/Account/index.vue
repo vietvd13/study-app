@@ -11,14 +11,14 @@
 							<b-form-input
 								id="filter-fullname"
 								v-model="isFilter.fullname"
-								placeholder="Enter fullname"
+								:placeholder="$t('ACCOUNT.PLACEHOLDER_FILTER_FULLNAME')"
 							></b-form-input>
 						</div>
 					</b-col>
 
 					<b-col cols="12" sm="12" md="6" lg="6" xl="3">
 						<div class="form-item">
-							<label for="filter-role">Role</label>
+							<label for="filter-role">{{ $t('ACCOUNT.LABEL_FILTER_ROLE') }}</label>
 							<b-form-select
 								id="filter-role"
 								v-model="isFilter.role"
@@ -29,22 +29,24 @@
 
 					<b-col cols="12" sm="12" md="6" lg="6" xl="3">
 						<div class="form-item">
-							<label for="filter-phone">Telephone</label>
+							<label for="filter-phone">{{
+								$t('ACCOUNT.LABEL_FILTER_TELEPHONE')
+							}}</label>
 							<b-form-input
 								id="filter-phone"
 								v-model="isFilter.phone"
-								placeholder="Enter phone"
+								:placeholder="$t('ACCOUNT.PLACEHOLDER_FILTER_TELEPHONE')"
 							></b-form-input>
 						</div>
 					</b-col>
 
 					<b-col cols="12" sm="12" md="6" lg="6" xl="3">
 						<div class="form-item">
-							<label for="filter-email">Email</label>
+							<label for="filter-email">{{ $t('ACCOUNT.LABEL_FILTER_EMAIL') }}</label>
 							<b-form-input
 								id="filter-email"
 								v-model="isFilter.email"
-								placeholder="Enter email"
+								:placeholder="$t('ACCOUNT.PLACEHOLDER_FILTER_EMAIL')"
 							></b-form-input>
 						</div>
 					</b-col>
@@ -57,9 +59,9 @@
 				<b-row>
 					<b-col>
 						<div class="d-flex justify-content-end account__content__add">
-							<b-button variant="primary" @click="onClickAddUser()">
+							<b-button @click="onClickAdd()" class="btn-custom">
 								<i class="fas fa-plus-circle"></i>
-								<span>Add</span>
+								<span>{{ $t('ACCOUNT.BUTTON_ADD_NEW') }}</span>
 							</b-button>
 						</div>
 					</b-col>
@@ -81,24 +83,32 @@
 							:current-page="pagination.page"
 						>
 							<template #cell(status)="data">
-								<b-badge v-if="data.item.status === 1" href="#" variant="success"
-									>Active</b-badge
-								>
-								<b-badge v-if="data.item.status === 0" href="#" variant="danger"
-									>Inactive</b-badge
-								>
+								<b-badge v-if="data.item.status === 1" variant="success">
+									Active
+								</b-badge>
+								<b-badge v-if="data.item.status === 0" variant="danger">
+									Inactive
+								</b-badge>
 							</template>
 
 							<template #cell(actions)="data">
 								<div class="td-actions">
 									<div class="actions-edit">
-										<b-button variant="warning" size="sm">
+										<b-button
+											variant="warning"
+											size="sm"
+											@click="onClickUpdate(data.item.id)"
+										>
 											<i class="fas fa-edit"></i>
 										</b-button>
 									</div>
 
 									<div class="actions-delete">
-										<b-button variant="danger" size="sm">
+										<b-button
+											variant="danger"
+											size="sm"
+											@click="onClickDelete(data.item.id)"
+										>
 											<i class="fas fa-trash"></i>
 										</b-button>
 									</div>
@@ -130,17 +140,117 @@
 			</b-card>
 		</div>
 
-		<b-modal v-model="visibleModal" size="lg">
-			<h1>Modal</h1>
+		<b-modal
+			v-model="visibleModalForm"
+			size="lg"
+			no-close-on-esc
+			no-close-on-backdrop
+			hide-header-close
+			body-class="modal-account-content"
+			footer-class="modal-account-footer"
+		>
+			<template #modal-header>
+				<div class="modal-account-header">
+					<h5 v-if="isAction === 'ADD'">{{ $t('ACCOUNT.MODAL_TITLE_ADD') }}</h5>
+					<h5 v-if="isAction === 'UPDATE'">{{ $t('ACCOUNT.MODAL_TITLE_UPDATE') }}</h5>
+				</div>
+			</template>
+
+			<template #default>
+				<div class="item-input">
+					<label for="form-fullname">{{ $t('ACCOUNT.LABEL_FORM_FULLNAME') }}</label>
+					<b-form-input id="form-fullname" v-model="isUser.fullname"></b-form-input>
+				</div>
+
+				<div class="item-input">
+					<label for="form-code">{{ $t('ACCOUNT.LABEL_FORM_CODE') }}</label>
+					<b-form-input id="form-code" v-model="isUser.code"></b-form-input>
+				</div>
+
+				<div class="item-input">
+					<label for="form-telephone">{{ $t('ACCOUNT.LABEL_FORM_TELEPHONE') }}</label>
+					<b-form-input id="form-telephone" v-model="isUser.telephone"></b-form-input>
+				</div>
+
+				<div class="item-input">
+					<label for="form-email">{{ $t('ACCOUNT.LABEL_FORM_EMAIL') }}</label>
+					<b-form-input id="form-email" v-model="isUser.email"></b-form-input>
+				</div>
+
+				<div class="item-input">
+					<label for="form-role">{{ $t('ACCOUNT.LABEL_FORM_ROLE') }}</label>
+					<b-form-select id="form-role" v-model="isUser.role" :options="listRole" />
+				</div>
+
+				<div class="item-input">
+					<label for="form-password">{{ $t('ACCOUNT.LABEL_FORM_PASSWORD') }}</label>
+					<b-form-input id="form-password" v-model="isUser.password"></b-form-input>
+				</div>
+
+				<div class="item-input">
+					<b-form-checkbox id="form-blind" v-model="isUser.blind" name="blind">
+						Blind students
+					</b-form-checkbox>
+				</div>
+			</template>
+
+			<template #modal-footer>
+				<b-button variant="outline-danger" @click="onClickCancelModalForm()">{{
+					$t('ACCOUNT.BUTTON_CANCEL')
+				}}</b-button>
+				<b-button class="btn-custom" @click="onClickSumbitModalForm()">{{
+					$t('ACCOUNT.BUTTON_SUBMIT')
+				}}</b-button>
+			</template>
+		</b-modal>
+
+		<b-modal
+			v-model="visibleModalDelete"
+			no-close-on-esc
+			no-close-on-backdrop
+			hide-header-close
+			body-class="modal-delete-content"
+			footer-class="modal-delete-footer"
+		>
+			<template #modal-header>
+				<h5>{{ $t('ACCOUNT.MODAL_TITLE_DELETE') }}</h5>
+			</template>
+
+			<template #default>
+				<p>{{ $t('ACCOUNT.CONTENT_MODAL_DELETE') }}</p>
+			</template>
+
+			<template #modal-footer>
+				<b-button variant="outline-secondary" @click="onClickCancelModalDelete()">{{
+					$t('ACCOUNT.BUTTON_CANCEL')
+				}}</b-button>
+
+				<b-button variant="danger" @click="onClickSubmitModalDelete()">{{
+					$t('ACCOUNT.BUTTON_SUBMIT')
+				}}</b-button>
+			</template>
 		</b-modal>
 	</div>
 </template>
 
 <script>
+	const ACITON_ADD = 'ADD';
+	const ACTION_UPDATE = 'UPDATE';
+
 	export default {
 		name: 'Account',
 		data() {
 			return {
+				isUser: {
+					fullname: '',
+					code: '',
+					telephone: '',
+					email: '',
+					role: null,
+					blind: false,
+					password: ''
+				},
+
 				isFilter: {
 					fullname: '',
 					role: null,
@@ -196,7 +306,10 @@
 					total: 1
 				},
 
-				visibleModal: false
+				visibleModalForm: false,
+				visibleModalDelete: false,
+				isAction: '',
+				idHandle: null
 			};
 		},
 		computed: {
@@ -247,8 +360,42 @@
 			}
 		},
 		methods: {
-			onClickAddUser() {
-				this.visibleModal = true;
+			showModalForm() {
+				this.visibleModalForm = true;
+			},
+			hideModalForm() {
+				this.visibleModalForm = false;
+			},
+			showModalDelete() {
+				this.visibleModalDelete = true;
+			},
+			hidenModalDelete() {
+				this.visibleModalDelete = false;
+			},
+			onClickAdd() {
+				this.isAction = ACITON_ADD;
+				this.showModalForm();
+			},
+			onClickUpdate(id) {
+				this.isAction = ACTION_UPDATE;
+				this.idHandle = id;
+				this.showModalForm();
+			},
+			onClickDelete(id) {
+				this.idHandle = id;
+				this.showModalDelete();
+			},
+			onClickCancelModalForm() {
+				this.hideModalForm();
+			},
+			onClickSumbitModalForm() {
+				this.hideModalForm();
+			},
+			onClickCancelModalDelete() {
+				this.hidenModalDelete();
+			},
+			onClickSubmitModalDelete() {
+				this.hidenModalDelete();
 			}
 		}
 	};
@@ -274,7 +421,7 @@
 				margin-bottom: 10px;
 
 				button {
-					min-width: 110px;
+					min-width: 150px;
 
 					i {
 						margin-right: 10px;
@@ -327,5 +474,14 @@
 				}
 			}
 		}
+	}
+
+	.modal-account-content {
+		.item-input {
+			margin-bottom: 10px;
+		}
+	}
+
+	.modal-account-footer {
 	}
 </style>

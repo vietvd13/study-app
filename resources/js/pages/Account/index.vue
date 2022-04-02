@@ -183,7 +183,7 @@
         </div>
 
         <div class="item-input">
-          <label for="form-password">                      {{ $t('ACCOUNT.LABEL_FORM_PASSWORD') }}</label>
+          <label for="form-password">{{ $t('ACCOUNT.LABEL_FORM_PASSWORD') }}</label>
           <b-form-input id="form-password" v-model="isUser.password" />
         </div>
 
@@ -195,12 +195,11 @@
       </template>
 
       <template #modal-footer>
-        <b-button variant="outline-danger" @click="onClickCancelModalForm()">{{
-          $t('ACCOUNT.BUTTON_CANCEL')
-        }}</b-button>
-        <b-button class="btn-custom" @click="onClickSumbitModalForm()">{{
-          $t('ACCOUNT.BUTTON_SUBMIT')
-        }}</b-button>
+        <b-button variant="outline-danger" @click="onClickCancelModalForm()">
+          {{ $t('ACCOUNT.BUTTON_CANCEL') }}</b-button>
+        <b-button class="btn-custom" @click="onClickSumbitModalForm()">
+          {{ $t('ACCOUNT.BUTTON_SUBMIT') }}
+        </b-button>
       </template>
     </b-modal>
 
@@ -221,13 +220,13 @@
       </template>
 
       <template #modal-footer>
-        <b-button variant="outline-secondary" @click="onClickCancelModalDelete()">{{
-          $t('ACCOUNT.BUTTON_CANCEL')
-        }}</b-button>
+        <b-button variant="outline-secondary" @click="onClickCancelModalDelete()">
+          {{ $t('ACCOUNT.BUTTON_CANCEL') }}
+        </b-button>
 
-        <b-button variant="danger" @click="onClickSubmitModalDelete()">{{
-          $t('ACCOUNT.BUTTON_DELETE')
-        }}</b-button>
+        <b-button variant="danger" @click="onClickSubmitModalDelete()">
+          {{ $t('ACCOUNT.BUTTON_DELETE') }}
+        </b-button>
       </template>
     </b-modal>
   </div>

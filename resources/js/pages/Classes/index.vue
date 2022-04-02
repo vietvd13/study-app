@@ -79,9 +79,9 @@
                 </div>
               </template>
               <template #empty>
-                <span
-                  class="d-flex justify-content-center"
-                >{{ $t('CLASSES.TABLE_CONTENT_NO_DATA') }}</span>
+                <span class="d-flex justify-content-center">
+                    {{ $t('CLASSES.TABLE_CONTENT_NO_DATA') }}
+                </span>
               </template>
             </b-table>
           </b-col>
@@ -152,15 +152,15 @@
 
       <template #modal-footer>
         <b-button variant="outline-secondary" @click="onClickCancelModalDelete()">
-          {{
-            $t('CLASSES.BUTTON_CANCEL')
-          }}
+          {{ $t('CLASSES.BUTTON_CANCEL') }}
         </b-button>
 
         <b-button
           variant="danger"
           @click="onClickSubmitModalDelete()"
-        >{{ $t('CLASSES.BUTTON_SUBMIT') }}</b-button>
+        >
+            {{ $t('CLASSES.BUTTON_SUBMIT') }}
+        </b-button>
       </template>
     </b-modal>
   </div>

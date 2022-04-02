@@ -80,7 +80,7 @@
               </template>
               <template #empty>
                 <span class="d-flex justify-content-center">
-                    {{ $t('CLASSES.TABLE_CONTENT_NO_DATA') }}
+                  {{ $t('CLASSES.TABLE_CONTENT_NO_DATA') }}
                 </span>
               </template>
             </b-table>
@@ -159,7 +159,7 @@
           variant="danger"
           @click="onClickSubmitModalDelete()"
         >
-            {{ $t('CLASSES.BUTTON_SUBMIT') }}
+          {{ $t('CLASSES.BUTTON_SUBMIT') }}
         </b-button>
       </template>
     </b-modal>

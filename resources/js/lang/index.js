@@ -9,13 +9,13 @@ import { getLanguage } from './helper/getLang';
 Vue.use(VueI18n);
 
 const messages = {
-	en: enLocale,
-	vn: vnLocale
+  en: enLocale,
+  vn: vnLocale,
 };
 
 const i18n = new VueI18n({
-	locale: getLanguage(),
-	messages
+  locale: getLanguage(),
+  messages,
 });
 
 export default i18n;

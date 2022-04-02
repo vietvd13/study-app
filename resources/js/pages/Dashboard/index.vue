@@ -1,12 +1,12 @@
 <template>
-	<div>
-		<h1>Dashboard</h1>
-		<audio controls id="test"></audio>
-	</div>
+  <div>
+    <h1>Dashboard</h1>
+    <audio id="test" controls />
+  </div>
 </template>
 
 <script>
-	export default {
-		name: 'Dashboard'
-	};
+export default {
+  name: 'Dashboard',
+};
 </script>

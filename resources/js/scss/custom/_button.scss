@@ -1,6 +1,4 @@
 .btn {
-	border: none;
-
 	&:focus {
 		box-shadow: none;
 	}
@@ -12,6 +10,28 @@
 	&:active {
 		&:focus {
 			box-shadow: none;
+		}
+	}
+}
+
+button.btn-custom {
+	border: none;
+	background-color: $green-haze !important;
+
+	&:focus {
+		box-shadow: none;
+		background-color: $green-haze !important;
+	}
+
+	&:active {
+		box-shadow: none;
+		background-color: $green-haze !important;
+	}
+
+	&:active {
+		&:focus {
+			box-shadow: none;
+			background-color: $green-haze !important;
 		}
 	}
 }

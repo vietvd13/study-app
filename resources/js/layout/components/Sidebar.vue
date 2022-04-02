@@ -1,23 +1,23 @@
 <template>
-	<div id="sidebar-wrapper">
-		<MenuSidebar class="sidebar-menu" :routes="routes" />
-	</div>
+  <div id="sidebar-wrapper">
+    <MenuSidebar class="sidebar-menu" :routes="routes" />
+  </div>
 </template>
 
 <script>
-	import MenuSidebar from './MenuSidebar.vue';
+import MenuSidebar from './MenuSidebar.vue';
 
-	export default {
-		name: 'Sidebar',
-		components: {
-			MenuSidebar
-		},
-		computed: {
-			routes() {
-				return this.$router.options.routes.filter(item => item.hidden !== true);
-			}
-		}
-	};
+export default {
+  name: 'Sidebar',
+  components: {
+    MenuSidebar,
+  },
+  computed: {
+    routes() {
+      return this.$router.options.routes.filter(item => item.hidden !== true);
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>

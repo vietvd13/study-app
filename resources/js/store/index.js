@@ -9,13 +9,13 @@ import getters from './getters';
 Vue.use(Vuex);
 
 const modules = {
-	app,
-	permissions
+  app,
+  permissions,
 };
 
 const store = new Vuex.Store({
-	modules,
-	getters
+  modules,
+  getters,
 });
 
 export default store;

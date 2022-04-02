@@ -1,5 +1,6 @@
 const mix = require('laravel-mix');
 const config = require('./webpack.config');
+require('laravel-mix-eslint');
 
 /*
  |--------------------------------------------------------------------------
@@ -26,6 +27,10 @@ mix.js('resources/js/app.js', 'public/js')
 if (mix.inProduction()) {
 	mix.version();
 } else {
+    if (process.env.LARAVUE_USE_ESLINT === 'true') {
+      mix.eslint();
+    }
+
 	mix.sourceMaps().webpackConfig({
 		devtool: 'eval-cheap-module-source-map'
 	});

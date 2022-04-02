@@ -1,15 +1,15 @@
 <template>
-	<div class="course">
-		<div class="course__header"> </div>
+  <div class="course">
+    <div class="course__header" />
 
-		<div class="course__content"> </div>
-	</div>
+    <div class="course__content" />
+  </div>
 </template>
 
 <script>
-	export default {
-		name: 'Course'
-	};
+export default {
+  name: 'Course',
+};
 </script>
 
 <style lang="scss" scoped>

@@ -3,17 +3,25 @@
 	"scripts": {
 		"dev": "npm run development",
 		"development": "mix",
-		"watch": "mix watch",
+		"watch": "mix watch -- --watch",
 		"watch-poll": "mix watch -- --watch-options-poll=1000",
 		"hot": "mix watch --hot",
 		"prod": "npm run production",
 		"production": "mix --production",
 		"postinstall": "npm run prod",
-		"prepare": "husky install"
+		"lint": "eslint --ext .js,.vue resources/js/"
 	},
-	"lint-staged": {
-		"**/*": "prettier --write --ignore-unknown"
-	},
+    "husky": {
+        "hooks": {
+            "pre-commit": "lint-staged"
+        }
+    },
+    "lint-staged": {
+        "resources/**/*.{js,vue}": [
+            "eslint --fix",
+            "git add"
+        ]
+    },
 	"devDependencies": {
 		"@popperjs/core": "^2.10.2",
 		"axios": "^0.21",
@@ -36,6 +44,12 @@
 		"webpack-chunk-rename-plugin": "^1.0.3"
 	},
 	"dependencies": {
+        "babel-eslint": "^10.1.0",
+        "eslint": "^7.19.0",
+        "eslint-loader": "^4.0.2",
+        "eslint-plugin-vue": "^7.5.0",
+        "eslint-webpack-plugin": "^2.5.0",
+        "laravel-mix-eslint": "^0.2.0",
 		"audio-recorder-polyfill": "^0.4.1",
 		"bootstrap-vue": "^2.21.2",
 		"core-js": "^3.20.0",

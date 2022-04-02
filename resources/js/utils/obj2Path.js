@@ -4,17 +4,17 @@
  * @returns String
  */
 export function obj2Path(obj) {
-	if (!obj) {
-		return '';
-	}
+  if (!obj) {
+    return '';
+  }
 
-	var str = [];
+  var str = [];
 
-	for (var p in obj) {
-		if (Object.prototype.hasOwnProperty.call(obj, p)) {
-			str.push(encodeURIComponent(p) + '=' + encodeURIComponent(obj[p]));
-		}
-	}
+  for (var p in obj) {
+    if (Object.prototype.hasOwnProperty.call(obj, p)) {
+      str.push(encodeURIComponent(p) + '=' + encodeURIComponent(obj[p]));
+    }
+  }
 
-	return str.join('&');
+  return str.join('&');
 }

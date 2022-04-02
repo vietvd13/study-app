@@ -183,7 +183,7 @@
         </div>
 
         <div class="item-input">
-          <label for="form-password">{{ $t('ACCOUNT.LABEL_FORM_PASSWORD') }}</label>
+          <label for="form-password">                      {{ $t('ACCOUNT.LABEL_FORM_PASSWORD') }}</label>
           <b-form-input id="form-password" v-model="isUser.password" />
         </div>
 

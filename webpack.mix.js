@@ -1,6 +1,6 @@
 const mix = require('laravel-mix');
 const config = require('./webpack.config');
-require('laravel-mix-eslint');
+require('laravel-mix-eslint-config');
 
 /*
  |--------------------------------------------------------------------------
@@ -28,7 +28,15 @@ if (mix.inProduction()) {
 	mix.version();
 } else {
     if (process.env.LARAVUE_USE_ESLINT === 'true') {
-      mix.eslint();
+      mix.eslint(
+        {
+            enforce: 'pre',
+            test: /\.(js|vue)$/,
+            exclude: /node_modules/,
+            loader: 'eslint-loader',
+            options: {}
+        }
+      );
     }
 
 	mix.sourceMaps().webpackConfig({

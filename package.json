@@ -1,16 +1,17 @@
 {
-	"private": true,
-	"scripts": {
-		"dev": "npm run development",
-		"development": "mix",
-		"watch": "mix watch -- --watch",
-		"watch-poll": "mix watch -- --watch-options-poll=1000",
-		"hot": "mix watch --hot",
-		"prod": "npm run production",
-		"production": "mix --production",
-		"postinstall": "npm run prod",
-		"lint": "eslint --ext .js,.vue resources/js/"
-	},
+    "private": true,
+    "scripts": {
+        "dev": "npm run development",
+        "development": "mix",
+        "watch": "mix watch -- --watch",
+        "watch-poll": "mix watch -- --watch-options-poll=1000",
+        "hot": "mix watch --hot",
+        "prod": "npm run production",
+        "production": "mix --production",
+        "postinstall": "npm run prod",
+        "prepare": "husky install",
+        "lint": "eslint --ext .js,.vue resources/js/"
+    },
     "husky": {
         "hooks": {
             "pre-commit": "lint-staged"
@@ -18,44 +19,45 @@
     },
     "lint-staged": {
         "resources/**/*.{js,vue}": [
-            "eslint --fix",
+            "eslint -- --fix",
             "git add"
         ]
     },
-	"devDependencies": {
-		"@popperjs/core": "^2.10.2",
-		"axios": "^0.21",
-		"babel-plugin-syntax-dynamic-import": "^6.18.0",
-		"babel-plugin-syntax-jsx": "^6.18.0",
-		"babel-plugin-transform-vue-jsx": "^3.7.0",
-		"bootstrap": "^4.5.3",
-		"husky": "^7.0.4",
-		"laravel-mix": "^6.0.6",
-		"lint-staged": "^12.1.4",
-		"lodash": "^4.17.19",
-		"postcss": "^8.1.14",
-		"prettier": "2.5.1",
-		"resolve-url-loader": "^3.1.2",
-		"sass": "^1.32.11",
-		"sass-loader": "^11.0.1",
-		"vue": "^2.6.14",
-		"vue-loader": "^15.9.8",
-		"vue-template-compiler": "^2.6.12",
-		"webpack-chunk-rename-plugin": "^1.0.3"
-	},
-	"dependencies": {
+    "devDependencies": {
+        "@popperjs/core": "^2.10.2",
+        "axios": "^0.21",
+        "babel-plugin-syntax-dynamic-import": "^6.18.0",
+        "babel-plugin-syntax-jsx": "^6.18.0",
+        "babel-plugin-transform-vue-jsx": "^3.7.0",
+        "bootstrap": "^4.5.3",
+        "husky": "^7.0.4",
+        "laravel-mix": "^6.0.6",
+        "laravel-mix-eslint-config": "^0.1.7",
+        "lint-staged": "^12.1.4",
+        "lodash": "^4.17.19",
+        "postcss": "^8.1.14",
+        "prettier": "2.5.1",
+        "resolve-url-loader": "^3.1.2",
+        "sass": "^1.32.11",
+        "sass-loader": "^11.0.1",
+        "vue": "^2.6.14",
+        "vue-loader": "^15.9.8",
+        "vue-template-compiler": "^2.6.12",
+        "webpack-chunk-rename-plugin": "^1.0.3"
+    },
+    "dependencies": {
+        "audio-recorder-polyfill": "^0.4.1",
         "babel-eslint": "^10.1.0",
+        "bootstrap-vue": "^2.21.2",
+        "core-js": "^3.20.0",
         "eslint": "^7.19.0",
         "eslint-loader": "^4.0.2",
         "eslint-plugin-vue": "^7.5.0",
         "eslint-webpack-plugin": "^2.5.0",
+        "js-cookie": "^3.0.1",
         "laravel-mix-eslint": "^0.2.0",
-		"audio-recorder-polyfill": "^0.4.1",
-		"bootstrap-vue": "^2.21.2",
-		"core-js": "^3.20.0",
-		"js-cookie": "^3.0.1",
-		"vue-i18n": "^8.26.7",
-		"vue-router": "^3.5.3",
-		"vuex": "^3.6.2"
-	}
+        "vue-i18n": "^8.26.7",
+        "vue-router": "^3.5.3",
+        "vuex": "^3.6.2"
+    }
 }

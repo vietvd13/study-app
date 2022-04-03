@@ -59,20 +59,12 @@
               <template #cell(actions)="data">
                 <div class="td-actions">
                   <div class="actions-edit">
-                    <b-button
-                      variant="warning"
-                      size="sm"
-                      @click="onClickUpdate(data.item.id)"
-                    >
+                    <b-button variant="warning" size="sm" @click="onClickUpdate(data.item.id)">
                       <i class="fas fa-pencil-alt" />
                     </b-button>
                   </div>
                   <div class="actions-delete">
-                    <b-button
-                      variant="danger"
-                      size="sm"
-                      @click="onClickDelete(data.item.id)"
-                    >
+                    <b-button variant="danger" size="sm" @click="onClickDelete(data.item.id)">
                       <i class="fas fa-trash" />
                     </b-button>
                   </div>
@@ -123,14 +115,11 @@
 
       <template #modal-footer>
         <b-button variant="outline-danger" @click="onClickCancelModalForm()">
-          {{
-            $t('CLASSES.BUTTON_CANCEL')
-          }}
+          {{ $t('CLASSES.BUTTON_CANCEL') }}
         </b-button>
-        <b-button
-          class="btn-custom"
-          @click="onClickSumbitModalForm()"
-        >{{ $t('CLASSES.BUTTON_SUBMIT') }}</b-button>
+        <b-button class="btn-custom" @click="onClickSumbitModalForm()">
+          {{ $t('CLASSES.BUTTON_SUBMIT') }}
+        </b-button>
       </template>
     </b-modal>
 

@@ -13,8 +13,4 @@ input[type='text'].form-control,
 input[type='password'].form-control,
 input[type='number'].form-control {
 	padding: 10px 16px;
-
-	&::placeholder {
-		font-weight: 500;
-	}
 }

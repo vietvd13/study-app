@@ -119,7 +119,7 @@
 
       <template #default>
         <div class="item-input">
-          <label for="form-name">{{ $t('course.LABEL_FORM_NAME') }}</label>
+          <label for="form-name">{{ $t('COURSE.LABEL_FORM_NAME') }}</label>
           <b-form-input id="form-name" v-model="isClass.name" :placeholder="$t('COURSE.PLACEHOLDER_FORM_NAME')" />
         </div>
 

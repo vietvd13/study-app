@@ -33,7 +33,7 @@
         <b-row>
           <b-col>
             <div class="d-flex justify-content-end classes__content__add">
-              <b-button class="btn-custom" @click="onClickAdd()">
+              <b-button class="btn-custom-green" @click="onClickAdd()">
                 <i class="fas fa-plus-circle" />
                 <span>{{ $t('ACCOUNT.BUTTON_ADD_NEW') }}</span>
               </b-button>
@@ -112,14 +112,26 @@
       </template>
 
       <template #default>
+        <div class="item-input">
+          <label for="form-name">{{ $t('CLASSES.LABEL_FORM_NAME') }}</label>
+          <b-form-input id="form-name" v-model="isClass.name" :placeholder="$t('CLASSES.PLACEHOLDER_FORM_NAME')" />
+        </div>
 
+        <div class="item-input">
+          <label for="form-level">{{ $t('CLASSES.PLACEHOLDER_FORM_LEVEL') }}</label>
+          <b-form-select
+            id="form-level"
+            v-model="isClass.level"
+            :options="listLevel"
+          />
+        </div>
       </template>
 
       <template #modal-footer>
         <b-button variant="outline-danger" @click="onClickCancelModalForm()">
           {{ $t('CLASSES.BUTTON_CANCEL') }}
         </b-button>
-        <b-button class="btn-custom" @click="onClickSumbitModalForm()">
+        <b-button class="btn-custom-green" @click="onClickSumbitModalForm()">
           {{ $t('CLASSES.BUTTON_SUBMIT') }}
         </b-button>
       </template>
@@ -142,14 +154,11 @@
       </template>
 
       <template #modal-footer>
-        <b-button variant="outline-secondary" @click="onClickCancelModalDelete()">
+        <b-button class="btn-custom-outline-charade" @click="onClickCancelModalDelete()">
           {{ $t('CLASSES.BUTTON_CANCEL') }}
         </b-button>
 
-        <b-button
-          variant="danger"
-          @click="onClickSubmitModalDelete()"
-        >
+        <b-button variant="danger" @click="onClickSubmitModalDelete()">
           {{ $t('CLASSES.BUTTON_SUBMIT') }}
         </b-button>
       </template>
@@ -359,6 +368,12 @@ export default {
                 }
             }
         }
+    }
+}
+
+.modal-classes-content {
+    .item-input {
+        margin-bottom: 10px;
     }
 }
 </style>

@@ -12,6 +12,13 @@
 
 	.login-form {
 		.login-form-content {
+			&__logo {
+				img {
+					height: 200px;
+					width: auto;
+				}
+			}
+
 			&__header {
 				text-align: center;
 

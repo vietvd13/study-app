@@ -1,6 +1,4 @@
 .btn {
-	border: none;
-
 	&:focus {
 		box-shadow: none;
 	}
@@ -12,6 +10,60 @@
 	&:active {
 		&:focus {
 			box-shadow: none;
+		}
+	}
+}
+
+button.btn-custom-green {
+	border: none;
+	background-color: $green-haze !important;
+
+	&:focus {
+		box-shadow: none;
+		background-color: $green-haze !important;
+	}
+
+	&:active {
+		box-shadow: none;
+		background-color: $green-haze !important;
+	}
+
+	&:active {
+		&:focus {
+			box-shadow: none;
+			background-color: $green-haze !important;
+		}
+	}
+}
+
+button.btn-custom-outline-charade {
+    color: $charade !important;
+    border: 1px solid $charade !important;
+    background-color: transparent !important;
+
+    &:hover {
+		box-shadow: none;
+        color: $white !important;
+		background-color: $charade !important;
+    }
+
+	&:focus {
+		box-shadow: none;
+        color: $white !important;
+		background-color: $charade !important;
+	}
+
+	&:active {
+		box-shadow: none;
+        color: $white !important;
+		background-color: $charade !important;
+	}
+
+	&:active {
+		&:focus {
+			box-shadow: none;
+            color: $white !important;
+			background-color: $charade !important;
 		}
 	}
 }

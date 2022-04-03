@@ -10,7 +10,7 @@ import {
   setProcess,
 } from './helper';
 import CONST_TOGGLE_STATUS from '@/const/toggle_status';
-import { handleRequestNavigation } from './request';
+// import { handleRequestNavigation } from './request';
 import { playSound } from './sound';
 import CONST_SOUND from './const';
 
@@ -22,12 +22,11 @@ let recorder;
 
 export function handleRecord(key) {
   window.onkeydown = event => {
-    if ((event.code === key.code || event.keyCode === key.keyCode) && event.ctrlKey) {
+    if ((key.code.includes(event.code) || event.keyCode === key.keyCode) && event.ctrlKey) {
       event.preventDefault();
 
       if (
-        getRecord() === CONST_TOGGLE_STATUS.STATUS_OFF &&
-				getProccess() === CONST_TOGGLE_STATUS.STATUS_OFF
+        getRecord() === CONST_TOGGLE_STATUS.STATUS_OFF && getProccess() === CONST_TOGGLE_STATUS.STATUS_OFF
       ) {
         handleStartRecord();
       }
@@ -65,7 +64,7 @@ async function sendData(event) {
   try {
     setProcess(CONST_TOGGLE_STATUS.STATUS_ON);
 
-    handleRequestNavigation(event);
+    // handleRequestNavigation(event);
 
     setProcess(CONST_TOGGLE_STATUS.STATUS_OFF);
   } catch (error) {

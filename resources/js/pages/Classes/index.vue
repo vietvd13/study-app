@@ -21,7 +21,13 @@
                 id="filter-level"
                 v-model="isFilter.level"
                 :options="listLevel"
-              />
+              >
+                <template #first>
+                  <b-form-select-option :value="null" disabled>
+                    {{ $t('CLASSES.PLACEHOLDER_FILTER_LEVEL') }}
+                  </b-form-select-option>
+                </template>
+              </b-form-select>
             </div>
           </b-col>
         </b-row>
@@ -35,7 +41,7 @@
             <div class="d-flex justify-content-end classes__content__add">
               <b-button class="btn-custom-green" @click="onClickAdd()">
                 <i class="fas fa-plus-circle" />
-                <span>{{ $t('ACCOUNT.BUTTON_ADD_NEW') }}</span>
+                <span>{{ $t('CLASSES.BUTTON_ADD_NEW') }}</span>
               </b-button>
             </div>
           </b-col>
@@ -123,7 +129,13 @@
             id="form-level"
             v-model="isClass.level"
             :options="listLevel"
-          />
+          >
+            <template #first>
+              <b-form-select-option :value="null" disabled>
+                {{ $t('CLASSES.PLACEHOLDER_FILTER_LEVEL') }}
+              </b-form-select-option>
+            </template>
+          </b-form-select>
         </div>
       </template>
 
@@ -186,10 +198,6 @@ export default {
 
       listLevel: [
         {
-          value: null,
-          text: this.$t('CLASSES.PLACEHOLDER_FILTER_LEVEL'),
-        },
-        {
           value: 1,
           text: 'Level 1',
         },
@@ -202,12 +210,12 @@ export default {
       items: [
         {
           id: 1,
-          name: 'Chemistry',
+          name: 'TCH1100',
           level: 1,
         },
         {
           id: 2,
-          name: 'Physics',
+          name: 'TCH2200',
           level: 1,
         },
       ],

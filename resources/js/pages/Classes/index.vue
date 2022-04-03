@@ -41,7 +41,7 @@
             <div class="d-flex justify-content-end classes__content__add">
               <b-button class="btn-custom-green" @click="onClickAdd()">
                 <i class="fas fa-plus-circle" />
-                <span>{{ $t('ACCOUNT.BUTTON_ADD_NEW') }}</span>
+                <span>{{ $t('CLASSES.BUTTON_ADD_NEW') }}</span>
               </b-button>
             </div>
           </b-col>
@@ -210,12 +210,12 @@ export default {
       items: [
         {
           id: 1,
-          name: 'Chemistry',
+          name: 'TCH1100',
           level: 1,
         },
         {
           id: 2,
-          name: 'Physics',
+          name: 'TCH2200',
           level: 1,
         },
       ],

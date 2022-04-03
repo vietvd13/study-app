@@ -14,14 +14,12 @@ export default {
     COURSE: 'Course Management',
     TEST: 'Test Management',
   },
-
   LOGIN: {
     TITLE: 'Account Login',
     PLACEHOLDER_ACCOUNT: 'Enter your account',
     PLACEHOLDER_PASSWORD: 'Enter your password',
     BUTTON_LOGIN: 'Login',
   },
-
   ACCOUNT: {
     LABEL_FILTER_FULLNAME: 'Fullname',
     LABEL_FILTER_ROLE: 'Role',
@@ -63,7 +61,6 @@ export default {
     BUTTON_DELETE: 'Delete',
     BUTTON_CANCEL: 'Cancel',
   },
-
   CLASSES: {
     LABEL_FILTER_NAME: 'Name',
     LABEL_FILTER_LEVEL: 'Level',
@@ -94,18 +91,45 @@ export default {
     BUTTON_DELETE: 'Delete',
     BUTTON_CANCEL: 'Cancel',
   },
+  COURSE: {
+    LABEL_FILTER_NAME: 'Name',
+    LABEL_FILTER_LEVEL: 'Level',
 
+    PLACEHOLDER_FILTER_NAME: 'Enter name',
+    PLACEHOLDER_FILTER_LEVEL: 'Please select',
+
+    BUTTON_ADD_NEW: 'Add new',
+
+    TABLE_TITLE_NAME: 'Name',
+    TABLE_TITLE_LEVEL: 'Level',
+    TABLE_TITLE_ACTIONS: 'Actions',
+
+    TABLE_CONTENT_NO_DATA: 'No data',
+
+    MODAL_TITLE_ADD: 'Add new course',
+    MODAL_TITLE_UPDATE: 'Update an course',
+    MODAL_TITLE_DELETE: 'Delete an course',
+    CONTENT_MODAL_DELETE: 'You will delete an course from the system. Are you sure?',
+
+    LABEL_FORM_NAME: 'Name',
+    LABEL_FORM_LEVEL: 'Level',
+
+    PLACEHOLDER_FORM_NAME: 'Enter name',
+    PLACEHOLDER_FORM_LEVEL: 'Please select',
+
+    BUTTON_SUBMIT: 'Submit',
+    BUTTON_DELETE: 'Delete',
+    BUTTON_CANCEL: 'Cancel',
+  },
   PAGE_NOT_FOUND: {
     DETAIL: "We can't seem to find the page you're looking for",
     GO_TO_HOME: 'Go To Home Page',
   },
-
   NAVBAR: {
     LANGUAGE: 'Language',
     ENGLISH: 'English',
     VIETNAMESE: 'Tiếng Việt',
   },
-
   I18N: {
     CHANGE_LANGUAGE: {
       SUCCESS: 'Change language successfully',

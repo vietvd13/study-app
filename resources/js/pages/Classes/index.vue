@@ -111,7 +111,9 @@
         <h5 v-if="isAction === 'UPDATE'">{{ $t('CLASSES.MODAL_TITLE_UPDATE') }}</h5>
       </template>
 
-      <template #default />
+      <template #default>
+
+      </template>
 
       <template #modal-footer>
         <b-button variant="outline-danger" @click="onClickCancelModalForm()">

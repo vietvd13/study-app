@@ -61,15 +61,15 @@ export default {
     BUTTON_CANCEL: 'Cancel',
   },
   CLASSES: {
-    LABEL_FILTER_NAME: 'Fullname',
+    LABEL_FILTER_NAME: 'Name',
     LABEL_FILTER_LEVEL: 'Level',
 
-    PLACEHOLDER_FILTER_NAME: 'Enter fullname',
+    PLACEHOLDER_FILTER_NAME: 'Enter name',
     PLACEHOLDER_FILTER_LEVEL: 'Please select',
 
     BUTTON_ADD_NEW: 'Add new',
 
-    TABLE_TITLE_NAME: 'Fullname',
+    TABLE_TITLE_NAME: 'Name',
     TABLE_TITLE_LEVEL: 'Level',
     TABLE_TITLE_ACTIONS: 'Actions',
 
@@ -80,8 +80,11 @@ export default {
     MODAL_TITLE_DELETE: 'Delete an classes',
     CONTENT_MODAL_DELETE: 'You will delete an classes from the system. Are you sure?',
 
-    LABEL_FORM_FULLNAME: 'Fullname',
+    LABEL_FORM_NAME: 'Name',
     LABEL_FORM_LEVEL: 'Level',
+
+    PLACEHOLDER_FORM_NAME: 'Enter name',
+    PLACEHOLDER_FORM_LEVEL: 'Please select',
 
     BUTTON_SUBMIT: 'Submit',
     BUTTON_DELETE: 'Delete',

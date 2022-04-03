@@ -56,7 +56,7 @@
                 <b-row>
                   <b-col>
                     <b-button
-                      class="btn-custom"
+                      class="btn-custom-green"
                       :disabled="isProcess"
                       @click="doLogin()"
                     >

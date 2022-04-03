@@ -5,9 +5,9 @@
         <b-row>
           <b-col cols="12" sm="12" md="6" lg="6" xl="3">
             <div class="form-item">
-              <label for="filter-fullname">{{
-                $t('ACCOUNT.LABEL_FILTER_FULLNAME')
-              }}</label>
+              <label for="filter-fullname">
+                {{ $t('ACCOUNT.LABEL_FILTER_FULLNAME') }}
+              </label>
               <b-form-input
                 id="filter-fullname"
                 v-model="isFilter.fullname"
@@ -18,7 +18,9 @@
 
           <b-col cols="12" sm="12" md="6" lg="6" xl="3">
             <div class="form-item">
-              <label for="filter-role">{{ $t('ACCOUNT.LABEL_FILTER_ROLE') }}</label>
+              <label for="filter-role">
+                {{ $t('ACCOUNT.LABEL_FILTER_ROLE') }}
+              </label>
               <b-form-select
                 id="filter-role"
                 v-model="isFilter.role"
@@ -29,9 +31,9 @@
 
           <b-col cols="12" sm="12" md="6" lg="6" xl="3">
             <div class="form-item">
-              <label for="filter-phone">{{
-                $t('ACCOUNT.LABEL_FILTER_TELEPHONE')
-              }}</label>
+              <label for="filter-phone">
+                {{ $t('ACCOUNT.LABEL_FILTER_TELEPHONE') }}
+              </label>
               <b-form-input
                 id="filter-phone"
                 v-model="isFilter.phone"
@@ -59,7 +61,7 @@
         <b-row>
           <b-col>
             <div class="d-flex justify-content-end account__content__add">
-              <b-button class="btn-custom" @click="onClickAdd()">
+              <b-button class="btn-custom-green" @click="onClickAdd()">
                 <i class="fas fa-plus-circle" />
                 <span>{{ $t('ACCOUNT.BUTTON_ADD_NEW') }}</span>
               </b-button>
@@ -116,7 +118,9 @@
               </template>
 
               <template #empty>
-                <span class="d-flex justify-content-center">{{ $t('ACCOUNT.TABLE_CONTENT_NO_DATA') }}</span>
+                <span class="d-flex justify-content-center">
+                  {{ $t('ACCOUNT.TABLE_CONTENT_NO_DATA') }}
+                </span>
               </template>
             </b-table>
           </b-col>
@@ -196,8 +200,9 @@
 
       <template #modal-footer>
         <b-button variant="outline-danger" @click="onClickCancelModalForm()">
-          {{ $t('ACCOUNT.BUTTON_CANCEL') }}</b-button>
-        <b-button class="btn-custom" @click="onClickSumbitModalForm()">
+          {{ $t('ACCOUNT.BUTTON_CANCEL') }}
+        </b-button>
+        <b-button class="btn-custom-green" @click="onClickSumbitModalForm()">
           {{ $t('ACCOUNT.BUTTON_SUBMIT') }}
         </b-button>
       </template>
@@ -220,7 +225,7 @@
       </template>
 
       <template #modal-footer>
-        <b-button variant="outline-secondary" @click="onClickCancelModalDelete()">
+        <b-button class="btn-custom-outline-charade" @click="onClickCancelModalDelete()">
           {{ $t('ACCOUNT.BUTTON_CANCEL') }}
         </b-button>
 

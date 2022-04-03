@@ -18,5 +18,6 @@ Route::namespace('Api')->group(function() {
     Route::post('/auth/login','AuthController@login');
     Route::middleware(['auth:sanctum'])->group(function () {
         Route::get('/auth/user','AuthController@user');
+        Route::apiResource('/users', 'UserController');
     });
 });

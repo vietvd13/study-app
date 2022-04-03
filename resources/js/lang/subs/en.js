@@ -4,6 +4,7 @@ export default {
     WARNING: 'Warning',
     DANGER: 'Danger',
   },
+
   ROUTER: {
     LOGIN: 'Account Login',
     PAGE_NOT_FOUND: 'Page Not Found',
@@ -79,6 +80,36 @@ export default {
     MODAL_TITLE_UPDATE: 'Update an classes',
     MODAL_TITLE_DELETE: 'Delete an classes',
     CONTENT_MODAL_DELETE: 'You will delete an classes from the system. Are you sure?',
+
+    LABEL_FORM_NAME: 'Name',
+    LABEL_FORM_LEVEL: 'Level',
+
+    PLACEHOLDER_FORM_NAME: 'Enter name',
+    PLACEHOLDER_FORM_LEVEL: 'Please select',
+
+    BUTTON_SUBMIT: 'Submit',
+    BUTTON_DELETE: 'Delete',
+    BUTTON_CANCEL: 'Cancel',
+  },
+  COURSE: {
+    LABEL_FILTER_NAME: 'Name',
+    LABEL_FILTER_LEVEL: 'Level',
+
+    PLACEHOLDER_FILTER_NAME: 'Enter name',
+    PLACEHOLDER_FILTER_LEVEL: 'Please select',
+
+    BUTTON_ADD_NEW: 'Add new',
+
+    TABLE_TITLE_NAME: 'Name',
+    TABLE_TITLE_LEVEL: 'Level',
+    TABLE_TITLE_ACTIONS: 'Actions',
+
+    TABLE_CONTENT_NO_DATA: 'No data',
+
+    MODAL_TITLE_ADD: 'Add new course',
+    MODAL_TITLE_UPDATE: 'Update an course',
+    MODAL_TITLE_DELETE: 'Delete an course',
+    CONTENT_MODAL_DELETE: 'You will delete an course from the system. Are you sure?',
 
     LABEL_FORM_NAME: 'Name',
     LABEL_FORM_LEVEL: 'Level',

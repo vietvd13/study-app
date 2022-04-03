@@ -49,11 +49,6 @@ function initRecord() {
       recorder = new MediaRecorder(stream);
 
       recorder.addEventListener('dataavailable', async event => {
-        console.log(event);
-
-        // let dom = document.getElementById('test');
-        // dom.src = URL.createObjectURL(event.data);
-
         sendData(event);
       });
 

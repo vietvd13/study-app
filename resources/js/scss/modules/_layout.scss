@@ -179,3 +179,10 @@
 		margin-right: 0;
 	}
 }
+
+@media (max-width: 991px) {
+    span.app-name {
+        text-align: center;
+        padding: 15px 0 15px 0;
+    }
+}

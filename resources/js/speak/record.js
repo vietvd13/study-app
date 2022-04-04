@@ -3,12 +3,12 @@ import mpegEncoder from 'audio-recorder-polyfill/mpeg-encoder';
 import { TIME_RECORD } from './config';
 import {
   getPermission,
-  setPermission,
   getRecord,
   setRecord,
   getProccess,
   setProcess,
 } from './helper';
+import { isLogged } from '@/utils/auth';
 import CONST_TOGGLE_STATUS from '@/const/toggle_status';
 // import { handleRequestNavigation } from './request';
 import { playSound } from './sound';
@@ -28,7 +28,9 @@ export function handleRecord(key) {
       if (
         getRecord() === CONST_TOGGLE_STATUS.STATUS_OFF && getProccess() === CONST_TOGGLE_STATUS.STATUS_OFF
       ) {
-        handleStartRecord();
+        if (isLogged()) {
+          handleStartRecord();
+        }
       }
     }
   };
@@ -36,7 +38,10 @@ export function handleRecord(key) {
   window.onkeyup = event => {
     if (event.code === key.code || event.keyCode === key.keyCode || event.ctrlKey) {
       event.preventDefault();
-      handleEndRecord();
+
+      if (isLogged()) {
+        handleEndRecord();
+      }
     }
   };
 }
@@ -51,11 +56,9 @@ function initRecord() {
         sendData(event);
       });
 
-      setPermission(CONST_TOGGLE_STATUS.STATUS_ON);
       recorder.start(TIME_RECORD);
     })
     .catch(error => {
-      setPermission(CONST_TOGGLE_STATUS.STATUS_OFF);
       console.log(error);
     });
 }
@@ -72,26 +75,26 @@ async function sendData(event) {
   }
 }
 
-async function handleStartRecord() {
+function handleStartRecord() {
   if (getRecord() === CONST_TOGGLE_STATUS.STATUS_OFF) {
     console.log('Start Record');
 
     setRecord(CONST_TOGGLE_STATUS.STATUS_ON);
-    await playSound(CONST_SOUND.SOUND_START_RECORD);
+    playSound(CONST_SOUND.SOUND_START_RECORD);
     initRecord();
   }
 }
 
-async function handleEndRecord() {
+function handleEndRecord() {
   if (
     getPermission() === CONST_TOGGLE_STATUS.STATUS_ON &&
-		getRecord() === CONST_TOGGLE_STATUS.STATUS_ON
+	getRecord() === CONST_TOGGLE_STATUS.STATUS_ON
   ) {
     console.log('End Record');
 
     setRecord(CONST_TOGGLE_STATUS.STATUS_OFF);
     recorder.stop();
     recorder.stream.getTracks().forEach(i => i.stop());
-    await playSound(CONST_SOUND.SOUND_END_RECORD);
+    playSound(CONST_SOUND.SOUND_END_RECORD);
   }
 }

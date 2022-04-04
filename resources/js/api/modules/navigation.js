@@ -1,5 +1,5 @@
-import * as RequestApi from '../request';
+import request from '../config';
 
 export function postNavigation(url, data) {
-  return RequestApi.postOne(url, data);
+  return request.postRequest(url, data);
 }

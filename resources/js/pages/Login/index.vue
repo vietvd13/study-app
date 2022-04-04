@@ -19,7 +19,7 @@
               <div class="login-form-content__body">
                 <div class="item-input">
                   <b-form-input
-                    v-model="User.account"
+                    v-model="User.email"
                     type="text"
                     :placeholder="$t('LOGIN.PLACEHOLDER_ACCOUNT')"
                     spellcheck="false"
@@ -79,6 +79,14 @@
 
 <script>
 import Logo from '@/assets/images/logo.png';
+import { MakeToast } from '@/toast/toastMessage';
+import { validEmail, validPassword } from '@/utils/validate';
+import { setRoutes } from '@/utils/setRoutes';
+
+import { getCSRF } from '@/api/modules/auth';
+const URL_API = {
+  urlGetCSRF: '/api/csrf-cookie',
+};
 
 export default {
   name: 'Login',
@@ -86,7 +94,7 @@ export default {
     return {
       Logo,
       User: {
-        account: '',
+        email: '',
         password: '',
       },
       showPassword: false,
@@ -94,17 +102,6 @@ export default {
     };
   },
   methods: {
-    doLogin() {
-      this.isProcess = true;
-
-      const Account = {
-        account: this.User.account || '',
-        password: this.User.password || '',
-      };
-
-      console.log(Account);
-    },
-
     handleShowPassword() {
       if (this.isProcess) {
         this.showPassword = false;
@@ -115,6 +112,68 @@ export default {
       }
 
       return 'fas fa-eye';
+    },
+
+    doLogin() {
+      this.isProcess = true;
+
+      const Account = {
+        email: this.User.email || '',
+        password: this.User.password || '',
+      };
+
+      if (this.validateLogin(Account)) {
+        this.callApiLogin(Account);
+      }
+
+      this.isProcess = false;
+    },
+
+    callApiLogin(Account) {
+      getCSRF(URL_API['urlGetCSRF'])
+        .then(() => {
+          this.$store.dispatch('auth/doLogin', Account)
+            .then(() => {
+              const ROLES = this.$store.getters.roles;
+              const ACCESS_ROUTES = this.$store.dispatch(
+                'permissions/generateRoutes',
+                {
+                  roles: ROLES,
+                  permissions: [],
+                }
+              );
+
+              setRoutes(ACCESS_ROUTES);
+              this.$router.push('/');
+            });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+
+    validateLogin(Account) {
+      if (validEmail(Account.email) === false) {
+        MakeToast({
+          title: 'Validate',
+          variant: 'warning',
+          content: 'Validate email',
+        });
+
+        return false;
+      }
+
+      if (validPassword(Account.password) === false) {
+        MakeToast({
+          title: 'Validate',
+          variant: 'warning',
+          content: 'Validate password',
+        });
+
+        return false;
+      }
+
+      return true;
     },
   },
 };

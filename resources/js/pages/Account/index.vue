@@ -47,7 +47,7 @@
                     :key="role.text"
                     :value="role.value"
                   >
-                    {{ $t(role.text) }}
+                    {{ $t(`ROLE.${role.text}`) }}
                   </b-form-select-option>
                 </b-form-select>
               </div>
@@ -236,7 +236,7 @@
                 :key="role.text"
                 :value="role.value"
               >
-                {{ $t(role.text) }}
+                {{ $t(`ROLE.${role.text}`) }}
               </b-form-select-option>
             </b-form-select>
           </div>
@@ -322,16 +322,20 @@
 const ACITON_ADD = 'ADD';
 const ACTION_UPDATE = 'UPDATE';
 
-import CONST_ROLE from '@/const/role';
 import CONST_ACCOUNT_STATUS from '@/const/account_status';
 
 const URL_API = {
+  getAllRole: '/roles',
   getAllAccount: '/users',
   getOneAccount: '/users',
   addAccount: '/users',
   updateAccount: '/users',
   deleteAccount: '/users',
 };
+
+import {
+  getAllRole,
+} from '@/api/modules/role';
 import {
   getAllAccount,
   getOneAccount,
@@ -372,7 +376,7 @@ export default {
         email: '',
       },
 
-      listRole: CONST_ROLE.LIST_ROLE,
+      listRole: [],
       listStatus: CONST_ACCOUNT_STATUS.ACCOUNT_STATUS,
 
       items: [],
@@ -444,9 +448,30 @@ export default {
     async initData() {
       this.overlay.show = true;
 
+      await this.handleGetAllRole();
       await this.handleGetAllAccount();
 
       this.overlay.show = false;
+    },
+    async handleGetAllRole() {
+      const URL = URL_API.getAllRole;
+
+      try {
+        const res = await getAllRole(URL);
+
+        let idx = 0;
+        this.listRole = [];
+        while (idx < res.length) {
+          this.listRole.push({
+            value: res[idx]['id'],
+            text: res[idx]['name'],
+          });
+
+          idx++;
+        }
+      } catch (err) {
+        console.log(err);
+      }
     },
     async handleGetAllAccount() {
       const URL = URL_API.getAllAccount;

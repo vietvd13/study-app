@@ -29,7 +29,7 @@ class ClassController extends Controller
     public function index(ClassRequest $request)
     {
         $data = $this->service->paginate($request->per_page);
-        return $this->responseJson(200, new ClassResource($data));
+        return $this->responseJson(200, ClassResource::collection($data));
     }
 
     public function store(ClassRequest $request)
@@ -45,8 +45,8 @@ class ClassController extends Controller
     public function show($id)
     {
         try {
-            $department = $this->service->find($id);
-            return $this->responseJson(200, new ClassResource($department));
+            $data = $this->service->find($id);
+            return $this->responseJson(200, new ClassResource($data));
         } catch (\Exception $e) {
             throw $e;
         }
@@ -65,7 +65,11 @@ class ClassController extends Controller
         return $this->responseJson(200, null, trans('messages.mes.delete_success'));
     }
 
-    public function studentInClass(ClassRequest $request) {
+    public function students(ClassRequest $request) {
 
+    }
+
+    public function AddStudent(ClassRequest $request) {
+        return $this->service->addStudent($request);
     }
 }

@@ -6,7 +6,6 @@
  */
 
 namespace Service;
-use App\Services\Contracts\BaseServiceInterface;
 use Service\BaseService;
 use App\Services\Contracts\ClassServiceInterface;
 use App\Repositories\Contracts\ClassRepositoryInterface;
@@ -18,5 +17,9 @@ class ClassService extends BaseService implements ClassServiceInterface
     public function __construct(ClassRepositoryInterface $repository)
     {
         $this->repository = $repository;
+    }
+
+    public function addStudent($request) {
+        return $this->repository->addStudent($request->data, $request->class_id);
     }
 }

@@ -580,6 +580,7 @@ export default {
     },
     hideModalForm() {
       this.visibleModalForm = false;
+      this.resetDataModalFrom();
     },
     resetDataModalFrom() {
       const DEFAULT = {

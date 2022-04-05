@@ -15,3 +15,7 @@ export function postAccount(url, data) {
 export function putAccount(url, data) {
   return request.putRequest(url, data);
 }
+
+export function deleteAccount(url, data) {
+  return request.deleteRequest(url, data);
+}

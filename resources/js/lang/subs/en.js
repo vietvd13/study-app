@@ -73,6 +73,7 @@ export default {
       ADD_SUCCESS: 'You have successfully created an account {email}',
       ADD_FAILD: 'You have created failure',
       UPDATE_SUCCESS: 'You have updated your {email} account information',
+      DELETE_SUCCESS: 'You have deleted an account from the system',
     },
   },
   CLASSES: {

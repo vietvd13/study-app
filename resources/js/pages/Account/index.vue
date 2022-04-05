@@ -330,12 +330,14 @@ const URL_API = {
   getOneAccount: '/users',
   addAccount: '/users',
   updateAccount: '/users',
+  deleteAccount: '/users',
 };
 import {
   getAllAccount,
   getOneAccount,
   postAccount,
   putAccount,
+  deleteAccount,
 } from '@/api/modules/account';
 
 import { MakeToast } from '../../toast/toastMessage';
@@ -531,6 +533,20 @@ export default {
         console.log(err);
       }
     },
+    async handleDeleteAccount(id) {
+      const URL = `${URL_API.deleteAccount}/${id}`;
+
+      try {
+        const res = await deleteAccount(URL);
+
+        if (res['status'] === 200) {
+          this.notifyDeleteSuccess();
+          this.initData();
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    },
     notifyAddSuccess(user) {
       MakeToast({
         variant: 'success',
@@ -550,6 +566,13 @@ export default {
         variant: 'success',
         title: this.$t('TOAST.SUCCESS'),
         content: this.$t('ACCOUNT.NOTIFY.UPDATE_SUCCESS', { email: user.email }),
+      });
+    },
+    notifyDeleteSuccess() {
+      MakeToast({
+        variant: 'success',
+        title: this.$t('TOAST.SUCCESS'),
+        content: this.$t('ACCOUNT.NOTIFY.DELETE_SUCCESS'),
       });
     },
     showModalForm() {
@@ -623,7 +646,8 @@ export default {
     onClickCancelModalDelete() {
       this.hidenModalDelete();
     },
-    onClickSubmitModalDelete() {
+    async onClickSubmitModalDelete() {
+      await this.handleDeleteAccount(this.idHandle);
       this.hidenModalDelete();
     },
   },

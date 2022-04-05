@@ -11,7 +11,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\ClassRequest;
 use App\Http\Resources\BaseResource;
 use App\Http\Resources\ClassResource;
-use Illuminate\Http\Request;
+use App\Services\Contracts\ClassServiceInterface;
 
 class ClassController extends Controller
 {
@@ -209,34 +209,6 @@ class ClassController extends Controller
         return $this->responseJson(200, new BaseResource($data));
     }
 
-    /**
-     * @OA\Delete(
-     *   path="/api/class/{id}",
-     *   tags={"Class"},
-     *   summary="Delete Class",
-     *   operationId="class_delete",
-     *   @OA\Parameter(
-     *      name="id",
-     *      in="path",
-     *      required=true,
-     *     @OA\Schema(
-     *      type="string",
-     *     ),
-     *   ),
-     *   @OA\Response(
-     *     response=200,
-     *     description="Send request success",
-     *     @OA\MediaType(
-     *      mediaType="application/json",
-     *      example={"code":200,"data":"Send request success"}
-     *     )
-     *   ),
-     *   security={{"auth": {}}},
-     * )
-     * @param int $id
-     * @return \Illuminate\Http\JsonResponse
-     * @throws \Exception
-     */
     public function destroy($id)
     {
         $this->service->delete($id);

@@ -22,5 +22,6 @@ Route::namespace('Api')->group(function() {
         Route::get('/roles', 'UserController@roles');
 
         Route::apiResource('/classes', 'ClassController');
+        Route::post('/classes/students', 'ClassController@AddStudent');
     });
 });

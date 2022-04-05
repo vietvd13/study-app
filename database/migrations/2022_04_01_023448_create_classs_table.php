@@ -24,6 +24,8 @@ class CreateClasssTable extends Migration
         Schema::create('class_student', function (Blueprint $table) {
             $table->bigInteger('student_id')->unsigned();
             $table->bigInteger('class_id')->unsigned();
+            $table->date('start_date');
+            $table->date('end_date');
             $table->timestamps();
 
             $table->primary(['student_id', 'class_id']);

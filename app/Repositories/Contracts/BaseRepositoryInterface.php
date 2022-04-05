@@ -316,4 +316,6 @@ interface BaseRepositoryInterface
      */
     public function __call($method, $arguments);
 
+    public function transaction($callback);
+
 }

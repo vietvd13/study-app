@@ -9,7 +9,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Route;
-
+use App\Models\Classes;
 class ClassRequest extends FormRequest
 {
     /**
@@ -42,12 +42,14 @@ class ClassRequest extends FormRequest
      public function getCustomRule(){
         if(Route::getCurrentRoute()->getActionMethod() == 'update'){
             return [
-
+                Classes::NAME => 'required|string',
+                Classes::LEVEL => 'in:inactive',
             ];
         }
         if(Route::getCurrentRoute()->getActionMethod() == 'store'){
             return  [
-
+                Classes::NAME => 'required|string',
+                Classes::LEVEL => 'required|string',
             ];
         }
      }
@@ -55,7 +57,8 @@ class ClassRequest extends FormRequest
     public function messages()
     {
         return [
-            'required' => ':attribute not null'
+            'required' => ':attribute not null',
+            Classes::LEVEL . ".in" => "The :attribute can not be update",
         ];
     }
 }

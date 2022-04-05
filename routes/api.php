@@ -20,5 +20,7 @@ Route::namespace('Api')->group(function() {
         Route::get('/auth/user','AuthController@user');
         Route::apiResource('/users', 'UserController');
         Route::get('/roles', 'UserController@roles');
+
+        Route::apiResource('/classes', 'ClassController');
     });
 });

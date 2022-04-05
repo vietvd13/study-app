@@ -8,4 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class Classes extends Model
 {
     use HasFactory;
+    const NAME = 'name';
+    const LEVEL = 'level';
+    protected $hidden = [
+        User::PASSWORD
+    ];
+    protected $fillable = [
+        Classes::NAME,
+        Classes::LEVEL
+    ];
 }

@@ -56,10 +56,24 @@ export default {
     LABEL_FORM_ROLE: 'Role',
     LABEL_FORM_PASSWORD: 'Password',
     LABEL_FORM_BLIND: 'Blind students',
+    LABEL_FORM_STATUS: 'Status',
+
+    PLACEHOLDER_FORM_FULLNAME: 'Enter fullname',
+    PLACEHOLDER_FORM_CODE: 'Enter code',
+    PLACEHOLDER_FORM_ROLE: 'Please select',
+    PLACEHOLDER_FORM_TELEPHONE: 'Enter telephone',
+    PLACEHOLDER_FORM_EMAIL: 'Enter email',
+    PLACEHOLDER_FORM_PASSWORD: 'Enter password',
 
     BUTTON_SUBMIT: 'Submit',
     BUTTON_DELETE: 'Delete',
     BUTTON_CANCEL: 'Cancel',
+
+    NOTIFY: {
+      ADD_SUCCESS: 'You have successfully created an account {email}',
+      ADD_FAILD: 'You have created failure',
+      UPDATE_SUCCESS: 'You have updated your {email} account information',
+    },
   },
   CLASSES: {
     LABEL_FILTER_NAME: 'Name',
@@ -130,10 +144,22 @@ export default {
     ENGLISH: 'English',
     VIETNAMESE: 'Tiếng Việt',
   },
+  ROLE: {
+    PLEASE_SELECT: 'Please select',
+    ADMIN: 'Admin',
+    TEACHER: 'Teacher',
+    STUDENT: 'Student',
+  },
+  ACCOUNT_STATUS: {
+    PLEASE_SELECT: 'Please select',
+    ACTIVE: 'Active',
+    INACTIVE: 'Inactive',
+  },
   I18N: {
     CHANGE_LANGUAGE: {
       SUCCESS: 'Change language successfully',
       FAILED: 'Language change failed',
     },
   },
+  LOADING_TEXT: 'Loading',
 };

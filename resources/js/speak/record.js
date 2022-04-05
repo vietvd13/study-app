@@ -9,6 +9,7 @@ import {
   setProcess,
 } from './helper';
 import { isLogged } from '@/utils/auth';
+import { getBlind } from './helper';
 import CONST_TOGGLE_STATUS from '@/const/toggle_status';
 // import { handleRequestNavigation } from './request';
 import { playSound } from './sound';
@@ -22,25 +23,29 @@ let recorder;
 
 export function handleRecord(key) {
   window.onkeydown = event => {
-    if ((key.code.includes(event.code) || event.keyCode === key.keyCode) && event.ctrlKey) {
-      event.preventDefault();
+    if (getBlind()) {
+      if (key.code.includes(event.code) && event.keyCode === key.keyCode) {
+        event.preventDefault();
 
-      if (
-        getRecord() === CONST_TOGGLE_STATUS.STATUS_OFF && getProccess() === CONST_TOGGLE_STATUS.STATUS_OFF
-      ) {
-        if (isLogged()) {
-          handleStartRecord();
+        if (
+          getRecord() === CONST_TOGGLE_STATUS.STATUS_OFF && getProccess() === CONST_TOGGLE_STATUS.STATUS_OFF
+        ) {
+          if (isLogged()) {
+            handleStartRecord();
+          }
         }
       }
     }
   };
 
   window.onkeyup = event => {
-    if (event.code === key.code || event.keyCode === key.keyCode || event.ctrlKey) {
-      event.preventDefault();
+    if (getBlind()) {
+      if (key.code.includes(event.code) && event.keyCode === key.keyCode) {
+        event.preventDefault();
 
-      if (isLogged()) {
-        handleEndRecord();
+        if (isLogged()) {
+          handleEndRecord();
+        }
       }
     }
   };

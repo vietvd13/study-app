@@ -1,7 +1,8 @@
 <template>
-  <b-nav-item-dropdown right>
+  <b-nav-item-dropdown right class="display-item">
     <template #button-content>
-      {{ $t('NAVBAR.LANGUAGE') }}
+      <span v-if="language === 'en'" class="text-btn">{{ $t('NAVBAR.ENGLISH') }}</span>
+      <span v-if="language === 'vn'" class="text-btn">{{ $t('NAVBAR.VIETNAMESE') }}</span>
     </template>
     <b-dropdown-item href="#" @click="setLanguage('en')">
       {{ $t('NAVBAR.ENGLISH') }}
@@ -17,6 +18,11 @@ import { MakeToast } from '@/toast/toastMessage';
 
 export default {
   name: 'LangSelector',
+  computed: {
+    language() {
+      return this.$store.getters.language;
+    },
+  },
   methods: {
     setLanguage(lang) {
       this.$store
@@ -41,3 +47,9 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.text-btn {
+    margin-right: 7px;
+}
+</style>

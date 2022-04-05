@@ -9,6 +9,7 @@ const getters = {
   isBlind: state => state.auth.isBlind,
   roles: state => state.auth.roles,
   token: state => state.auth.token,
+  blind: state => state.blind.blind,
   permissionRoutes: state => state.permissions.routes,
   addRoutes: state => state.permissions.addRoutes,
 };

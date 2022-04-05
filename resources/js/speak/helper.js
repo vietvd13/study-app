@@ -1,3 +1,4 @@
+import Cookies from 'js-cookie';
 import CONST_TOGGLE_STATUS from '@/const/toggle_status';
 
 let STATUS_PERMISSION = '0';
@@ -57,4 +58,15 @@ export function setProcess(status) {
   if (checkStatus(status)) {
     STATUS_PROCESS = status;
   }
+}
+
+// STATUS
+export function getBlind() {
+  const BLIND = Cookies.get('MODE_BLIND');
+
+  if (['0', '1'].includes(BLIND)) {
+    return BLIND === '1';
+  }
+
+  return false;
 }

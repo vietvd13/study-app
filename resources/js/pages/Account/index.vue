@@ -221,7 +221,7 @@
               id="form-email"
               v-model="isUser.email"
               :placeholder="$t('ACCOUNT.PLACEHOLDER_FORM_EMAIL')"
-              :disabled="isProcess"
+              :disabled="isProcess || isAction === 'EDIT'"
             />
           </div>
 
@@ -344,7 +344,8 @@ import {
   deleteAccount,
 } from '@/api/modules/account';
 
-import { MakeToast } from '../../toast/toastMessage';
+import NotifyAccount from '@/toast/modules/account';
+import { validateAddAccount, validateUpdateAccount } from './validate';
 
 export default {
   name: 'Account',
@@ -469,8 +470,8 @@ export default {
 
           idx++;
         }
-      } catch (err) {
-        console.log(err);
+      } catch {
+        NotifyAccount.exception();
       }
     },
     async handleGetAllAccount() {
@@ -489,8 +490,8 @@ export default {
           this.pagination.page = res['data']['current_page'];
           this.pagination.total = res['data']['total'];
         }
-      } catch (err) {
-        console.log(err);
+      } catch {
+        NotifyAccount.exception();
       }
     },
     async handleGetOneAccount(id) {
@@ -502,11 +503,12 @@ export default {
         if (res['status'] === 200) {
           this.setDataModalForm(res['data']);
         }
-      } catch (err) {
-        console.log(err);
+      } catch {
+        NotifyAccount.exception();
       }
     },
     async handleAddAccount() {
+      this.isProcess = true;
       const URL = URL_API.addAccount;
       const DATA = {
         name: this.isUser.fullname,
@@ -519,18 +521,30 @@ export default {
         role: this.isUser.role,
       };
 
-      try {
-        const res = await postAccount(URL, DATA);
+      const validate = validateAddAccount(DATA);
 
-        if (res['status'] === 200) {
-          this.notifyAddSuccess(res.data);
+      if (validate.status) {
+        try {
+          const res = await postAccount(URL, DATA);
+          this.isProcess = false;
+          this.hideModalForm();
+
+          if (res['status'] === 200) {
+            NotifyAccount.addSuccess(res.data.email);
+            this.initData();
+          }
+        } catch (error) {
+          NotifyAccount.addError(error);
+          this.isProcess = false;
           this.initData();
         }
-      } catch (err) {
-        console.log(err);
+      } else {
+        NotifyAccount.validateForm(`NOTIFY.ACCOUNT.${validate.message.shift()}`);
+        this.isProcess = false;
       }
     },
     async handleUpdateAccount(id) {
+      this.isProcess = true;
       const URL = `${URL_API.updateAccount}/${id}`;
 
       const DATA = {
@@ -547,15 +561,26 @@ export default {
         DATA['new_password'] = this.isUser.password;
       }
 
-      try {
-        const res = await putAccount(URL, DATA);
+      const validate = validateUpdateAccount(DATA);
 
-        if (res['status'] === 200) {
-          this.notifyUpdateSuccess(res.data);
+      if (validate.status) {
+        try {
+          const res = await putAccount(URL, DATA);
+
+          if (res['status'] === 200) {
+            this.isProcess = false;
+            this.hideModalForm();
+            NotifyAccount.updateSuccess(res.data.email);
+            this.initData();
+          }
+        } catch (error) {
+          NotifyAccount.updateError(error);
+          this.isProcess = false;
           this.initData();
         }
-      } catch (err) {
-        console.log(err);
+      } else {
+        NotifyAccount.validateForm(`NOTIFY.ACCOUNT.${validate.message.shift()}`);
+        this.isProcess = false;
       }
     },
     async handleDeleteAccount(id) {
@@ -565,40 +590,12 @@ export default {
         const res = await deleteAccount(URL);
 
         if (res['status'] === 200) {
-          this.notifyDeleteSuccess();
+          NotifyAccount.deleteSuccess();
           this.initData();
         }
-      } catch (err) {
-        console.log(err);
+      } catch {
+        NotifyAccount.exception();
       }
-    },
-    notifyAddSuccess(user) {
-      MakeToast({
-        variant: 'success',
-        title: this.$t('TOAST.SUCCESS'),
-        content: this.$t('ACCOUNT.NOTIFY.ADD_SUCCESS', { email: user.email }),
-      });
-    },
-    notifyAddFail() {
-      MakeToast({
-        variant: 'danger',
-        title: this.$t('TOAST.DANGER'),
-        content: this.$t('ACCOUNT.NOTIFY.ADD_FAILD'),
-      });
-    },
-    notifyUpdateSuccess(user) {
-      MakeToast({
-        variant: 'success',
-        title: this.$t('TOAST.SUCCESS'),
-        content: this.$t('ACCOUNT.NOTIFY.UPDATE_SUCCESS', { email: user.email }),
-      });
-    },
-    notifyDeleteSuccess() {
-      MakeToast({
-        variant: 'success',
-        title: this.$t('TOAST.SUCCESS'),
-        content: this.$t('ACCOUNT.NOTIFY.DELETE_SUCCESS'),
-      });
     },
     showModalForm() {
       this.visibleModalForm = true;
@@ -658,7 +655,6 @@ export default {
       this.hideModalForm();
     },
     async onClickSumbitModalForm() {
-      this.isProcess = true;
       if (this.isAction === ACITON_ADD) {
         await this.handleAddAccount();
       }
@@ -666,8 +662,6 @@ export default {
       if (this.isAction === ACTION_UPDATE) {
         await this.handleUpdateAccount(this.idHandle);
       }
-      this.isProcess = false;
-      this.hideModalForm();
     },
     onClickCancelModalDelete() {
       this.hidenModalDelete();

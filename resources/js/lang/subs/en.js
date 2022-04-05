@@ -2,7 +2,7 @@ export default {
   TOAST: {
     SUCCESS: 'Sucess',
     WARNING: 'Warning',
-    DANGER: 'Danger',
+    DANGER: 'Error',
   },
 
   ROUTER: {
@@ -144,6 +144,12 @@ export default {
     LANGUAGE: 'Language',
     ENGLISH: 'English',
     VIETNAMESE: 'Tiếng Việt',
+    BLIND_MODE: 'Blind asist',
+    ON: 'Turn on',
+    OFF: 'Turn off',
+    MESSAGE_ON_BLIND: 'You have enabled the blind assist mode',
+    MESSAGE_OFF_BLIND: 'You have turned off assistive mode for the visually impaired',
+    MESSAGE_CHANGE_BLIND_ERROR: 'You have failed to change the mode of support for the blind',
   },
   ROLE: {
     PLEASE_SELECT: 'Please select',
@@ -163,4 +169,25 @@ export default {
     },
   },
   LOADING_TEXT: 'Loading',
+  NOTIFY: {
+    SYSTEM: {
+      EXCEPTION: 'An unexpected error occurred',
+    },
+    ACCOUNT: {
+      ADD_SUCCESS: 'You have successfully created an account {email}',
+      ADD_FAILD: 'You have created failure',
+      UPDATE_SUCCESS: 'You have updated your {email} account information',
+      DELETE_SUCCESS: 'You have deleted an account from the system',
+
+      VALIDATE_NAME: 'Fullname entered is not correct',
+      VALIDATE_PASSWORD: 'Password entered is not correct',
+      VALIDATE_NEW_PASSWORD: 'New password entered is not correct',
+      VALIDATE_USER_CODE: 'User code entered is not correct',
+      VALIDATE_EMAIL: 'Email entered is not correct',
+      VALIDATE_PHONE: 'Telephone entered is not correct',
+      VALIDATE_STATUS: 'Status entered is not correct',
+      VALIDATE_IS_BLIND: 'Blind entered is not correct',
+      VALIDATE_ROLE: 'Role entered is not correct',
+    },
+  },
 };

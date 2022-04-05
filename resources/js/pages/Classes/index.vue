@@ -198,18 +198,18 @@ const ACTION_UPDATE = 'UPDATE';
 
 import CONST_CLASSES from '@/const/classes';
 const URL_API = {
-    getAll: '/classes',
-    getOne: '/classes',
-    postClasses: '/classes',
-    putClasses: '/classes',
-    deleteClasses: '/classes',
+  getAll: '/classes',
+  getOne: '/classes',
+  postClasses: '/classes',
+  putClasses: '/classes',
+  deleteClasses: '/classes',
 };
 import {
-    getAllClasses,
-    getOneClasses,
-    postClasses,
-    putClasses,
-    deleteClasses,
+  getAllClasses,
+  getOneClasses,
+  postClasses,
+  putClasses,
+  deleteClasses,
 } from '@/api/modules/classes';
 
 export default {
@@ -276,28 +276,28 @@ export default {
       ];
     },
   },
-  created () {
-      this.initData();
+  created() {
+    this.initData();
   },
   methods: {
     async initData() {
-        await this.handleGetAllClasses();
+      await this.handleGetAllClasses();
     },
     async handleGetAllClasses() {
-        const URL = URL_API['getAll'];
+      const URL = URL_API['getAll'];
 
-        const PARAMS = {
-            page: this.pagination.page,
-            per_page: this.pagination.perPage,
-        }
+      const PARAMS = {
+        page: this.pagination.page,
+        per_page: this.pagination.perPage,
+      };
 
-        try {
-            const res = await getAllClasses(URL, PARAMS);
+      try {
+        const res = await getAllClasses(URL, PARAMS);
 
-            console.log(res);
-        } catch (error) {
-            console.log(error)
-        }
+        console.log(res);
+      } catch (error) {
+        console.log(error);
+      }
     },
     async handleGetOneClasses() {
 
@@ -312,12 +312,12 @@ export default {
 
     },
     resetModalForm() {
-        const DEFAULT = {
-            name: '',
-            level: null,
-        }
+      const DEFAULT = {
+        name: '',
+        level: null,
+      };
 
-        this.isClass = DEFAULT;
+      this.isClass = DEFAULT;
     },
     showModalForm() {
       this.visibleModalForm = true;

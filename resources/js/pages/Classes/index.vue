@@ -133,7 +133,7 @@
         <template #default>
           <div class="item-input">
             <label for="form-name">{{ $t('CLASSES.LABEL_FORM_NAME') }}</label>
-            <b-form-input id="form-name" v-model="isClass.name" :placeholder="$t('CLASSES.PLACEHOLDER_FORM_NAME')" />
+            <b-form-input id="form-name" v-model="isClass.name" :disabled="isProcess" :placeholder="$t('CLASSES.PLACEHOLDER_FORM_NAME')" />
           </div>
 
           <div class="item-input">
@@ -142,6 +142,7 @@
               id="form-level"
               v-model="isClass.level"
               :options="listLevel"
+              :disabled="isProcess"
             >
               <template #first>
                 <b-form-select-option :value="null" disabled>
@@ -153,10 +154,11 @@
         </template>
 
         <template #modal-footer>
-          <b-button variant="outline-danger" @click="onClickCancelModalForm()">
+          <b-button variant="outline-danger" :disabled="isProcess" @click="onClickCancelModalForm()">
             {{ $t('CLASSES.BUTTON_CANCEL') }}
           </b-button>
-          <b-button class="btn-custom-green" @click="onClickSumbitModalForm()">
+          <b-button class="btn-custom-green" :disabled="isProcess" @click="onClickSumbitModalForm()">
+            <i v-if="isProcess" class="fad fa-spinner-third fa-spin" />
             {{ $t('CLASSES.BUTTON_SUBMIT') }}
           </b-button>
         </template>
@@ -248,6 +250,7 @@ export default {
       visibleModalDelete: false,
       isAction: '',
       idHandle: null,
+      isProcess: false,
     };
   },
   computed: {
@@ -294,22 +297,95 @@ export default {
       try {
         const res = await getAllClasses(URL, PARAMS);
 
-        console.log(res);
+        if (res['status'] === 200) {
+          console.log(res);
+        } else {
+          console.log(res);
+        }
       } catch (error) {
         console.log(error);
       }
     },
-    async handleGetOneClasses() {
+    async handleGetOneClasses(id) {
+      const URL = `${URL_API['getOne']}/${id}`;
 
+      try {
+        const res = await getOneClasses(URL);
+
+        if (res['status'] === 200) {
+          console.log(res);
+        } else {
+          console.log(res);
+        }
+      } catch (error) {
+        console.log(error);
+      }
     },
     async handleAddClasses() {
+      this.isProcess = true;
+      const URL = URL_API.postClasses;
 
+      const DATA = {
+        name: this.isClass.name,
+        level: this.isClass.level,
+      };
+
+      try {
+        const res = await postClasses(URL, DATA);
+
+        if (res['status'] === 200) {
+          this.isProcess = false;
+          this.hideModalForm();
+          console.log(res);
+        } else {
+          console.log(res);
+          this.isProcess = true;
+        }
+      } catch (error) {
+        console.log(error);
+        this.isProcess = false;
+      }
     },
-    async handleUpdateClasses() {
+    async handleUpdateClasses(id) {
+      this.isProcess = true;
+      const URL = `${URL_API.putClasses}/${id}`;
 
+      const DATA = {
+        name: this.isClass.name,
+        level: this.isClass.level,
+      };
+
+      try {
+        const res = await putClasses(URL, DATA);
+
+        if (res['status'] === 200) {
+          this.isProcess = false;
+          this.hideModalForm();
+          console.log(res);
+        } else {
+          console.log(res);
+        }
+      } catch (error) {
+        this.isProcess = false;
+        console.log(error);
+      }
+
+      this.isProcess = false;
     },
-    async handleDeleteClasses() {
+    async handleDeleteClasses(id) {
+      const URL = `${URL_API.deleteClasses}/${id}`;
 
+      try {
+        const res = await deleteClasses(URL);
+
+        if (res['status'] === 200) {
+          console.log(res);
+        } else {
+          console.log(res);
+        }
+      } catch (error) {
+        console.log(error);
+      }
     },
     resetModalForm() {
       const DEFAULT = {
@@ -323,6 +399,7 @@ export default {
       this.visibleModalForm = true;
     },
     hideModalForm() {
+      this.resetModalForm();
       this.visibleModalForm = false;
     },
     showModalDelete() {
@@ -347,8 +424,16 @@ export default {
     onClickCancelModalForm() {
       this.hideModalForm();
     },
-    onClickSumbitModalForm() {
+    async onClickSumbitModalForm() {
+      if (this.isAction === ACITON_ADD) {
+        await this.handleAddClasses();
+      }
+
+      if (this.isAction === ACTION_UPDATE) {
+        await this.handleUpdateClasses(this.idHandle);
+      }
       this.hideModalForm();
+      this.handleAddClasses();
     },
     onClickCancelModalDelete() {
       this.hidenModalDelete();

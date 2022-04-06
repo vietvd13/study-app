@@ -102,4 +102,14 @@ class UserService extends BaseService implements UserServiceInterface
             ];
         }
     }
+
+    public function students($request) {
+        $role = Role::where('name', ROLES['STUDENT'])->first();
+        return $this->repository->getUserByRole($role->id);
+    }
+
+    public function teacher($request) {
+        $role = Role::where('name', ROLES['TEACHER'])->first();
+        return $this->repository->getUserByRole($role->id);
+    }
 }

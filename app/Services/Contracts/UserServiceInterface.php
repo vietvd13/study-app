@@ -10,5 +10,7 @@ namespace App\Services\Contracts;
 
 interface UserServiceInterface extends BaseServiceInterface
 {
-    //
+    public function students($request);
+
+    public function teacher($request);
 }

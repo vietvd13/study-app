@@ -234,6 +234,9 @@ export default {
           tdClass: 'base-td',
         },
         {
+            key: 'arrangement'
+        },
+        {
           key: 'actions',
           lebael: this.$t('CLASSES.TABLE_TITLE_ACTIONS'),
           thClass: 'base-th base-actions',
@@ -430,6 +433,7 @@ export default {
 
 .classes {
     padding: 10px;
+    height: calc(100vh - 57px);
 
     &__header {
         margin-bottom: 10px;
@@ -508,5 +512,10 @@ export default {
     .item-input {
         margin-bottom: 10px;
     }
+}
+
+.icon-loading {
+    font-size: 50px;
+    color: $forest-green;
 }
 </style>

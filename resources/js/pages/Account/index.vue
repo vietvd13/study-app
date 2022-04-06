@@ -384,8 +384,8 @@ export default {
 
       pagination: {
         page: 1,
-        perPage: 20,
-        total: 1,
+        perPage: 10,
+        total: 0,
       },
 
       visibleModalForm: false,

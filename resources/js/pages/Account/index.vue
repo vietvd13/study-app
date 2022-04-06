@@ -538,6 +538,7 @@ export default {
             NotifyAccount.addSuccess(res.data.email);
             this.initData();
           } else {
+            this.isProcess = false;
             NotifyAccount.server(res['message']);
           }
         } catch (error) {
@@ -597,6 +598,7 @@ export default {
         const res = await deleteAccount(URL);
 
         if (res['status'] === 200) {
+          this.hidenModalDelete();
           NotifyAccount.deleteSuccess();
           this.initData();
         } else {
@@ -677,7 +679,6 @@ export default {
     },
     async onClickSubmitModalDelete() {
       await this.handleDeleteAccount(this.idHandle);
-      this.hidenModalDelete();
     },
   },
 };

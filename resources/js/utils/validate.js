@@ -34,3 +34,8 @@ export function validateFullname(sting) {
   const re = /\S/;
   return re.test(sting);
 }
+
+export function validaClassesName(string) {
+  const re = /\S/;
+  return re.test(string);
+}

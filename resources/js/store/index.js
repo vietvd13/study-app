@@ -4,6 +4,7 @@ import Vuex from 'vuex';
 import app from './modules/app';
 import auth from './modules/auth';
 import permissions from './modules/permissions';
+import blind from './modules/blind';
 
 import getters from './getters';
 
@@ -13,6 +14,7 @@ const modules = {
   app,
   auth,
   permissions,
+  blind,
 };
 
 const store = new Vuex.Store({

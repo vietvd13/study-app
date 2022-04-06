@@ -11,7 +11,7 @@ use App\Models\Classes;
 use App\Repositories\Contracts\ClassRepositoryInterface;
 use Repository\BaseRepository;
 use Illuminate\Foundation\Application;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Carbon;
 
 class ClassRepository extends BaseRepository implements ClassRepositoryInterface
 {
@@ -33,5 +33,35 @@ class ClassRepository extends BaseRepository implements ClassRepositoryInterface
         return Classes::class;
     }
 
+    public function addStudent(array $data, int $class_id) {
+        $status = $this->transaction(function () use ($data, $class_id) {
+            $class = $this->model->where([
+                'id' => $class_id
+            ])->first();
 
+            if ($data) {
+                foreach ($data as $key => &$value) {
+                    $value['class_id'] = $class_id;
+                    $value['created_at'] = Carbon::now()->format('Y-m-d H:i:s');
+                    $value['updated_at'] = Carbon::now()->format('Y-m-d H:i:s');
+                }
+            }
+
+            $class = $class->students()->sync($data);
+            return $class;
+        });
+        return $status;
+    }
+
+    public function find($id, $columns = ['*'])
+    {
+        $class = $this->model->with([
+            'students' => function ($query) {
+                $query->select(['*']);
+            }
+        ])->where([
+            'id' => $id
+        ])->first();
+        return $class;
+    }
 }

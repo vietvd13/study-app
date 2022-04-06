@@ -14,16 +14,7 @@ const service = axios.create({
 
 service.interceptors.request.use(
   config => {
-    // const token = getToken();
     config.headers['Accept-Language'] = getLanguage();
-
-    // if (token) {
-    // 	config.headers['Authorization'] = token;
-    // } else {
-    // 	if (router.currentRoute.path !== '/login') {
-    // 		router.push({ path: '/login' });
-    // 	}
-    // }
 
     return config;
   },

@@ -9,3 +9,28 @@ export function validPassword(password) {
 
   return re.test(password);
 }
+
+export function validEmptyOrWhiteSpace(string) {
+  const re = /^\s*$/;
+  return re.test(string);
+}
+
+export function validAccountCode(string) {
+  const re = /^[_A-z0-9]{1,}$/;
+  return re.test(string);
+}
+
+export function validPhone(string) {
+  const re = /(84|0[3|5|7|8|9])+([0-9]{8})\b/;
+  return re.test(string);
+}
+
+export function validateNumberMoreThanZero(number) {
+  const re = /^[1-9][0-9]*$/;
+  return re.test(number);
+}
+
+export function validateFullname(sting) {
+  const re = /\S/;
+  return re.test(sting);
+}

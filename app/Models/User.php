@@ -29,7 +29,8 @@ class User extends Authenticatable
     const BLIND = 'isBlind';
     const ROLE = 'role';
     protected $hidden = [
-        User::PASSWORD
+        User::PASSWORD,
+        'pivot'
     ];
     protected $fillable = [
         User::NAME,

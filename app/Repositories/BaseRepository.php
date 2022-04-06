@@ -14,6 +14,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 abstract class BaseRepository implements BaseRepositoryInterface
 {
     /**
@@ -749,4 +750,22 @@ abstract class BaseRepository implements BaseRepositoryInterface
         return call_user_func_array([$this->model, $method], $arguments);
     }
 
+    public function transaction($callback) {
+        $status = DB::transaction(function () use ($callback) {
+            try {
+                call_user_func($callback);
+                DB::commit();
+                return [
+                    'status' => 200
+                ];
+            } catch (\Throwable $th) {
+                DB::rollBack();
+                return [
+                    'status' => 500,
+                    'message' => $th
+                ];
+            }
+        });
+        return $status;
+    }
 }

@@ -18,6 +18,7 @@
         </b-navbar-nav>
 
         <b-navbar-nav class="ml-auto">
+          <BlindSelector />
           <LangSelector />
         </b-navbar-nav>
       </b-collapse>
@@ -27,11 +28,13 @@
 
 <script>
 import LangSelector from './LangSelector';
+import BlindSelector from './BlindSelector';
 
 export default {
   name: 'Navbar',
   components: {
     LangSelector,
+    BlindSelector,
   },
   computed: {
     titleRoute() {

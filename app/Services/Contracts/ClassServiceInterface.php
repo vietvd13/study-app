@@ -10,5 +10,5 @@ namespace App\Services\Contracts;
 
 interface ClassServiceInterface extends BaseServiceInterface
 {
-    //
+    public function addStudent($request);
 }

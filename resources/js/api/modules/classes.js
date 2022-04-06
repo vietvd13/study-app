@@ -19,3 +19,7 @@ export function putClasses(url, data) {
 export function deleteClasses(url) {
   return request.deleteRequest(url);
 }
+
+export function getStudent(url, params) {
+  return request.getRequest(url, params);
+}

@@ -26,5 +26,8 @@ export default {
   exception() {
     Notification.notifyError(i18n.t('NOTIFY.SYSTEM.EXCEPTION'));
   },
+  server(message) {
+    Notification.notifyWarning(message);
+  },
 };
 

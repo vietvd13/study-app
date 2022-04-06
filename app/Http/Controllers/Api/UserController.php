@@ -13,7 +13,6 @@ use App\Http\Resources\BaseResource;
 use App\Http\Resources\UserResource;
 use App\Models\Role;
 use App\Services\Contracts\UserServiceInterface;
-use Illuminate\Http\Client\Request;
 class UserController extends Controller
 {
 

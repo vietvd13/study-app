@@ -53,6 +53,25 @@ class ClassRepository extends BaseRepository implements ClassRepositoryInterface
         return $status;
     }
 
+    public function addCourse(array $data, int $class_id) {
+        $status = $this->transaction(function () use ($data, $class_id) {
+            $class = $this->model->where([
+                'id' => $class_id
+            ])->first();
+
+            if ($data) {
+                foreach ($data as $key => &$value) {
+                    $value['class_id'] = $class_id;
+                    $value['created_at'] = Carbon::now()->format('Y-m-d H:i:s');
+                    $value['updated_at'] = Carbon::now()->format('Y-m-d H:i:s');
+                }
+            }
+            $class = $class->courses()->sync($data);
+            return $class;
+        });
+        return $status;
+    }
+
     public function find($id, $columns = ['*'])
     {
         $class = $this->model->with([

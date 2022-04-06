@@ -17,7 +17,10 @@ class Course extends Model
     use SoftDeletes;
 
     protected $table = 'courses';
-
+    const PIVOT = 'pivot';
+    protected $hidden = [
+        Classes::PIVOT,
+    ];
     protected $fillable = [];
 
     protected $dates = ['deleted_at'];

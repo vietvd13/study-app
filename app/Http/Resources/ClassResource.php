@@ -22,6 +22,7 @@ class ClassResource extends JsonResource
             "name" => $this->name,
             "level" => $this->level,
             "students" => $this->students,
+            "courses" => $this->courses
         ];
     }
 }

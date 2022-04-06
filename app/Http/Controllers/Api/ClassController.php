@@ -72,4 +72,8 @@ class ClassController extends Controller
     public function AddStudent(ClassRequest $request) {
         return $this->service->addStudent($request);
     }
+
+    public function AddCourses(ClassRequest $request) {
+        return $this->service->addCourse($request);
+    }
 }

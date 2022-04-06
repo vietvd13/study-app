@@ -17,16 +17,25 @@ class Course extends Model
     use SoftDeletes;
 
     protected $table = 'courses';
+    const NAME = 'name';
+    const LEVEL = 'level';
     const PIVOT = 'pivot';
     protected $hidden = [
-        Classes::PIVOT,
+        Course::PIVOT,
     ];
-    protected $fillable = [];
+    protected $fillable = [
+        Course::NAME,
+        Course::LEVEL
+    ];
 
     protected $dates = ['deleted_at'];
 
     protected $casts = [
         'data' => 'array'
     ];
+
+    public function teachers() {
+        return $this->belongsToMany('App\Models\User', 'teacher_course', 'course_id', 'teacher_id')->withTimestamps();
+    }
 
 }

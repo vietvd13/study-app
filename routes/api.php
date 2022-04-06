@@ -28,5 +28,6 @@ Route::namespace('Api')->group(function() {
         Route::get('user/teacher', 'UserController@teacher');
 
         Route::apiResource('courses', 'CourseController');
+        Route::post('courses/add-teacher', 'CourseController@AddTeacher');
     });
 });

@@ -9,7 +9,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Route;
-
+use App\Models\Course;
 class CourseRequest extends FormRequest
 {
     /**
@@ -42,12 +42,14 @@ class CourseRequest extends FormRequest
      public function getCustomRule(){
         if(Route::getCurrentRoute()->getActionMethod() == 'update'){
             return [
-
+                Course::NAME => 'required|string',
+                Course::LEVEL => 'in:inactive',
             ];
         }
         if(Route::getCurrentRoute()->getActionMethod() == 'store'){
-            return  [
-
+            return [
+                Course::NAME => 'required|string',
+                Course::LEVEL => 'int',
             ];
         }
      }

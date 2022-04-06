@@ -180,6 +180,13 @@ import {
   deleteClasses,
 } from '@/api/modules/classes';
 
+import {
+  validateAddClasses,
+  validateUpdateClasses,
+} from './validate';
+
+import NotifyClasses from '@/toast/modules/classes';
+
 export default {
   name: 'Classes',
   data() {
@@ -256,14 +263,13 @@ export default {
         const res = await getAllClasses(URL, PARAMS);
 
         if (res['status'] === 200) {
-          console.log(res);
           this.items = res['data'];
           this.pagination.page = res['per_page'];
         } else {
-          console.log(res);
+          NotifyClasses.server(res['message']);
         }
-      } catch (error) {
-        console.log(error);
+      } catch {
+        NotifyClasses.exception();
       }
     },
     async handleGetOneClasses(id) {
@@ -273,13 +279,12 @@ export default {
         const res = await getOneClasses(URL);
 
         if (res['status'] === 200) {
-          console.log(res);
           this.isClass.name = res['data']['name'];
         } else {
-          console.log(res);
+          NotifyClasses.server(res['message']);
         }
-      } catch (error) {
-        console.log(error);
+      } catch {
+        NotifyClasses.exception();
       }
     },
     async handleAddClasses() {
@@ -291,20 +296,27 @@ export default {
         level: this.isClass.level,
       };
 
-      try {
-        const res = await postClasses(URL, DATA);
+      const validate = validateAddClasses(DATA);
 
-        if (res['status'] === 200) {
+      if (validate.status) {
+        try {
+          const res = await postClasses(URL, DATA);
+
+          if (res['status'] === 200) {
+            this.isProcess = false;
+            this.hideModalForm();
+            NotifyClasses.addSuccess(res.data.name);
+            this.initData();
+          } else {
+            this.isProcess = true;
+            NotifyClasses.server(res['message']);
+          }
+        } catch (error) {
+          NotifyClasses.addError(error);
           this.isProcess = false;
-          this.hideModalForm();
-          console.log(res);
-          this.initData();
-        } else {
-          console.log(res);
-          this.isProcess = true;
         }
-      } catch (error) {
-        console.log(error);
+      } else {
+        NotifyClasses.validateForm(`NOTIFY.CLASSES.${validate.message.shift()}`);
         this.isProcess = false;
       }
     },
@@ -316,23 +328,28 @@ export default {
         name: this.isClass.name,
       };
 
-      try {
-        const res = await putClasses(URL, DATA);
+      const validate = validateUpdateClasses(DATA);
 
-        if (res['status'] === 200) {
+      if (validate.status) {
+        try {
+          const res = await putClasses(URL, DATA);
+
+          if (res['status'] === 200) {
+            this.isProcess = false;
+            this.hideModalForm();
+            NotifyClasses.updateSuccess(res.data.name);
+            this.initData();
+          } else {
+            NotifyClasses.server(res['message']);
+          }
+        } catch (error) {
+          NotifyClasses.updateError(error);
           this.isProcess = false;
-          this.hideModalForm();
-          this.initData();
-          console.log(res);
-        } else {
-          console.log(res);
         }
-      } catch (error) {
+      } else {
+        NotifyClasses.validateForm(`NOTIFY.CLASSES.${validate.message.shift()}`);
         this.isProcess = false;
-        console.log(error);
       }
-
-      this.isProcess = false;
     },
     async handleDeleteClasses(id) {
       const URL = `${URL_API.deleteClasses}/${id}`;
@@ -342,13 +359,13 @@ export default {
 
         if (res['status'] === 200) {
           this.hidenModalDelete();
+          NotifyClasses.deleteSuccess();
           this.initData();
-          console.log(res);
         } else {
-          console.log(res);
+          NotifyClasses.server(res['message']);
         }
-      } catch (error) {
-        console.log(error);
+      } catch {
+        NotifyClasses.exception();
       }
     },
     resetModalForm() {
@@ -403,7 +420,6 @@ export default {
     },
     async onClickSubmitModalDelete() {
       await this.handleDeleteClasses(this.idHandle);
-      this.hidenModalDelete();
     },
   },
 };

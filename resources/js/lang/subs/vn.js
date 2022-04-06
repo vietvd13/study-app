@@ -2,7 +2,7 @@ export default {
   TOAST: {
     SUCCESS: 'Sucess',
     WARNING: 'Warning',
-    DANGER: 'Danger',
+    DANGER: 'Error',
   },
 
   ROUTER: {
@@ -63,10 +63,18 @@ export default {
     PLACEHOLDER_FORM_ROLE: 'Please select',
     PLACEHOLDER_FORM_TELEPHONE: 'Enter telephone',
     PLACEHOLDER_FORM_EMAIL: 'Enter email',
+    PLACEHOLDER_FORM_PASSWORD: 'Enter password',
 
     BUTTON_SUBMIT: 'Submit',
     BUTTON_DELETE: 'Delete',
     BUTTON_CANCEL: 'Cancel',
+
+    NOTIFY: {
+      ADD_SUCCESS: 'You have successfully created an account {email}',
+      ADD_FAILD: 'You have created failure',
+      UPDATE_SUCCESS: 'You have updated your {email} account information',
+      DELETE_SUCCESS: 'You have deleted an account from the system',
+    },
   },
   CLASSES: {
     LABEL_FILTER_NAME: 'Name',
@@ -136,6 +144,12 @@ export default {
     LANGUAGE: 'Language',
     ENGLISH: 'English',
     VIETNAMESE: 'Tiếng Việt',
+    BLIND_MODE: 'Blind asist',
+    ON: 'Turn on',
+    OFF: 'Turn off',
+    MESSAGE_ON_BLIND: 'You have enabled the blind assist mode',
+    MESSAGE_OFF_BLIND: 'You have turned off assistive mode for the visually impaired',
+    MESSAGE_CHANGE_BLIND_ERROR: 'You have failed to change the mode of support for the blind',
   },
   ROLE: {
     PLEASE_SELECT: 'Please select',
@@ -154,5 +168,38 @@ export default {
       FAILED: 'Language change failed',
     },
   },
-  LOADING_TEXT: 'Loading...',
+  LOADING_TEXT: 'Loading',
+  NOTIFY: {
+    SYSTEM: {
+      EXCEPTION: 'An unexpected error occurred',
+    },
+    ACCOUNT: {
+      ADD_SUCCESS: 'You have successfully created an account {email}',
+      ADD_FAILD: 'You have created failure',
+      UPDATE_SUCCESS: 'You have updated your {email} account information',
+      UPDATE_FAILED: 'You have failed to edit your account information',
+      DELETE_SUCCESS: 'You have deleted an account from the system',
+      DELETE_FAILED: 'You have failed to delete your account from the system',
+
+      VALIDATE_NAME: 'Fullname entered is not correct',
+      VALIDATE_PASSWORD: 'Password entered is not correct',
+      VALIDATE_NEW_PASSWORD: 'New password entered is not correct',
+      VALIDATE_USER_CODE: 'User code entered is not correct',
+      VALIDATE_EMAIL: 'Email entered is not correct',
+      VALIDATE_PHONE: 'Telephone entered is not correct',
+      VALIDATE_STATUS: 'Status entered is not correct',
+      VALIDATE_IS_BLIND: 'Blind entered is not correct',
+      VALIDATE_ROLE: 'Role entered is not correct',
+    },
+    CLASSES: {
+      ADD_SUCCESS: 'You have successfully created class {name}',
+      ADD_FAILD: 'You have created failure',
+      UPDATE_SUCCESS: 'You have successfully edited the class {name}',
+      UPDATE_FAILED: 'You have failed to edit your classes information',
+      DELETE_SUCCESS: 'You have deleted an classes from the system',
+      DELETE_FAILED: 'You have failed to delete your classes from the system',
+
+      VALIDATE_NAME: 'Class name is incorrect',
+    },
+  },
 };

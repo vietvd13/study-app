@@ -49,7 +49,7 @@ class ClassRequest extends FormRequest
         if(Route::getCurrentRoute()->getActionMethod() == 'store'){
             return  [
                 Classes::NAME => 'required|string',
-                Classes::LEVEL => 'required|string',
+                Classes::LEVEL => 'required|int',
             ];
         }
      }

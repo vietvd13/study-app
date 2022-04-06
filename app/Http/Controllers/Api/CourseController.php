@@ -43,7 +43,7 @@ class CourseController extends Controller
     {
         try {
             $data = $this->service->find($id);
-            return $this->responseJson(200, new BaseResource($data));
+            return $this->responseJson(200, new CourseResource($data));
         } catch (\Exception $e) {
             throw $e;
         }

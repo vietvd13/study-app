@@ -29,7 +29,7 @@ class ClassController extends Controller
     public function index(ClassRequest $request)
     {
         $data = $this->service->paginate($request->per_page);
-        return $this->responseJson(200, ClassResource::collection($data));
+        return $this->responseJson(200, $data);
     }
 
     public function store(ClassRequest $request)

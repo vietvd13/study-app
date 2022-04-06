@@ -384,8 +384,8 @@ export default {
 
       pagination: {
         page: 1,
-        perPage: 20,
-        total: 1,
+        perPage: 10,
+        total: 0,
       },
 
       visibleModalForm: false,
@@ -489,6 +489,8 @@ export default {
 
           this.pagination.page = res['data']['current_page'];
           this.pagination.total = res['data']['total'];
+        } else {
+          NotifyAccount.server(res['message']);
         }
       } catch {
         NotifyAccount.exception();
@@ -502,6 +504,8 @@ export default {
 
         if (res['status'] === 200) {
           this.setDataModalForm(res['data']);
+        } else {
+          NotifyAccount.server(res['message']);
         }
       } catch {
         NotifyAccount.exception();
@@ -526,17 +530,19 @@ export default {
       if (validate.status) {
         try {
           const res = await postAccount(URL, DATA);
-          this.isProcess = false;
-          this.hideModalForm();
 
           if (res['status'] === 200) {
+            this.isProcess = false;
+            this.hideModalForm();
+
             NotifyAccount.addSuccess(res.data.email);
             this.initData();
+          } else {
+            NotifyAccount.server(res['message']);
           }
         } catch (error) {
           NotifyAccount.addError(error);
           this.isProcess = false;
-          this.initData();
         }
       } else {
         NotifyAccount.validateForm(`NOTIFY.ACCOUNT.${validate.message.shift()}`);
@@ -572,11 +578,12 @@ export default {
             this.hideModalForm();
             NotifyAccount.updateSuccess(res.data.email);
             this.initData();
+          } else {
+            NotifyAccount.server(res['message']);
           }
         } catch (error) {
           NotifyAccount.updateError(error);
           this.isProcess = false;
-          this.initData();
         }
       } else {
         NotifyAccount.validateForm(`NOTIFY.ACCOUNT.${validate.message.shift()}`);
@@ -592,6 +599,8 @@ export default {
         if (res['status'] === 200) {
           NotifyAccount.deleteSuccess();
           this.initData();
+        } else {
+          NotifyAccount.server(res['message']);
         }
       } catch {
         NotifyAccount.exception();

@@ -19,4 +19,9 @@ class CourseService extends BaseService implements CourseServiceInterface
     {
         $this->repository = $repository;
     }
+
+    public function addTeacher($request)
+    {
+        return $this->repository->addTeacher($request->data, $request->course_id);
+    }
 }

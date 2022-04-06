@@ -46,7 +46,7 @@ class ClassRepository extends BaseRepository implements ClassRepositoryInterface
                     $value['updated_at'] = Carbon::now()->format('Y-m-d H:i:s');
                 }
             }
-
+            $class->students()->sync([]);
             $class = $class->students()->sync($data);
             return $class;
         });
@@ -66,6 +66,7 @@ class ClassRepository extends BaseRepository implements ClassRepositoryInterface
                     $value['updated_at'] = Carbon::now()->format('Y-m-d H:i:s');
                 }
             }
+            $class->courses()->sync([]);
             $class = $class->courses()->sync($data);
             return $class;
         });

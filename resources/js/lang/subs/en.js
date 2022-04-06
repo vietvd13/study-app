@@ -177,7 +177,9 @@ export default {
       ADD_SUCCESS: 'You have successfully created an account {email}',
       ADD_FAILD: 'You have created failure',
       UPDATE_SUCCESS: 'You have updated your {email} account information',
+      UPDATE_FAILED: 'You have failed to edit your account information',
       DELETE_SUCCESS: 'You have deleted an account from the system',
+      DELETE_FAILED: 'You have failed to delete your account from the system',
 
       VALIDATE_NAME: 'Fullname entered is not correct',
       VALIDATE_PASSWORD: 'Password entered is not correct',
@@ -188,6 +190,16 @@ export default {
       VALIDATE_STATUS: 'Status entered is not correct',
       VALIDATE_IS_BLIND: 'Blind entered is not correct',
       VALIDATE_ROLE: 'Role entered is not correct',
+    },
+    CLASSES: {
+      ADD_SUCCESS: 'You have successfully created class {name}',
+      ADD_FAILD: 'You have created failure',
+      UPDATE_SUCCESS: 'You have successfully edited the class {name}',
+      UPDATE_FAILED: 'You have failed to edit your classes information',
+      DELETE_SUCCESS: 'You have deleted an classes from the system',
+      DELETE_FAILED: 'You have failed to delete your classes from the system',
+
+      VALIDATE_NAME: 'Class name is incorrect',
     },
   },
 };

@@ -61,13 +61,13 @@
                 <template #cell(arrangement)="data">
                   <b-row>
                     <b-col cols="6" sm="6" md="6" lg="6" xl="6">
-                      <b-button class="btn-custom-green" size="sm" @click="onClickAssignStudent(data.item.id)">
+                      <b-button class="btn-custom-green" size="sm" @click="onClickAssignStudent(data.item)">
                         <i class="fas fa-user-alt" />
                       </b-button>
                     </b-col>
 
                     <b-col cols="6" sm="6" md="6" lg="6" xl="6">
-                      <b-button class="btn-custom-green" size="sm" @click="onClickAssignCourse(data.item.id)">
+                      <b-button class="btn-custom-green" size="sm" @click="onClickAssignCourse(data.item)">
                         <i class="fas fa-books" />
                       </b-button>
                     </b-col>
@@ -190,10 +190,25 @@
         <template #default>
           <b-row>
             <b-col cols="12" sm="12" md="12" lg="12" xl="6">
-              <div class="item-input-search">
-                <div style="height: 38px;" />
+
+              <div class="title-list">
+                <b-card>
+                  <b-card-text>
+                    <h5>{{ $t('CLASSES.TITLE_LIST_STUDENT_IN_CLASS', { name: isClassHandle.name }) }}</h5>
+                  </b-card-text>
+                </b-card>
               </div>
+
+              <div class="display-total-student">
+                <b-card>
+                  <b-card-text>
+                    <span>{{ $t('CLASSES.TITLE_NUMBER_STUDENT', { total: listStudentSelected.length }) }}</span>
+                  </b-card-text>
+                </b-card>
+              </div>
+
               <div class="list-student">
+
                 <template v-if="listStudentSelected.length === 0">
                   <div class="display-student">
                     <b-card>
@@ -205,7 +220,7 @@
                 </template>
 
                 <template v-if="listStudentSelected.length > 0">
-                  <div v-for="student in listStudentSelected" :key="student.id">
+                  <div v-for="(student, index) in listStudentSelected" :key="student.id">
                     <div class="display-student">
                       <b-card>
                         <template #header>
@@ -213,7 +228,7 @@
                             <div class="align-self-center">
                               <span><b>{{ student.user_code }}</b></span>
                             </div>
-                            <b-button variant="danger" size="sm">
+                            <b-button variant="danger" size="sm" @click="deleteStudentInClass(student, index)">
                               <i class="fas fa-trash" />
                             </b-button>
                           </div>
@@ -260,6 +275,15 @@
             </b-col>
 
             <b-col cols="12" sm="12" md="12" lg="12" xl="6">
+
+              <div class="title-list">
+                <b-card>
+                  <b-card-text>
+                    <h5>{{ $t('CLASSES.TITLE_LIST_STUDENT_IN_SYSTEM') }}</h5>
+                  </b-card-text>
+                </b-card>
+              </div>
+
               <div class="item-input-search">
                 <b-form-input
                   id="search-user-code"
@@ -269,7 +293,9 @@
                   @keyup.enter="handleGetListStudent()"
                 />
               </div>
+
               <div class="list-student">
+
                 <template v-if="listStudentSystem.length === 0">
                   <div class="display-student">
                     <b-card>
@@ -281,7 +307,7 @@
                 </template>
 
                 <template v-if="listStudentSystem.length > 0">
-                  <div v-for="student in listStudentSystem" :key="student.id">
+                  <div v-for="(student, index) in listStudentSystem" :key="student.id">
                     <div class="display-student">
                       <b-card>
                         <template #header>
@@ -289,9 +315,11 @@
                             <div class="align-self-center">
                               <span><b>{{ student.user_code }}</b></span>
                             </div>
-                            <b-button class="btn-custom-green" size="sm">
-                              <i class="fas fa-plus-circle" />
-                            </b-button>
+                            <template v-if="!listStudentIdSelected.includes(student.id)">
+                              <b-button class="btn-custom-green" size="sm" @click="addStudentToClass(student, index)">
+                                <i class="fas fa-plus-circle" />
+                              </b-button>
+                            </template>
                           </div>
                         </template>
 
@@ -355,7 +383,8 @@
           <b-button variant="outline-danger" :disabled="isProcess" @click="visibleModalAssignStudent = false">
             {{ $t('CLASSES.BUTTON_CANCEL') }}
           </b-button>
-          <b-button class="btn-custom-green">
+
+          <b-button class="btn-custom-green" @click="onSubmitAssignStudent()">
             <i v-if="isProcess" :disabled="isProcess" class="fad fa-spinner-third fa-spin" />
             {{ $t('CLASSES.BUTTON_SUBMIT') }}
           </b-button>
@@ -400,6 +429,7 @@ const URL_API = {
   putClasses: '/classes',
   deleteClasses: '/classes',
   getStudent: '/user/students',
+  assignStudent: '/classes/students',
 };
 import {
   getAllClasses,
@@ -408,6 +438,7 @@ import {
   putClasses,
   deleteClasses,
   getStudent,
+  assignStudent,
 } from '@/api/modules/classes';
 
 import {
@@ -454,6 +485,7 @@ export default {
       searchUserCode: '',
       listStudentSelected: [],
       listStudentSystem: [],
+      listStudentIdSelected: [],
 
       visibleModalForm: false,
       visibleModalDelete: false,
@@ -462,6 +494,11 @@ export default {
       isAction: '',
       idHandle: null,
       isProcess: false,
+      isClassHandle: {
+        id: null,
+        name: '',
+        level: 1,
+      },
     };
   },
   computed: {
@@ -630,8 +667,6 @@ export default {
         this.listStudentSystem = res['data'];
         this.paginationStudent['page'] = res['current_page'];
         this.paginationStudent['total'] = res['total'];
-
-        console.log(this.listStudentSystem);
       } catch (error) {
         console.log(error);
       }
@@ -689,12 +724,84 @@ export default {
     async onClickSubmitModalDelete() {
       await this.handleDeleteClasses(this.idHandle);
     },
-    async onClickAssignStudent(id) {
+    async onClickAssignStudent(isClass) {
+      this.isClassHandle.id = isClass.id;
+      this.isClassHandle.name = isClass.name;
+      this.isClassHandle.level = 1;
+
       await this.handleGetListStudent();
       this.visibleModalAssignStudent = true;
     },
-    onClickAssignCourse(id) {
+    onClickAssignCourse(isClass) {
+      this.isClassHandle.id = isClass.id;
+      this.isClassHandle.name = isClass.name;
+      this.isClassHandle.level = 1;
+
       this.visibleModalAssignCourse = true;
+    },
+    addStudentToClass(student, index) {
+      this.listStudentSelected.push(student);
+      this.listStudentIdSelected.push(student.id);
+    },
+    deleteStudentInClass(student, index) {
+      this.listStudentSelected.splice(index, 1);
+      this.listStudentIdSelected = this.removeItemInArr(this.listStudentIdSelected, student.id);
+    },
+    removeItemInArr(arr, value) {
+      const index = arr.indexOf(value);
+      if (index > -1) {
+        arr.splice(index, 1);
+      }
+
+      return arr;
+    },
+    hideModalAssignStudent() {
+      this.visibleModalAssignStudent = false;
+      this.listStudentSelected = [];
+      this.listStudentIdSelected = [];
+    },
+    createDataAssignStudent(id_class, list_student_selected) {
+      let idx = 0;
+      const len = list_student_selected.length;
+      const student_list = [];
+
+      while (idx < len) {
+        student_list.push(
+          {
+            student_id: list_student_selected[idx]['id'],
+          }
+        );
+
+        idx++;
+      }
+
+      return {
+        class_id: id_class,
+        data: student_list,
+      };
+    },
+    async onSubmitAssignStudent() {
+      this.isProcess = true;
+      const URL = URL_API.assignStudent;
+      const DATA = this.createDataAssignStudent(this.isClassHandle.id, this.listStudentSelected);
+
+      try {
+        const res = await assignStudent(URL, DATA);
+
+        if (res['status'] === 200) {
+          this.hideModalAssignStudent();
+        } else {
+          console.log(res);
+        }
+
+        this.isProcess = false;
+      } catch (error) {
+        console.log(error);
+        this.isProcess = false;
+        this.hideModalAssignStudent();
+      }
+
+      console.log(DATA);
     },
   },
 };
@@ -793,6 +900,43 @@ export default {
 .modal-assign-students-content {
     .item-input-search {
         margin-bottom: 10px;
+        padding: 5px;
+    }
+
+    .title-list {
+        padding: 5px;
+
+        .card {
+            background-color: $charade;
+
+            .card-body {
+                padding: 0.5rem 0.75rem;
+
+                h5 {
+                    margin-bottom: 0;
+                    color: $white;
+                    font-size: 1rem;
+                }
+            }
+        }
+
+        margin-bottom: 5px;
+    }
+
+    .display-total-student {
+        padding: 5px;
+
+        .card {
+            .card-header {
+                padding: 0.5rem 0.75rem;
+            }
+
+            .card-body {
+                padding: 0.5rem 0.75rem;
+            }
+        }
+
+        margin-bottom: 5px;
     }
 
     .list-student {

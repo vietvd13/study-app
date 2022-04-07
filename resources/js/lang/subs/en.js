@@ -95,6 +95,10 @@ export default {
     LABEL_FORM_NAME: 'Name',
     LABEL_FORM_LEVEL: 'Level',
 
+    TITLE_LIST_STUDENT_IN_CLASS: 'Class: {name}',
+    TITLE_LIST_STUDENT_IN_SYSTEM: 'List student in system',
+    TITLE_NUMBER_STUDENT: 'Total number of students: {total}',
+
     PLACEHOLDER_FORM_NAME: 'Enter name',
     PLACEHOLDER_FORM_LEVEL: 'Please select',
     PLACEHOLDER_SEARCH_USER_CODE: 'Seach by user code',

@@ -146,6 +146,7 @@ export default {
 
               setRoutes(ACCESS_ROUTES);
               this.$router.push('/');
+              NotifyLogin.loginSuccess();
             });
         })
         .catch((err) => {

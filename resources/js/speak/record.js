@@ -11,8 +11,8 @@ import {
 import { isLogged } from '@/utils/auth';
 import { getBlind } from './helper';
 import CONST_TOGGLE_STATUS from '@/const/toggle_status';
-// import { handleRequestNavigation } from './request';
-import { playSound } from './sound';
+import { handleRequestNavigation } from './request';
+import { playSound, clearSound } from './sound';
 import CONST_SOUND from './const';
 
 AudioRecorder.encoder = mpegEncoder;
@@ -31,6 +31,7 @@ export function handleRecord(key) {
           getRecord() === CONST_TOGGLE_STATUS.STATUS_OFF && getProccess() === CONST_TOGGLE_STATUS.STATUS_OFF
         ) {
           if (isLogged()) {
+            clearSound();
             handleStartRecord();
           }
         }
@@ -44,6 +45,7 @@ export function handleRecord(key) {
         event.preventDefault();
 
         if (isLogged()) {
+          clearSound();
           handleEndRecord();
         }
       }
@@ -72,7 +74,7 @@ async function sendData(event) {
   try {
     setProcess(CONST_TOGGLE_STATUS.STATUS_ON);
 
-    // handleRequestNavigation(event);
+    handleRequestNavigation(event);
 
     setProcess(CONST_TOGGLE_STATUS.STATUS_OFF);
   } catch (error) {
@@ -82,7 +84,7 @@ async function sendData(event) {
 
 function handleStartRecord() {
   if (getRecord() === CONST_TOGGLE_STATUS.STATUS_OFF) {
-    console.log('Start Record');
+    console.log('VOICE NAVIGATION: Start Record');
 
     setRecord(CONST_TOGGLE_STATUS.STATUS_ON);
     playSound(CONST_SOUND.SOUND_START_RECORD);
@@ -95,7 +97,7 @@ function handleEndRecord() {
     getPermission() === CONST_TOGGLE_STATUS.STATUS_ON &&
 	getRecord() === CONST_TOGGLE_STATUS.STATUS_ON
   ) {
-    console.log('End Record');
+    console.log('VOICE NAVIGATION: End Record');
 
     setRecord(CONST_TOGGLE_STATUS.STATUS_OFF);
     recorder.stop();

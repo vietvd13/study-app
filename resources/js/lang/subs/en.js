@@ -149,6 +149,7 @@ export default {
     GO_TO_HOME: 'Go To Home Page',
   },
   NAVBAR: {
+    LOGOUT: 'Logout',
     LANGUAGE: 'Language',
     ENGLISH: 'English',
     VIETNAMESE: 'Tiếng Việt',
@@ -180,6 +181,15 @@ export default {
   NOTIFY: {
     SYSTEM: {
       EXCEPTION: 'An unexpected error occurred',
+    },
+    LOGIN: {
+      LOGIN_SUCCESS: 'You have successfully logged into the system',
+
+      VALIDATE_EMAIL: 'The email information you entered is not in the correct format',
+      VALIDATE_PASSWORD: 'The password you entered is not in the correct format',
+    },
+    LOGOUT: {
+      LOGOUT_SUCCESS: 'You have successfully logged out of the system',
     },
     ACCOUNT: {
       ADD_SUCCESS: 'You have successfully created an account {email}',

@@ -20,6 +20,7 @@
         <b-navbar-nav class="ml-auto">
           <BlindSelector />
           <LangSelector />
+          <Logout />
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
@@ -27,12 +28,14 @@
 </template>
 
 <script>
+import Logout from './Logout';
 import LangSelector from './LangSelector';
 import BlindSelector from './BlindSelector';
 
 export default {
   name: 'Navbar',
   components: {
+    Logout,
     LangSelector,
     BlindSelector,
   },

@@ -58,6 +58,22 @@
                 :per-page="pagination.perPage"
                 aria-controls="table-classes"
               >
+                <template #cell(arrangement)="data">
+                  <b-row>
+                    <b-col cols="6" sm="6" md="6" lg="6" xl="6">
+                      <b-button class="btn-custom-green" size="sm" @click="onClickAssignStudent(data.item)">
+                        <i class="fas fa-user-alt" />
+                      </b-button>
+                    </b-col>
+
+                    <b-col cols="6" sm="6" md="6" lg="6" xl="6">
+                      <b-button class="btn-custom-green" size="sm" @click="onClickAssignCourse(data.item)">
+                        <i class="fas fa-books" />
+                      </b-button>
+                    </b-col>
+                  </b-row>
+                </template>
+
                 <template #cell(actions)="data">
                   <div class="td-actions">
                     <div class="actions-edit">
@@ -157,6 +173,247 @@
           </b-button>
         </template>
       </b-modal>
+
+      <b-modal
+        v-model="visibleModalAssignStudent"
+        size="xl"
+        no-close-on-esc
+        no-close-on-backdrop
+        hide-header-close
+        body-class="modal-assign-students-content"
+        footer-class="modal-assign-students-footer"
+      >
+        <template #modal-header>
+          <h5>{{ $t('CLASSES.MODAL_TITLE_ASSIGN_STUDENT') }}</h5>
+        </template>
+
+        <template #default>
+          <b-row>
+            <b-col cols="12" sm="12" md="12" lg="12" xl="6">
+
+              <div class="title-list">
+                <b-card>
+                  <b-card-text>
+                    <h5>{{ $t('CLASSES.TITLE_LIST_STUDENT_IN_CLASS', { name: isClassHandle.name }) }}</h5>
+                  </b-card-text>
+                </b-card>
+              </div>
+
+              <div class="display-total-student">
+                <b-card>
+                  <b-card-text>
+                    <span>{{ $t('CLASSES.TITLE_NUMBER_STUDENT', { total: listStudentSelected.length }) }}</span>
+                  </b-card-text>
+                </b-card>
+              </div>
+
+              <div class="list-student">
+
+                <template v-if="listStudentSelected.length === 0">
+                  <div class="display-student">
+                    <b-card>
+                      <b-card-text>
+                        <span>{{ $t('CLASSES.TABLE_CONTENT_NO_DATA') }}</span>
+                      </b-card-text>
+                    </b-card>
+                  </div>
+                </template>
+
+                <template v-if="listStudentSelected.length > 0">
+                  <div v-for="(student, index) in listStudentSelected" :key="student.id">
+                    <div class="display-student">
+                      <b-card>
+                        <template #header>
+                          <div class="d-flex justify-content-between">
+                            <div class="align-self-center">
+                              <span><b>{{ student.user_code }}</b></span>
+                            </div>
+                            <b-button variant="danger" size="sm" @click="deleteStudentInClass(student, index)">
+                              <i class="fas fa-trash" />
+                            </b-button>
+                          </div>
+                        </template>
+
+                        <b-card-text>
+                          <div>
+                            <span><b>{{ $t('ACCOUNT.LABEL_FORM_FULLNAME') }}:</b>{{ student.name }}</span>
+                          </div>
+                          <div>
+                            <span><b>{{ $t('ACCOUNT.LABEL_FORM_TELEPHONE') }}:</b>{{ student.phone }}</span>
+                          </div>
+                          <div>
+                            <span><b>{{ $t('ACCOUNT.LABEL_FORM_EMAIL') }}:</b>{{ student.email }}</span>
+                          </div>
+                          <div>
+                            <span>
+                              <b>{{ $t('ACCOUNT.LABEL_FORM_BLIND') }}:</b>
+                              <b-badge v-if="student.status === 1" variant="danger">
+                                {{ $t('CLASSES.TEXT_YES') }}
+                              </b-badge>
+                              <b-badge v-if="student.status === 0" variant="success">
+                                {{ $t('CLASSES.TEXT_NO') }}
+                              </b-badge>
+                            </span>
+                          </div>
+                          <div>
+                            <span>
+                              <b>{{ $t('ACCOUNT.LABEL_FORM_STATUS') }}:</b>
+                              <b-badge v-if="student.status === 1" variant="success">
+                                {{ $t('CLASSES.TEXT_ACTIVE') }}
+                              </b-badge>
+                              <b-badge v-if="student.status === 0" variant="danger">
+                                {{ $t('CLASSES.TEXT_INACTIVE') }}
+                              </b-badge>
+                            </span>
+                          </div>
+                        </b-card-text>
+                      </b-card>
+                    </div>
+                  </div>
+                </template>
+              </div>
+            </b-col>
+
+            <b-col cols="12" sm="12" md="12" lg="12" xl="6">
+
+              <div class="title-list">
+                <b-card>
+                  <b-card-text>
+                    <h5>{{ $t('CLASSES.TITLE_LIST_STUDENT_IN_SYSTEM') }}</h5>
+                  </b-card-text>
+                </b-card>
+              </div>
+
+              <div class="item-input-search">
+                <b-form-input
+                  id="search-user-code"
+                  v-model="searchUserCode"
+                  :disabled="isProcess"
+                  :placeholder="$t('CLASSES.PLACEHOLDER_SEARCH_USER_CODE')"
+                  @keyup.enter="handleGetListStudent()"
+                />
+              </div>
+
+              <div class="list-student">
+
+                <template v-if="listStudentSystem.length === 0">
+                  <div class="display-student">
+                    <b-card>
+                      <b-card-text>
+                        <span>{{ $t('CLASSES.TABLE_CONTENT_NO_DATA') }}</span>
+                      </b-card-text>
+                    </b-card>
+                  </div>
+                </template>
+
+                <template v-if="listStudentSystem.length > 0">
+                  <div v-for="(student, index) in listStudentSystem" :key="student.id">
+                    <div class="display-student">
+                      <b-card>
+                        <template #header>
+                          <div class="d-flex justify-content-between">
+                            <div class="align-self-center">
+                              <span><b>{{ student.user_code }}</b></span>
+                            </div>
+                            <template v-if="!listStudentIdSelected.includes(student.id)">
+                              <b-button class="btn-custom-green" size="sm" @click="addStudentToClass(student, index)">
+                                <i class="fas fa-plus-circle" />
+                              </b-button>
+                            </template>
+                          </div>
+                        </template>
+
+                        <b-card-text>
+                          <div>
+                            <span><b>{{ $t('ACCOUNT.LABEL_FORM_FULLNAME') }}:</b>{{ student.name }}</span>
+                          </div>
+                          <div>
+                            <span><b>{{ $t('ACCOUNT.LABEL_FORM_TELEPHONE') }}:</b>{{ student.phone }}</span>
+                          </div>
+                          <div>
+                            <span><b>{{ $t('ACCOUNT.LABEL_FORM_EMAIL') }}:</b>{{ student.email }}</span>
+                          </div>
+                          <div>
+                            <span>
+                              <b>{{ $t('ACCOUNT.LABEL_FORM_BLIND') }}:</b>
+                              <b-badge v-if="student.status === 1" variant="danger">
+                                {{ $t('CLASSES.TEXT_YES') }}
+                              </b-badge>
+                              <b-badge v-if="student.status === 0" variant="success">
+                                {{ $t('CLASSES.TEXT_NO') }}
+                              </b-badge>
+                            </span>
+                          </div>
+                          <div>
+                            <span>
+                              <b>{{ $t('ACCOUNT.LABEL_FORM_STATUS') }}:</b>
+                              <b-badge v-if="student.status === 1" variant="success">
+                                {{ $t('CLASSES.TEXT_ACTIVE') }}
+                              </b-badge>
+                              <b-badge v-if="student.status === 0" variant="danger">
+                                {{ $t('CLASSES.TEXT_INACTIVE') }}
+                              </b-badge>
+                            </span>
+                          </div>
+                        </b-card-text>
+                      </b-card>
+                    </div>
+                  </div>
+                </template>
+              </div>
+
+              <div class="pagination-student">
+                <b-pagination
+                  v-model="paginationStudent.page"
+                  pills
+                  size="sm"
+                  first-number
+                  last-number
+                  align="right"
+                  :total-rows="paginationStudent.total"
+                  :per-page="paginationStudent.perPage"
+                />
+              </div>
+            </b-col>
+          </b-row>
+
+        </template>
+
+        <template #modal-footer>
+          <b-button variant="outline-danger" :disabled="isProcess" @click="visibleModalAssignStudent = false">
+            {{ $t('CLASSES.BUTTON_CANCEL') }}
+          </b-button>
+
+          <b-button class="btn-custom-green" @click="onSubmitAssignStudent()">
+            <i v-if="isProcess" :disabled="isProcess" class="fad fa-spinner-third fa-spin" />
+            {{ $t('CLASSES.BUTTON_SUBMIT') }}
+          </b-button>
+        </template>
+      </b-modal>
+
+      <b-modal
+        v-model="visibleModalAssignCourse"
+        size="xl"
+        no-close-on-esc
+        no-close-on-backdrop
+        hide-header-close
+        body-class="modal-assign-course-content"
+        footer-class="modal-assign-course-footer"
+      >
+        <template #modal-header>
+          <h5>{{ $t('CLASSES.MODAL_TITLE_ASSIGN_COURSE') }}</h5>
+        </template>
+
+        <template #modal-footer>
+          <b-button variant="outline-danger" :disabled="isProcess" @click="visibleModalAssignCourse = false">
+            {{ $t('CLASSES.BUTTON_CANCEL') }}
+          </b-button>
+          <b-button class="btn-custom-green">
+            <i v-if="isProcess" :disabled="isProcess" class="fad fa-spinner-third fa-spin" />
+            {{ $t('CLASSES.BUTTON_SUBMIT') }}
+          </b-button>
+        </template>
+      </b-modal>
     </div>
   </b-overlay>
 </template>
@@ -171,6 +428,8 @@ const URL_API = {
   postClasses: '/classes',
   putClasses: '/classes',
   deleteClasses: '/classes',
+  getStudent: '/user/students',
+  assignStudent: '/classes/students',
 };
 import {
   getAllClasses,
@@ -178,6 +437,8 @@ import {
   postClasses,
   putClasses,
   deleteClasses,
+  getStudent,
+  assignStudent,
 } from '@/api/modules/classes';
 
 import {
@@ -215,12 +476,29 @@ export default {
         perPage: 10,
         total: 0,
       },
+      paginationStudent: {
+        page: 1,
+        perPage: 10,
+        total: 0,
+      },
+
+      searchUserCode: '',
+      listStudentSelected: [],
+      listStudentSystem: [],
+      listStudentIdSelected: [],
 
       visibleModalForm: false,
       visibleModalDelete: false,
+      visibleModalAssignStudent: false,
+      visibleModalAssignCourse: false,
       isAction: '',
       idHandle: null,
       isProcess: false,
+      isClassHandle: {
+        id: null,
+        name: '',
+        level: 1,
+      },
     };
   },
   computed: {
@@ -234,9 +512,15 @@ export default {
           tdClass: 'base-td',
         },
         {
+          key: 'arrangement',
+          label: this.$t('CLASSES.TABLE_TITLE_ARRANGEMENT'),
+          thClass: 'base-th',
+          tdClass: 'base-td base-arrangement',
+        },
+        {
           key: 'actions',
           lebael: this.$t('CLASSES.TABLE_TITLE_ACTIONS'),
-          thClass: 'base-th base-actions',
+          thClass: 'base-th',
           tdClass: 'base-td base-actions',
         },
       ];
@@ -263,8 +547,9 @@ export default {
         const res = await getAllClasses(URL, PARAMS);
 
         if (res['status'] === 200) {
-          this.items = res['data'];
+          this.items = res['data']['data'];
           this.pagination.page = res['per_page'];
+          this.pagination.total = res['total'];
         } else {
           NotifyClasses.server(res['message']);
         }
@@ -280,6 +565,8 @@ export default {
 
         if (res['status'] === 200) {
           this.isClass.name = res['data']['name'];
+          this.listStudentSelected = res['data']['students'];
+          this.listStudentIdSelected = this.getListKey('id', res['data']['students']);
         } else {
           NotifyClasses.server(res['message']);
         }
@@ -368,6 +655,24 @@ export default {
         NotifyClasses.exception();
       }
     },
+    async handleGetListStudent() {
+      const URL = URL_API.getStudent;
+      const PARAMS = {
+        user_code: this.searchUserCode,
+        page: this.paginationStudent['page'],
+        per_page: this.paginationStudent['perPage'],
+      };
+
+      try {
+        const res = await getStudent(URL, PARAMS);
+
+        this.listStudentSystem = res['data'];
+        this.paginationStudent['page'] = res['current_page'];
+        this.paginationStudent['total'] = res['total'];
+      } catch (error) {
+        NotifyClasses.updateError(error);
+      }
+    },
     resetModalForm() {
       const DEFAULT = {
         name: '',
@@ -421,6 +726,98 @@ export default {
     async onClickSubmitModalDelete() {
       await this.handleDeleteClasses(this.idHandle);
     },
+    async onClickAssignStudent(isClass) {
+      this.isClassHandle.id = isClass.id;
+      this.isClassHandle.name = isClass.name;
+      this.isClassHandle.level = 1;
+
+      await this.handleGetListStudent();
+      await this.handleGetOneClasses(isClass.id);
+      this.visibleModalAssignStudent = true;
+    },
+    onClickAssignCourse(isClass) {
+      this.isClassHandle.id = isClass.id;
+      this.isClassHandle.name = isClass.name;
+      this.isClassHandle.level = 1;
+
+      this.visibleModalAssignCourse = true;
+    },
+    addStudentToClass(student, index) {
+      this.listStudentSelected.push(student);
+      this.listStudentIdSelected.push(student.id);
+    },
+    deleteStudentInClass(student, index) {
+      this.listStudentSelected.splice(index, 1);
+      this.listStudentIdSelected = this.removeItemInArr(this.listStudentIdSelected, student.id);
+    },
+    removeItemInArr(arr, value) {
+      const index = arr.indexOf(value);
+      if (index > -1) {
+        arr.splice(index, 1);
+      }
+
+      return arr;
+    },
+    hideModalAssignStudent() {
+      this.visibleModalAssignStudent = false;
+      this.listStudentSelected = [];
+      this.listStudentIdSelected = [];
+    },
+    createDataAssignStudent(id_class, list_student_selected) {
+      let idx = 0;
+      const len = list_student_selected.length;
+      const student_list = [];
+
+      while (idx < len) {
+        student_list.push(
+          {
+            student_id: list_student_selected[idx]['id'],
+          }
+        );
+
+        idx++;
+      }
+
+      return {
+        class_id: id_class,
+        data: student_list,
+      };
+    },
+    getListKey(key, arr) {
+      let idx = 0;
+      const len = arr.length;
+      const result = [];
+
+      while (idx < len) {
+        result.push(arr[idx][key]);
+
+        idx++;
+      }
+
+      return result;
+    },
+    async onSubmitAssignStudent() {
+      this.isProcess = true;
+      const URL = URL_API.assignStudent;
+      const DATA = this.createDataAssignStudent(this.isClassHandle.id, this.listStudentSelected);
+
+      try {
+        const res = await assignStudent(URL, DATA);
+
+        if (res['status'] === 200) {
+          this.hideModalAssignStudent();
+          NotifyClasses.assignStudentSuccess();
+        } else {
+          NotifyClasses.server(res['message']);
+        }
+
+        this.isProcess = false;
+      } catch (error) {
+        NotifyClasses.updateError(error);
+        this.isProcess = false;
+        this.hideModalAssignStudent();
+      }
+    },
   },
 };
 </script>
@@ -430,6 +827,7 @@ export default {
 
 .classes {
     padding: 10px;
+    height: calc(100vh - 57px);
 
     &__header {
         margin-bottom: 10px;
@@ -473,6 +871,10 @@ export default {
                         text-align: center;
                     }
 
+                    td.base-td.base-arrangement {
+                        width: 200px;
+                    }
+
                     td.base-td.base-actions {
                         width: 200px;
                     }
@@ -508,5 +910,85 @@ export default {
     .item-input {
         margin-bottom: 10px;
     }
+}
+
+.modal-assign-students-content {
+    .item-input-search {
+        margin-bottom: 10px;
+        padding: 5px;
+    }
+
+    .title-list {
+        padding: 5px;
+
+        .card {
+            background-color: $charade;
+
+            .card-body {
+                padding: 0.5rem 0.75rem;
+
+                h5 {
+                    margin-bottom: 0;
+                    color: $white;
+                    font-size: 1rem;
+                }
+            }
+        }
+
+        margin-bottom: 5px;
+    }
+
+    .display-total-student {
+        padding: 5px;
+
+        .card {
+            .card-header {
+                padding: 0.5rem 0.75rem;
+            }
+
+            .card-body {
+                padding: 0.5rem 0.75rem;
+            }
+        }
+
+        margin-bottom: 5px;
+    }
+
+    .list-student {
+        width: 100%;
+        height: 500px;
+        overflow: auto;
+        margin-bottom: 10px;
+        min-height: 46px;
+
+        .display-student {
+            width: 100%;
+            overflow: hidden;
+            padding: 5px;
+
+            .card-header {
+                padding: 0.5rem 0.75rem;
+            }
+
+            .card-body {
+                padding: 0.5rem 0.75rem;
+            }
+
+            div {
+                span {
+                    word-wrap: break-word;
+
+                    b {
+                        margin-right: 5px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.icon-loading {
+    font-size: 50px;
+    color: $forest-green;
 }
 </style>

@@ -19,3 +19,15 @@ export function putClasses(url, data) {
 export function deleteClasses(url) {
   return request.deleteRequest(url);
 }
+
+export function getStudent(url, params) {
+  return request.getRequest(url, params);
+}
+
+export function assignStudent(url, data) {
+  return request.postRequest(url, data);
+}
+
+export function assignCourse(url, data) {
+  return request.postRequest(url, data);
+}

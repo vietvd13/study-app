@@ -30,12 +30,17 @@ export function validateNumberMoreThanZero(number) {
   return re.test(number);
 }
 
-export function validateFullname(sting) {
+export function validateFullname(string) {
   const re = /\S/;
-  return re.test(sting);
+  return re.test(string);
 }
 
 export function validaClassesName(string) {
+  const re = /\S/;
+  return re.test(string);
+}
+
+export function validCourseName(string) {
   const re = /\S/;
   return re.test(string);
 }

@@ -208,6 +208,8 @@ export default {
       DELETE_FAILED: 'You have failed to delete your classes from the system',
 
       VALIDATE_NAME: 'Class name is incorrect',
+
+      ASSIGN_STUDENT_SUCCESS: 'You have successfully arranged your students for the class',
     },
   },
 };

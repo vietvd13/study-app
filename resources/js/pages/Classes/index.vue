@@ -565,6 +565,8 @@ export default {
 
         if (res['status'] === 200) {
           this.isClass.name = res['data']['name'];
+          this.listStudentSelected = res['data']['students'];
+          this.listStudentIdSelected = this.getListKey('id', res['data']['students']);
         } else {
           NotifyClasses.server(res['message']);
         }
@@ -668,7 +670,7 @@ export default {
         this.paginationStudent['page'] = res['current_page'];
         this.paginationStudent['total'] = res['total'];
       } catch (error) {
-        console.log(error);
+        NotifyClasses.updateError(error);
       }
     },
     resetModalForm() {
@@ -730,6 +732,7 @@ export default {
       this.isClassHandle.level = 1;
 
       await this.handleGetListStudent();
+      await this.handleGetOneClasses(isClass.id);
       this.visibleModalAssignStudent = true;
     },
     onClickAssignCourse(isClass) {
@@ -780,6 +783,19 @@ export default {
         data: student_list,
       };
     },
+    getListKey(key, arr) {
+      let idx = 0;
+      const len = arr.length;
+      const result = [];
+
+      while (idx < len) {
+        result.push(arr[idx][key]);
+
+        idx++;
+      }
+
+      return result;
+    },
     async onSubmitAssignStudent() {
       this.isProcess = true;
       const URL = URL_API.assignStudent;
@@ -790,18 +806,17 @@ export default {
 
         if (res['status'] === 200) {
           this.hideModalAssignStudent();
+          NotifyClasses.assignStudentSuccess();
         } else {
-          console.log(res);
+          NotifyClasses.server(res['message']);
         }
 
         this.isProcess = false;
       } catch (error) {
-        console.log(error);
+        NotifyClasses.updateError(error);
         this.isProcess = false;
         this.hideModalAssignStudent();
       }
-
-      console.log(DATA);
     },
   },
 };

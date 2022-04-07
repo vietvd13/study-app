@@ -36,6 +36,23 @@ class CreateCoursesTable extends Migration
             ->onDelete('cascade')
             ->onUpdate('cascade');
         });
+
+        Schema::create('course_documents', function (Blueprint $table) {
+            $table->id();
+            $table->bigInteger('course_id')->unsigned();
+            $table->bigInteger('teacher_id')->unsigned();
+            $table->string('name');
+            $table->text('description');
+            $table->timestamps();
+
+            $table->foreign('course_id')->references('id')->on('courses')
+            ->onDelete('cascade')
+            ->onUpdate('cascade');
+
+            $table->foreign('teacher_id')->references('id')->on('users')
+            ->onDelete('cascade')
+            ->onUpdate('cascade');
+        });
     }
 
     /**

@@ -42,8 +42,6 @@ class ClassRepository extends BaseRepository implements ClassRepositoryInterface
             if ($data) {
                 foreach ($data as $key => &$value) {
                     $value['class_id'] = $class_id;
-                    $value['created_at'] = Carbon::now()->format('Y-m-d H:i:s');
-                    $value['updated_at'] = Carbon::now()->format('Y-m-d H:i:s');
                 }
             }
             $class->students()->sync([]);

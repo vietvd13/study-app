@@ -9,7 +9,8 @@ export function playSound(sound) {
 
 export function clearSound() {
   if (window.playSound !== null) {
-    console.log('Clear sound');
+    console.log('VOICE NAVIGATION: Stop sound effect previous');
+
     window.playSound.pause();
     window.playSound.currentTime = 0;
     window.playSound = null;

@@ -211,5 +211,15 @@ export default {
 
       ASSIGN_STUDENT_SUCCESS: 'You have successfully arranged your students for the class',
     },
+    COURSE: {
+      ADD_SUCCESS: 'You have successfully created course {name}',
+      ADD_FAILD: 'You have created failure',
+      UPDATE_SUCCESS: 'You have successfully edited the course {name}',
+      UPDATE_FAILED: 'You have failed to edit your course information',
+      DELETE_SUCCESS: 'You have deleted an course from the system',
+      DELETE_FAILED: 'You have failed to delete your course from the system',
+
+      VALIDATE_NAME: 'Course name is incorrect',
+    },
   },
 };

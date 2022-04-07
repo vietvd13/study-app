@@ -12,7 +12,7 @@ import { isLogged } from '@/utils/auth';
 import { getBlind } from './helper';
 import CONST_TOGGLE_STATUS from '@/const/toggle_status';
 // import { handleRequestNavigation } from './request';
-import { playSound } from './sound';
+import { playSound, clearSound } from './sound';
 import CONST_SOUND from './const';
 
 AudioRecorder.encoder = mpegEncoder;
@@ -31,6 +31,7 @@ export function handleRecord(key) {
           getRecord() === CONST_TOGGLE_STATUS.STATUS_OFF && getProccess() === CONST_TOGGLE_STATUS.STATUS_OFF
         ) {
           if (isLogged()) {
+            clearSound();
             handleStartRecord();
           }
         }
@@ -44,6 +45,7 @@ export function handleRecord(key) {
         event.preventDefault();
 
         if (isLogged()) {
+          clearSound();
           handleEndRecord();
         }
       }

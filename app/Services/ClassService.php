@@ -22,4 +22,8 @@ class ClassService extends BaseService implements ClassServiceInterface
     public function addStudent($request) {
         return $this->repository->addStudent($request->data, $request->class_id);
     }
+
+    public function addCourse($request) {
+        return $this->repository->addCourse($request->data, $request->class_id);
+    }
 }

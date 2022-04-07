@@ -33,5 +33,21 @@ class CourseRepository extends BaseRepository implements CourseRepositoryInterfa
         return Course::class;
     }
 
+    public function addTeacher(array $data, int $course_id) {
+        $status = $this->transaction(function () use ($data, $course_id) {
+            $course = $this->model->where([
+                'id' => $course_id
+            ])->first();
 
+            if ($data) {
+                foreach ($data as $key => &$value) {
+                    $value['course_id'] = $course_id;
+                }
+            }
+            $course->teachers()->sync([]);
+            $course = $course->teachers()->sync($data);
+            return $course;
+        });
+        return $status;
+    }
 }

@@ -13,23 +13,6 @@
               />
             </div>
           </b-col>
-
-          <b-col cols="12" sm="12" md="6" lg="4" xl="4">
-            <div class="form-item">
-              <label for="filter-level">{{ $t('COURSE.LABEL_FILTER_LEVEL') }}</label>
-              <b-form-select
-                id="filter-level"
-                v-model="isFilter.level"
-                :options="listLevel"
-              >
-                <template #first>
-                  <b-form-select-option :value="null" disabled>
-                    {{ $t('COURSE.PLACEHOLDER_FILTER_LEVEL') }}
-                  </b-form-select-option>
-                </template>
-              </b-form-select>
-            </div>
-          </b-col>
         </b-row>
       </b-card>
     </div>
@@ -122,21 +105,6 @@
           <label for="form-name">{{ $t('COURSE.LABEL_FORM_NAME') }}</label>
           <b-form-input id="form-name" v-model="isClass.name" :placeholder="$t('COURSE.PLACEHOLDER_FORM_NAME')" />
         </div>
-
-        <div class="item-input">
-          <label for="form-level">{{ $t('COURSE.PLACEHOLDER_FORM_LEVEL') }}</label>
-          <b-form-select
-            id="form-level"
-            v-model="isClass.level"
-            :options="listLevel"
-          >
-            <template #first>
-              <b-form-select-option :value="null" disabled>
-                {{ $t('COURSE.PLACEHOLDER_FILTER_LEVEL') }}
-              </b-form-select-option>
-            </template>
-          </b-form-select>
-        </div>
       </template>
 
       <template #modal-footer>
@@ -188,37 +156,14 @@ export default {
     return {
       isClass: {
         name: '',
-        level: null,
+        level: 1,
       },
 
       isFilter: {
         name: '',
-        level: null,
       },
 
-      listLevel: [
-        {
-          value: 1,
-          text: 'Level 1',
-        },
-        {
-          value: 2,
-          text: 'Level 2',
-        },
-      ],
-
-      items: [
-        {
-          id: 1,
-          name: 'Maths',
-          level: 1,
-        },
-        {
-          id: 2,
-          name: 'Chemistry',
-          level: 1,
-        },
-      ],
+      items: [],
 
       pagination: {
         page: 1,

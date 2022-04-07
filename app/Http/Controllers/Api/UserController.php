@@ -69,4 +69,12 @@ class UserController extends Controller
     public function roles() {
         return Role::all();
     }
+
+    public function students(UserRequest $request) {
+        return $this->service->students($request);
+    }
+
+    public function teacher(UserRequest $request) {
+        return $this->service->teacher($request);
+    }
 }

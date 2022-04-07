@@ -12,6 +12,7 @@ use App\Repositories\Contracts\UserRepositoryInterface;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Role;
+use Illuminate\Support\Arr;
 class UserService extends BaseService implements UserServiceInterface
 {
 
@@ -101,5 +102,17 @@ class UserService extends BaseService implements UserServiceInterface
                 "message" => ERROR_USER_NOT_FOUND
             ];
         }
+    }
+
+    public function students($request) {
+        $user_code = Arr::get($request->all(), 'user_code', null);
+        $role = Role::where('name', ROLES['STUDENT'])->first();
+        return $this->repository->getUserByRole($role->id, $user_code);
+    }
+
+    public function teacher($request) {
+        $user_code = Arr::get($request->all(), 'user_code', null);
+        $role = Role::where('name', ROLES['TEACHER'])->first();
+        return $this->repository->getUserByRole($role->id, $user_code);
     }
 }

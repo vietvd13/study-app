@@ -23,6 +23,9 @@ export default {
   validateForm(message) {
     Notification.notifyWarning(i18n.t(message));
   },
+  assignStudentSuccess() {
+    Notification.notifySuccess(i18n.t('NOTIFY.CLASSES.ASSIGN_STUDENT_SUCCESS'));
+  },
   exception() {
     Notification.notifyError(i18n.t('NOTIFY.SYSTEM.EXCEPTION'));
   },

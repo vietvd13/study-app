@@ -29,7 +29,7 @@ class ClassController extends Controller
     public function index(ClassRequest $request)
     {
         $data = $this->service->paginate($request->per_page);
-        return $this->responseJson(200, ClassResource::collection($data));
+        return $this->responseJson(200, $data);
     }
 
     public function store(ClassRequest $request)
@@ -71,5 +71,9 @@ class ClassController extends Controller
 
     public function AddStudent(ClassRequest $request) {
         return $this->service->addStudent($request);
+    }
+
+    public function AddCourses(ClassRequest $request) {
+        return $this->service->addCourse($request);
     }
 }

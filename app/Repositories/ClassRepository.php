@@ -42,12 +42,30 @@ class ClassRepository extends BaseRepository implements ClassRepositoryInterface
             if ($data) {
                 foreach ($data as $key => &$value) {
                     $value['class_id'] = $class_id;
+                }
+            }
+            $class->students()->sync([]);
+            $class = $class->students()->sync($data);
+            return $class;
+        });
+        return $status;
+    }
+
+    public function addCourse(array $data, int $class_id) {
+        $status = $this->transaction(function () use ($data, $class_id) {
+            $class = $this->model->where([
+                'id' => $class_id
+            ])->first();
+
+            if ($data) {
+                foreach ($data as $key => &$value) {
+                    $value['class_id'] = $class_id;
                     $value['created_at'] = Carbon::now()->format('Y-m-d H:i:s');
                     $value['updated_at'] = Carbon::now()->format('Y-m-d H:i:s');
                 }
             }
-
-            $class = $class->students()->sync($data);
+            $class->courses()->sync([]);
+            $class = $class->courses()->sync($data);
             return $class;
         });
         return $status;

@@ -24,8 +24,6 @@ class CreateClasssTable extends Migration
         Schema::create('class_student', function (Blueprint $table) {
             $table->bigInteger('student_id')->unsigned();
             $table->bigInteger('class_id')->unsigned();
-            $table->date('start_date');
-            $table->date('end_date');
             $table->timestamps();
 
             $table->primary(['student_id', 'class_id']);
@@ -42,6 +40,8 @@ class CreateClasssTable extends Migration
         Schema::create('class_course', function (Blueprint $table) {
             $table->bigInteger('class_id')->unsigned();
             $table->bigInteger('course_id')->unsigned();
+            $table->date('start_date');
+            $table->date('end_date');
             $table->timestamps();
 
             $table->primary(['class_id', 'course_id']);
@@ -51,6 +51,42 @@ class CreateClasssTable extends Migration
             ->onUpdate('cascade');
 
             $table->foreign('class_id')->references('id')->on('classes')
+            ->onDelete('cascade')
+            ->onUpdate('cascade');
+        });
+
+        Schema::create('class_action', function (Blueprint $table) {
+            $table->id();
+            $table->bigInteger('class_id')->unsigned();
+            $table->bigInteger('teacher_id')->unsigned();
+            $table->string('name');
+            $table->text('description');
+            $table->timestamps();
+
+            $table->foreign('teacher_id')->references('id')->on('users')
+            ->onDelete('cascade')
+            ->onUpdate('cascade');
+
+            $table->foreign('class_id')->references('id')->on('classes')
+            ->onDelete('cascade')
+            ->onUpdate('cascade');
+        });
+
+        Schema::create('student_handin', function (Blueprint $table) {
+            $table->id();
+            $table->bigInteger('student_id')->unsigned();
+            $table->bigInteger('action_id')->unsigned();
+            $table->string('name');
+            $table->string('file_path')->nullable();
+            $table->text('description');
+            $table->integer('grade')->nullable();
+            $table->timestamps();
+
+            $table->foreign('action_id')->references('id')->on('class_action')
+            ->onDelete('cascade')
+            ->onUpdate('cascade');
+
+            $table->foreign('student_id')->references('id')->on('users')
             ->onDelete('cascade')
             ->onUpdate('cascade');
         });

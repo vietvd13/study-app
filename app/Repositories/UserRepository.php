@@ -33,5 +33,18 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
         return User::class;
     }
 
+    public function getUserByRole(int $role_id, string $user_code = null) {
+        $query = $this->model->whereHas(
+            'roles', function ($query) use($role_id){
+                $query->where('id', $role_id);
+            }
+        );
+        if ($user_code !== null) {
+            $query = $query->where('user_code', $user_code);
+        }
+
+        return $query->paginate(20);
+    }
+
 
 }

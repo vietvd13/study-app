@@ -79,7 +79,6 @@
 
 <script>
 import Logo from '@/assets/images/logo.png';
-import { MakeToast } from '@/toast/toastMessage';
 import { validEmail, validPassword } from '@/utils/validate';
 import { setRoutes } from '@/utils/setRoutes';
 
@@ -87,6 +86,8 @@ import { getCSRF } from '@/api/modules/auth';
 const URL_API = {
   urlGetCSRF: '/api/csrf-cookie',
 };
+
+import NotifyLogin from '@/toast/modules/login';
 
 export default {
   name: 'Login',
@@ -154,21 +155,13 @@ export default {
 
     validateLogin(Account) {
       if (validEmail(Account.email) === false) {
-        MakeToast({
-          title: 'Validate',
-          variant: 'warning',
-          content: 'Validate email',
-        });
+        NotifyLogin.validEmail();
 
         return false;
       }
 
       if (validPassword(Account.password) === false) {
-        MakeToast({
-          title: 'Validate',
-          variant: 'warning',
-          content: 'Validate password',
-        });
+        NotifyLogin.validPassword();
 
         return false;
       }

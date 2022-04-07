@@ -181,6 +181,12 @@ export default {
     SYSTEM: {
       EXCEPTION: 'An unexpected error occurred',
     },
+    LOGIN: {
+      LOGIN_SUCCESS: 'You have successfully logged into the system',
+
+      VALIDATE_EMAIL: 'The email information you entered is not in the correct format',
+      VALIDATE_PASSWORD: 'The password you entered is not in the correct format',
+    },
     ACCOUNT: {
       ADD_SUCCESS: 'You have successfully created an account {email}',
       ADD_FAILD: 'You have created failure',

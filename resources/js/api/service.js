@@ -1,7 +1,5 @@
 import axios from 'axios';
 import i18n from '@/lang';
-// import router from '@/router';
-// import { getToken } from '@/utils/handleToken';
 import { getLanguage } from '@/lang/helper/getLang';
 import { MakeToast } from '@/toast/toastMessage';
 
@@ -28,16 +26,11 @@ service.interceptors.response.use(
     return response.data;
   },
   error => {
-    const isCheckTitle = i18n.te(error.response.data.title);
-    const isCheckContent = i18n.te(error.response.data.message);
-
-    if (isCheckTitle && isCheckContent) {
-      MakeToast({
-        variant: i18n.t('TOAST.WARNING'),
-        title: i18n.t(error.response.data.title),
-        content: i18n.t(error.response.data.message),
-      });
-    }
+    MakeToast({
+      variant: 'danger',
+      title: i18n.t('TOAST.DANGER'),
+      content: i18n.t(error.response.data.message),
+    });
 
     return Promise.reject(error);
   }

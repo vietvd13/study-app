@@ -99,6 +99,9 @@ export default {
     TITLE_LIST_STUDENT_IN_SYSTEM: 'List student in system',
     TITLE_NUMBER_STUDENT: 'Total number of students: {total}',
 
+    TITLE_LIST_COURSE_IN_CLASS: 'Class: {name}',
+    TITLE_LIST_COURSE_IN_SYSTEM: 'List course in system',
+
     PLACEHOLDER_FORM_NAME: 'Enter name',
     PLACEHOLDER_FORM_LEVEL: 'Please select',
     PLACEHOLDER_SEARCH_USER_CODE: 'Seach by user code',
@@ -113,6 +116,9 @@ export default {
     TEXT_NO: 'No',
     TEXT_ACTIVE: 'Active',
     TEXT_INACTIVE: 'Inactive',
+
+    LABLE_START: 'Start date',
+    LABLE_END: 'End date',
   },
   COURSE: {
     LABEL_FILTER_NAME: 'Name',

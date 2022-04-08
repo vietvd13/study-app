@@ -1,4 +1,4 @@
-.form-control {
+.form-control:not(.b-calendar-grid) {
 	background-color: $athens-gray;
 	border-color: $athens-gray;
 

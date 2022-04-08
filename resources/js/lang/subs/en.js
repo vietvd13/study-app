@@ -224,8 +224,10 @@ export default {
       DELETE_FAILED: 'You have failed to delete your classes from the system',
 
       VALIDATE_NAME: 'Class name is incorrect',
+      VALIDATE_LIST_ASSIGN_COURSE: 'The list of course is not correct, please check again',
 
-      ASSIGN_STUDENT_SUCCESS: 'You have successfully arranged your students for the class',
+      ASSIGN_STUDENT_SUCCESS: 'You have successfully arranged students for the class',
+      ASSIGN_COURSE_SUCCESS: 'You have successfully arranged courses for the class',
     },
     COURSE: {
       ADD_SUCCESS: 'You have successfully created course {name}',

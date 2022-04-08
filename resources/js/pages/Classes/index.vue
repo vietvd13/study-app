@@ -447,7 +447,7 @@
                               <b-form-datepicker
                                 v-model="listCourseSelected[index]['start_date']"
                                 class="date_picker"
-                                :date-format-options="{ year: '2-digit', month: '2-digit', day: '2-digit' }"
+                                :date-format-options="{ year: 'numeric', month: '2-digit', day: '2-digit' }"
                                 :max="listCourseSelected[index]['end_date']"
                                 :locale="locale"
                               >
@@ -462,7 +462,7 @@
                               <b-form-datepicker
                                 v-model="listCourseSelected[index]['end_date']"
                                 class="date_picker"
-                                :date-format-options="{ year: '2-digit', month: '2-digit', day: '2-digit' }"
+                                :date-format-options="{ year: 'numeric', month: '2-digit', day: '2-digit' }"
                                 :min="listCourseSelected[index]['start_date']"
                                 :locale="locale"
                               >
@@ -521,6 +521,19 @@
                   </div>
                 </template>
               </div>
+
+              <div class="pagination-course">
+                <b-pagination
+                  v-model="paginationCourse.page"
+                  pills
+                  size="sm"
+                  first-number
+                  last-number
+                  align="right"
+                  :total-rows="paginationCourse.total"
+                  :per-page="paginationCourse.perPage"
+                />
+              </div>
             </b-col>
           </b-row>
         </template>
@@ -529,8 +542,8 @@
           <b-button variant="outline-danger" :disabled="isProcess" @click="visibleModalAssignCourse = false">
             {{ $t('CLASSES.BUTTON_CANCEL') }}
           </b-button>
-          <b-button class="btn-custom-green">
-            <i v-if="isProcess" :disabled="isProcess" class="fad fa-spinner-third fa-spin" />
+          <b-button class="btn-custom-green" :disabled="isProcess" @click="onSubmitAssignCourse()">
+            <i v-if="isProcess" class="fad fa-spinner-third fa-spin" />
             {{ $t('CLASSES.BUTTON_SUBMIT') }}
           </b-button>
         </template>
@@ -552,6 +565,7 @@ const URL_API = {
   getStudent: '/user/students',
   assignStudent: '/classes/students',
   getAllCourse: '/courses',
+  assignCourse: '/classes/courses',
 };
 import {
   getAllClasses,
@@ -561,6 +575,7 @@ import {
   deleteClasses,
   getStudent,
   assignStudent,
+  assignCourse,
 } from '@/api/modules/classes';
 import {
   getAllCourse,
@@ -569,6 +584,7 @@ import {
 import {
   validateAddClasses,
   validateUpdateClasses,
+  validateAssingCourse,
 } from './validate';
 
 import NotifyClasses from '@/toast/modules/classes';
@@ -993,6 +1009,48 @@ export default {
         this.isProcess = false;
         this.hideModalAssignStudent();
       }
+    },
+    createDataAssignCourse(idClass, listCourse) {
+      const DATA = {
+        class_id: idClass,
+        data: [],
+      };
+
+      let idx = 0;
+      const len = listCourse.length;
+
+      while (idx < len) {
+        DATA['data'].push({
+          course_id: listCourse[idx]['id'],
+          start_date: listCourse[idx]['start_date'],
+          end_date: listCourse[idx]['end_date'],
+        });
+
+        idx++;
+      }
+
+      return DATA;
+    },
+    async onSubmitAssignCourse() {
+      this.isProcess = true;
+
+      const URL = URL_API.assignCourse;
+      const DATA = this.createDataAssignCourse(this.isClassHandle.id, this.listCourseSelected);
+
+      if (validateAssingCourse(DATA['data'])) {
+        const res = await assignCourse(URL, DATA);
+
+        if (res['status'] === 200) {
+          this.visibleModalAssignCourse = false;
+          NotifyClasses.assignCourseSuccess();
+        } else {
+          NotifyClasses.server(res['message']);
+        }
+      } else {
+        NotifyClasses.validateForm(`NOTIFY.CLASSES.VALIDATE_LIST_ASSIGN_COURSE`);
+      }
+
+      this.isProcess = false;
     },
   },
 };

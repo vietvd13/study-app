@@ -43,3 +43,24 @@ export function validateUpdateClasses(classes) {
 
   return validate;
 }
+
+export function validateAssingCourse(list) {
+  let idx = 0;
+  let count = 0;
+  const len = list.length;
+
+  while (idx < len) {
+    if (list[idx]['start_date'] && list[idx]['end_date']) {
+      const END_DATE = new Date(list[idx]['end_date']);
+      const START_DATE = new Date(list[idx]['start_date']);
+
+      if (END_DATE.getTime() > START_DATE.getTime()) {
+        count = count + 1;
+      }
+    }
+
+    idx++;
+  }
+
+  return count === list.length;
+}

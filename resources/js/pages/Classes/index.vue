@@ -687,6 +687,38 @@ export default {
 
       return 'en';
     },
+    currentPageClass() {
+      return this.pagination.page;
+    },
+    currentPageStudent() {
+      return this.paginationStudent.page;
+    },
+    currentPageCourse() {
+      return this.paginationCourse.page;
+    },
+  },
+  watch: {
+    currentPageClass() {
+      this.overlay.show = true;
+
+      this.handleGetAllClasses();
+
+      this.overlay.show = false;
+    },
+    currentPageStudent() {
+      this.overlay.show = true;
+
+      this.handleGetListStudent();
+
+      this.overlay.show = false;
+    },
+    currentPageCourse() {
+      this.overlay.show = true;
+
+      this.handleGetListCourse();
+
+      this.overlay.show = false;
+    },
   },
   created() {
     this.initData();

@@ -241,6 +241,14 @@ export default {
         },
       ];
     },
+    currentPageCourse() {
+      return this.pagination.page;
+    },
+  },
+  watch: {
+    currentPageCourse() {
+      this.initData();
+    },
   },
   created() {
     this.initData();

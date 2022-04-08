@@ -68,13 +68,6 @@ export default {
     BUTTON_SUBMIT: 'Submit',
     BUTTON_DELETE: 'Delete',
     BUTTON_CANCEL: 'Cancel',
-
-    NOTIFY: {
-      ADD_SUCCESS: 'You have successfully created an account {email}',
-      ADD_FAILD: 'You have created failure',
-      UPDATE_SUCCESS: 'You have updated your {email} account information',
-      DELETE_SUCCESS: 'You have deleted an account from the system',
-    },
   },
   CLASSES: {
     LABEL_FILTER_NAME: 'Name',
@@ -87,6 +80,7 @@ export default {
 
     TABLE_TITLE_NAME: 'Name',
     TABLE_TITLE_LEVEL: 'Level',
+    TABLE_TITLE_ARRANGEMENT: 'Arrangement',
     TABLE_TITLE_ACTIONS: 'Actions',
 
     TABLE_CONTENT_NO_DATA: 'No data',
@@ -94,17 +88,37 @@ export default {
     MODAL_TITLE_ADD: 'Add new classes',
     MODAL_TITLE_UPDATE: 'Update an classes',
     MODAL_TITLE_DELETE: 'Delete an classes',
+    MODAL_TITLE_ASSIGN_STUDENT: 'Arrange students',
+    MODAL_TITLE_ASSIGN_COURSE: 'Arrange courses',
     CONTENT_MODAL_DELETE: 'You will delete an classes from the system. Are you sure?',
 
     LABEL_FORM_NAME: 'Name',
     LABEL_FORM_LEVEL: 'Level',
 
+    TITLE_LIST_STUDENT_IN_CLASS: 'Class: {name}',
+    TITLE_LIST_STUDENT_IN_SYSTEM: 'List student in system',
+    TITLE_NUMBER_STUDENT: 'Total number of students: {total}',
+
+    TITLE_LIST_COURSE_IN_CLASS: 'Class: {name}',
+    TITLE_LIST_COURSE_IN_SYSTEM: 'List course in system',
+
     PLACEHOLDER_FORM_NAME: 'Enter name',
     PLACEHOLDER_FORM_LEVEL: 'Please select',
+    PLACEHOLDER_SEARCH_USER_CODE: 'Seach by user code',
 
+    BUTTON_ADD: 'Add',
+    BUTTON_REMOVE: 'Remove',
     BUTTON_SUBMIT: 'Submit',
     BUTTON_DELETE: 'Delete',
     BUTTON_CANCEL: 'Cancel',
+
+    TEXT_YES: 'Yes',
+    TEXT_NO: 'No',
+    TEXT_ACTIVE: 'Active',
+    TEXT_INACTIVE: 'Inactive',
+
+    LABLE_START: 'Start date',
+    LABLE_END: 'End date',
   },
   COURSE: {
     LABEL_FILTER_NAME: 'Name',
@@ -141,6 +155,7 @@ export default {
     GO_TO_HOME: 'Go To Home Page',
   },
   NAVBAR: {
+    LOGOUT: 'Logout',
     LANGUAGE: 'Language',
     ENGLISH: 'English',
     VIETNAMESE: 'Tiếng Việt',
@@ -173,6 +188,15 @@ export default {
     SYSTEM: {
       EXCEPTION: 'An unexpected error occurred',
     },
+    LOGIN: {
+      LOGIN_SUCCESS: 'You have successfully logged into the system',
+
+      VALIDATE_EMAIL: 'The email information you entered is not in the correct format',
+      VALIDATE_PASSWORD: 'The password you entered is not in the correct format',
+    },
+    LOGOUT: {
+      LOGOUT_SUCCESS: 'You have successfully logged out of the system',
+    },
     ACCOUNT: {
       ADD_SUCCESS: 'You have successfully created an account {email}',
       ADD_FAILD: 'You have created failure',
@@ -200,6 +224,18 @@ export default {
       DELETE_FAILED: 'You have failed to delete your classes from the system',
 
       VALIDATE_NAME: 'Class name is incorrect',
+
+      ASSIGN_STUDENT_SUCCESS: 'You have successfully arranged your students for the class',
+    },
+    COURSE: {
+      ADD_SUCCESS: 'You have successfully created course {name}',
+      ADD_FAILD: 'You have created failure',
+      UPDATE_SUCCESS: 'You have successfully edited the course {name}',
+      UPDATE_FAILED: 'You have failed to edit your course information',
+      DELETE_SUCCESS: 'You have deleted an course from the system',
+      DELETE_FAILED: 'You have failed to delete your course from the system',
+
+      VALIDATE_NAME: 'Course name is incorrect',
     },
   },
 };

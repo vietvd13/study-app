@@ -441,6 +441,18 @@ export default {
         },
       ];
     },
+    currentPageAccount() {
+      return this.pagination.page;
+    },
+  },
+  watch: {
+    currentPageAccount() {
+      this.overlay.show = true;
+
+      this.handleGetAllAccount();
+
+      this.overlay.show = false;
+    },
   },
   created() {
     this.initData();

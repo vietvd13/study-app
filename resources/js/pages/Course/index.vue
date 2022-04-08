@@ -212,7 +212,7 @@ export default {
 
       pagination: {
         page: 1,
-        perPage: 20,
+        perPage: 10,
         total: 1,
       },
 
@@ -241,6 +241,14 @@ export default {
         },
       ];
     },
+    currentPageCourse() {
+      return this.pagination.page;
+    },
+  },
+  watch: {
+    currentPageCourse() {
+      this.initData();
+    },
   },
   created() {
     this.initData();
@@ -264,8 +272,8 @@ export default {
 
         if (res['status'] === 200) {
           this.items = res['data']['data'];
-          this.pagination.page = res['per_page'];
-          this.pagination.total = res['total'];
+          this.pagination.page = res['data']['current_page'];
+          this.pagination.total = res['data']['total'];
         } else {
           NotifyCourse.server(res['message']);
         }

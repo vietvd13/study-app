@@ -43,13 +43,11 @@ class CourseRequest extends FormRequest
         if(Route::getCurrentRoute()->getActionMethod() == 'update'){
             return [
                 Course::NAME => 'required|string',
-                Course::LEVEL => 'in:inactive',
             ];
         }
         if(Route::getCurrentRoute()->getActionMethod() == 'store'){
             return [
                 Course::NAME => 'required|string',
-                Course::LEVEL => 'int',
             ];
         }
      }

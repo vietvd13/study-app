@@ -11,4 +11,5 @@ namespace App\Repositories\Contracts;
 interface CourseRepositoryInterface extends BaseRepositoryInterface
 {
     public function addTeacher(array $data, int $course_id);
+    public function addDocument($request);
 }

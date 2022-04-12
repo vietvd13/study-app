@@ -11,4 +11,6 @@ namespace App\Services\Contracts;
 interface CourseServiceInterface extends BaseServiceInterface
 {
     public function addTeacher($request);
+    public function addDocument($request, $teacher_id);
+    public function deleteDocuments($course_id, $document_id);
 }

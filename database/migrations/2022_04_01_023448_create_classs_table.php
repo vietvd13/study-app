@@ -40,6 +40,7 @@ class CreateClasssTable extends Migration
         Schema::create('class_course', function (Blueprint $table) {
             $table->bigInteger('class_id')->unsigned();
             $table->bigInteger('course_id')->unsigned();
+            $table->bigInteger('teacher_id')->unsigned();
             $table->date('start_date');
             $table->date('end_date');
             $table->timestamps();
@@ -51,6 +52,10 @@ class CreateClasssTable extends Migration
             ->onUpdate('cascade');
 
             $table->foreign('class_id')->references('id')->on('classes')
+            ->onDelete('cascade')
+            ->onUpdate('cascade');
+
+            $table->foreign('teacher_id')->references('id')->on('users')
             ->onDelete('cascade')
             ->onUpdate('cascade');
         });

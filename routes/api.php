@@ -28,6 +28,8 @@ Route::namespace('Api')->group(function() {
         Route::get('user/teacher', 'UserController@teacher');
 
         Route::apiResource('courses', 'CourseController');
-        Route::post('courses/add-teacher', 'CourseController@AddTeacher');
+        Route::post('course/add-teacher', 'CourseController@AddTeacher');
+        Route::post('course/add-document', 'CourseController@courseDocuments');
+        Route::delete('course/delete-document', 'CourseController@deleteDocument');
     });
 });

@@ -18,14 +18,12 @@ class Course extends Model
 
     protected $table = 'courses';
     const NAME = 'name';
-    const LEVEL = 'level';
     const PIVOT = 'pivot';
     protected $hidden = [
         Course::PIVOT,
     ];
     protected $fillable = [
-        Course::NAME,
-        Course::LEVEL
+        Course::NAME
     ];
 
     protected $dates = ['deleted_at'];
@@ -38,4 +36,7 @@ class Course extends Model
         return $this->belongsToMany('App\Models\User', 'teacher_course', 'course_id', 'teacher_id')->withTimestamps();
     }
 
+    public function files() {
+        return $this->hasMany('App\Models\CourseDocument', 'course_id', 'id');
+    }
 }

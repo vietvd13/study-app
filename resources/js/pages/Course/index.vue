@@ -165,7 +165,7 @@
 
       <b-modal
         v-model="visibleModalAssignTeacher"
-        size="lg"
+        size="xl"
         no-close-on-esc
         no-close-on-backdrop
         hide-header-close

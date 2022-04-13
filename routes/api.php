@@ -28,8 +28,11 @@ Route::namespace('Api')->group(function() {
         Route::get('user/teacher', 'UserController@teacher');
 
         Route::apiResource('courses', 'CourseController');
-        Route::post('course/add-teacher', 'CourseController@AddTeacher');
-        Route::post('course/add-document', 'CourseController@courseDocuments');
-        Route::delete('course/delete-document', 'CourseController@deleteDocument');
+
+        Route::group(['prefix' => 'course'], function () {
+            Route::post('add-teacher', 'CourseController@AddTeacher');
+            Route::post('add-document', 'CourseController@courseDocuments');
+            Route::delete('delete-document', 'CourseController@deleteDocument');
+        });
     });
 });

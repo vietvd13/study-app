@@ -20,6 +20,9 @@ export default {
   deleteError(error) {
     Notification.notifyError(error['response']['data']['message']);
   },
+  assignTeacherSuccess() {
+    Notification.notifySuccess(i18n.t('NOTIFY.COURSE.ASSIGN_TEACHER_SUCCESS'));
+  },
   validateForm(message) {
     Notification.notifyWarning(i18n.t(message));
   },

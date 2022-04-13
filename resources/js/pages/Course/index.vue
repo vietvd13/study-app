@@ -58,6 +58,11 @@
                 :per-page="pagination.perPage"
                 aria-controls="table-course"
               >
+                <template #cell(arrangement)="data">
+                  <b-button class="btn-custom-green" size="sm" @click="onClickAssignTeacher(data.item)">
+                    <i class="fas fa-chalkboard-teacher" />
+                  </b-button>
+                </template>
                 <template #cell(actions)="data">
                   <div class="td-actions">
                     <div class="actions-edit">
@@ -72,6 +77,7 @@
                     </div>
                   </div>
                 </template>
+
                 <template #empty>
                   <span class="d-flex justify-content-center">
                     {{ $t('COURSE.TABLE_CONTENT_NO_DATA') }}
@@ -156,6 +162,211 @@
           </b-button>
         </template>
       </b-modal>
+
+      <b-modal
+        v-model="visibleModalAssignTeacher"
+        size="lg"
+        no-close-on-esc
+        no-close-on-backdrop
+        hide-header-close
+        body-class="modal-assign-teacher-content"
+        footer-class="modal-assign-teacher-footer"
+      >
+        <template #modal-header>
+          <h5>{{ $t('COURSE.MODAL_TITLE_ASSIGN_TEACHER') }}</h5>
+        </template>
+
+        <template #default>
+          <b-row>
+            <b-col cols="12" sm="12" md="12" lg="12" xl="6">
+
+              <div class="title-list">
+                <b-card>
+                  <b-card-text>
+                    <h5>{{ $t('CLASSES.TITLE_LIST_TEACHER_IN_COURSE', { name: isCourse.name }) }}</h5>
+                  </b-card-text>
+                </b-card>
+              </div>
+
+              <div class="display-total-teacher">
+                <b-card>
+                  <b-card-text>
+                    <span>{{ $t('CLASSES.TITLE_NUMBER_TEACHER', { total: listTeacherSelected.length }) }}</span>
+                  </b-card-text>
+                </b-card>
+              </div>
+
+              <div class="list-teacher">
+
+                <template v-if="listTeacherSelected.length === 0">
+                  <div class="display-teacher">
+                    <b-card>
+                      <b-card-text>
+                        <span>{{ $t('CLASSES.TABLE_CONTENT_NO_DATA') }}</span>
+                      </b-card-text>
+                    </b-card>
+                  </div>
+                </template>
+
+                <template v-if="listTeacherSelected.length > 0">
+                  <div v-for="(teacher, index) in listTeacherSelected" :key="teacher.id">
+                    <div class="display-teacher">
+                      <b-card>
+                        <template #header>
+                          <div class="d-flex justify-content-between">
+                            <div class="align-self-center">
+                              <span><b>{{ teacher.user_code }}</b></span>
+                            </div>
+                            <b-button variant="danger" size="sm" @click="deleteTeacherInCourse(teacher, index)">
+                              <i class="fas fa-trash" />
+                            </b-button>
+                          </div>
+                        </template>
+
+                        <b-card-text>
+                          <div>
+                            <span><b>{{ $t('ACCOUNT.LABEL_FORM_FULLNAME') }}:</b>{{ teacher.name }}</span>
+                          </div>
+                          <div>
+                            <span><b>{{ $t('ACCOUNT.LABEL_FORM_TELEPHONE') }}:</b>{{ teacher.phone }}</span>
+                          </div>
+                          <div>
+                            <span><b>{{ $t('ACCOUNT.LABEL_FORM_EMAIL') }}:</b>{{ teacher.email }}</span>
+                          </div>
+                          <div>
+                            <span>
+                              <b>{{ $t('ACCOUNT.LABEL_FORM_BLIND') }}:</b>
+                              <b-badge v-if="teacher.status === 1" variant="danger">
+                                {{ $t('CLASSES.TEXT_YES') }}
+                              </b-badge>
+                              <b-badge v-if="teacher.status === 0" variant="success">
+                                {{ $t('CLASSES.TEXT_NO') }}
+                              </b-badge>
+                            </span>
+                          </div>
+                          <div>
+                            <span>
+                              <b>{{ $t('ACCOUNT.LABEL_FORM_STATUS') }}:</b>
+                              <b-badge v-if="teacher.status === 1" variant="success">
+                                {{ $t('CLASSES.TEXT_ACTIVE') }}
+                              </b-badge>
+                              <b-badge v-if="teacher.status === 0" variant="danger">
+                                {{ $t('CLASSES.TEXT_INACTIVE') }}
+                              </b-badge>
+                            </span>
+                          </div>
+                        </b-card-text>
+                      </b-card>
+                    </div>
+                  </div>
+                </template>
+              </div>
+            </b-col>
+
+            <b-col cols="12" sm="12" md="12" lg="12" xl="6">
+
+              <div class="title-list">
+                <b-card>
+                  <b-card-text>
+                    <h5>{{ $t('CLASSES.TITLE_LIST_TEACHER_IN_SYSTEM') }}</h5>
+                  </b-card-text>
+                </b-card>
+              </div>
+
+              <div class="list-teacher">
+
+                <template v-if="listTeacherSystem.length === 0">
+                  <div class="display-teacher">
+                    <b-card>
+                      <b-card-text>
+                        <span>{{ $t('CLASSES.TABLE_CONTENT_NO_DATA') }}</span>
+                      </b-card-text>
+                    </b-card>
+                  </div>
+                </template>
+
+                <template v-if="listTeacherSystem.length > 0">
+                  <div v-for="(teacher, index) in listTeacherSystem" :key="teacher.id">
+                    <div class="display-teacher">
+                      <b-card>
+                        <template #header>
+                          <div class="d-flex justify-content-between">
+                            <div class="align-self-center">
+                              <span><b>{{ teacher.user_code }}</b></span>
+                            </div>
+                            <template v-if="!listTeacherIdSelected.includes(teacher.id)">
+                              <b-button class="btn-custom-green" size="sm" @click="addTeacherToCourse(teacher, index)">
+                                <i class="fas fa-plus-circle" />
+                              </b-button>
+                            </template>
+                          </div>
+                        </template>
+
+                        <b-card-text>
+                          <div>
+                            <span><b>{{ $t('ACCOUNT.LABEL_FORM_FULLNAME') }}:</b>{{ teacher.name }}</span>
+                          </div>
+                          <div>
+                            <span><b>{{ $t('ACCOUNT.LABEL_FORM_TELEPHONE') }}:</b>{{ teacher.phone }}</span>
+                          </div>
+                          <div>
+                            <span><b>{{ $t('ACCOUNT.LABEL_FORM_EMAIL') }}:</b>{{ teacher.email }}</span>
+                          </div>
+                          <div>
+                            <span>
+                              <b>{{ $t('ACCOUNT.LABEL_FORM_BLIND') }}:</b>
+                              <b-badge v-if="teacher.status === 1" variant="danger">
+                                {{ $t('CLASSES.TEXT_YES') }}
+                              </b-badge>
+                              <b-badge v-if="teacher.status === 0" variant="success">
+                                {{ $t('CLASSES.TEXT_NO') }}
+                              </b-badge>
+                            </span>
+                          </div>
+                          <div>
+                            <span>
+                              <b>{{ $t('ACCOUNT.LABEL_FORM_STATUS') }}:</b>
+                              <b-badge v-if="teacher.status === 1" variant="success">
+                                {{ $t('CLASSES.TEXT_ACTIVE') }}
+                              </b-badge>
+                              <b-badge v-if="teacher.status === 0" variant="danger">
+                                {{ $t('CLASSES.TEXT_INACTIVE') }}
+                              </b-badge>
+                            </span>
+                          </div>
+                        </b-card-text>
+                      </b-card>
+                    </div>
+                  </div>
+                </template>
+              </div>
+
+              <div class="pagination-teacher">
+                <b-pagination
+                  v-model="paginationTeacher.page"
+                  pills
+                  size="sm"
+                  first-number
+                  last-number
+                  align="right"
+                  :total-rows="paginationTeacher.total"
+                  :per-page="paginationTeacher.perPage"
+                />
+              </div>
+            </b-col>
+          </b-row>
+        </template>
+
+        <template #modal-footer>
+          <b-button class="btn-custom-outline-charade" @click="onClickCancelAssignTeacher()">
+            {{ $t('COURSE.BUTTON_CANCEL') }}
+          </b-button>
+
+          <b-button variant="danger" @click="onClickSubmitAssignTeacher()">
+            {{ $t('COURSE.BUTTON_SUBMIT') }}
+          </b-button>
+        </template>
+      </b-modal>
     </div>
   </b-overlay>
 </template>
@@ -170,6 +381,8 @@ const URL_API = {
   postCourse: '/courses',
   putCourse: '/courses',
   deleteCourse: '/courses',
+  getTeacher: '/user/teacher',
+  assignTeacher: '/course/add-teacher',
 };
 
 import {
@@ -178,6 +391,8 @@ import {
   postCourse,
   putCourse,
   deleteCourse,
+  getTeacher,
+  assignTeacher,
 } from '@/api/modules/course';
 
 import {
@@ -215,9 +430,19 @@ export default {
         perPage: 10,
         total: 1,
       },
+      paginationTeacher: {
+        page: 1,
+        perPage: 10,
+        total: 1,
+      },
+
+      listTeacherSelected: [],
+      listTeacherSystem: [],
+      listTeacherIdSelected: [],
 
       visibleModalForm: false,
       visibleModalDelete: false,
+      visibleModalAssignTeacher: false,
       isAction: '',
       idHandle: null,
       isProcess: false,
@@ -234,6 +459,12 @@ export default {
           tdClass: 'base-td',
         },
         {
+          key: 'arrangement',
+          label: this.$t('COURSE.TABLE_TITLE_ARRANGEMENT'),
+          thClass: 'base-th base-arrangement',
+          tdClass: 'base-td base-arrangement',
+        },
+        {
           key: 'actions',
           lebael: this.$t('COURSE.TABLE_TITLE_ACTIONS'),
           thClass: 'base-th base-actions',
@@ -244,10 +475,20 @@ export default {
     currentPageCourse() {
       return this.pagination.page;
     },
+    currentPageTeacher() {
+      return this.paginationStudent.page;
+    },
   },
   watch: {
     currentPageCourse() {
       this.initData();
+    },
+    currentPageStudent() {
+      this.overlay.show = true;
+
+      this.handleGetListTeacher();
+
+      this.overlay.show = false;
     },
   },
   created() {
@@ -289,6 +530,9 @@ export default {
 
         if (res['status'] === 200) {
           this.isCourse.name = res['data']['name'];
+
+          this.listTeacherSelected = res['data']['teachers'];
+          this.listTeacherIdSelected = this.getListKey('id', res['data']['teachers']);
         } else {
           NotifyCourse.server(res['message']);
         }
@@ -377,6 +621,43 @@ export default {
         NotifyCourse.exception();
       }
     },
+    createDataAssignTeacher(id_course, list_teacher_selected) {
+      let idx = 0;
+      const len = list_teacher_selected.length;
+      const teacher_list = [];
+
+      while (idx < len) {
+        teacher_list.push(
+          {
+            teacher_id: list_teacher_selected[idx]['id'],
+          }
+        );
+
+        idx++;
+      }
+
+      return {
+        course_id: id_course,
+        data: teacher_list,
+      };
+    },
+    async handleGetListTeacher() {
+      const URL = URL_API.getTeacher;
+      const PARAMS = {
+        page: this.paginationTeacher['page'],
+        per_page: this.paginationTeacher['perPage'],
+      };
+
+      try {
+        const res = await getTeacher(URL, PARAMS);
+
+        this.listTeacherSystem = res['data'];
+        this.paginationTeacher['page'] = res['current_page'];
+        this.paginationTeacher['total'] = res['total'];
+      } catch {
+        NotifyCourse.exception();
+      }
+    },
     resetModalForm() {
       const DEFAULT = {
         name: '',
@@ -429,6 +710,74 @@ export default {
     },
     async onClickSubmitModalDelete() {
       await this.handleDeleteCourse(this.idHandle);
+    },
+    showModalAssignTeacher() {
+      this.visibleModalAssignTeacher = true;
+    },
+    hideModalAssignTeacher() {
+      this.visibleModalAssignTeacher = false;
+    },
+    onClickCancelAssignTeacher() {
+      this.hideModalAssignTeacher();
+    },
+    async onClickSubmitAssignTeacher() {
+      this.isProcess = true;
+      const URL = URL_API.assignTeacher;
+      const DATA = this.createDataAssignTeacher(this.idHandle, this.listTeacherSelected);
+
+      try {
+        const res = await assignTeacher(URL, DATA);
+
+        if (res['status'] === 200) {
+          this.hideModalAssignTeacher();
+          NotifyCourse.assignTeacherSuccess();
+        } else {
+          NotifyCourse.server(res['message']);
+        }
+
+        this.isProcess = false;
+      } catch (error) {
+        NotifyCourse.updateError(error);
+        this.isProcess = false;
+        this.hideModalAssignTeacher();
+      }
+    },
+    async onClickAssignTeacher(item) {
+      console.log(item);
+      this.idHandle = item.id;
+
+      await this.handleGetOneCourse(item.id);
+      await this.handleGetListTeacher();
+      this.showModalAssignTeacher();
+    },
+    addTeacherToCourse(teacher, index) {
+      this.listTeacherSelected.push(teacher);
+      this.listTeacherIdSelected.push(teacher.id);
+    },
+    deleteTeacherInCourse(teacher, index) {
+      this.listTeacherSelected.splice(index, 1);
+      this.listTeacherIdSelected = this.removeItemInArr(this.listTeacherIdSelected, teacher.id);
+    },
+    removeItemInArr(arr, value) {
+      const index = arr.indexOf(value);
+      if (index > -1) {
+        arr.splice(index, 1);
+      }
+
+      return arr;
+    },
+    getListKey(key, arr) {
+      let idx = 0;
+      const len = arr.length;
+      const result = [];
+
+      while (idx < len) {
+        result.push(arr[idx][key]);
+
+        idx++;
+      }
+
+      return result;
     },
   },
 };
@@ -483,6 +832,10 @@ export default {
                         text-align: center;
                     }
 
+                    td.base-td.base-arrangement {
+                        width: 200px;
+                    }
+
                     td.base-td.base-actions {
                         width: 200px;
                     }
@@ -517,6 +870,81 @@ export default {
 .modal-course-content {
     .item-input {
         margin-bottom: 10px;
+    }
+}
+
+.modal-assign-teacher-content {
+    .item-input-search {
+        margin-bottom: 10px;
+        padding: 5px;
+    }
+
+    .title-list {
+        padding: 5px;
+
+        .card {
+            background-color: $charade;
+
+            .card-body {
+                padding: 0.5rem 0.75rem;
+
+                h5 {
+                    margin-bottom: 0;
+                    color: $white;
+                    font-size: 1rem;
+                }
+            }
+        }
+
+        margin-bottom: 5px;
+    }
+
+    .display-total-teacher {
+        padding: 5px;
+
+        .card {
+            .card-header {
+                padding: 0.5rem 0.75rem;
+            }
+
+            .card-body {
+                padding: 0.5rem 0.75rem;
+            }
+        }
+
+        margin-bottom: 5px;
+    }
+
+    .list-teacher {
+        width: 100%;
+        height: 500px;
+        overflow: auto;
+        margin-bottom: 10px;
+        min-height: 46px;
+
+        .display-teacher {
+            width: 100%;
+            overflow: hidden;
+            padding: 5px;
+
+            .card-header {
+                padding: 0.5rem 0.75rem;
+            }
+
+            .card-body {
+                padding: 0.5rem 0.75rem;
+            }
+
+            div {
+                span {
+                    word-wrap: break-word;
+
+                    b {
+                        margin-right: 5px;
+                    }
+                }
+            }
+        }
     }
 }
 

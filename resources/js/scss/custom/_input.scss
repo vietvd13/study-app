@@ -9,6 +9,11 @@
 	}
 }
 
+input.custom-file{
+	background-color: $athens-gray !important;
+	border-color: $athens-gray !important;
+}
+
 input[type='text'].form-control,
 input[type='password'].form-control,
 input[type='number'].form-control {

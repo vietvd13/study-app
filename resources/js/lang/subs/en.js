@@ -138,6 +138,7 @@ export default {
 
     TABLE_TITLE_NAME: 'Name',
     TABLE_TITLE_LEVEL: 'Level',
+    TABLE_TITLE_DOCS: 'Docs',
     TABLE_TITLE_ARRANGEMENT: 'Arrangement',
     TABLE_TITLE_ACTIONS: 'Actions',
 
@@ -147,13 +148,20 @@ export default {
     MODAL_TITLE_UPDATE: 'Update an course',
     MODAL_TITLE_DELETE: 'Delete an course',
     MODAL_TITLE_ASSIGN_TEACHER: 'Arrange teacher',
+    MODAL_TITLE_DOCS: 'Docs',
     CONTENT_MODAL_DELETE: 'You will delete an course from the system. Are you sure?',
 
     LABEL_FORM_NAME: 'Name',
     LABEL_FORM_LEVEL: 'Level',
+    LABEL_DOCS_NAME: 'Name',
+    LABEL_FORM_DESCRIPTION: 'Description',
+    LABEL_FORM_FILE: 'File',
 
     PLACEHOLDER_FORM_NAME: 'Enter name',
     PLACEHOLDER_FORM_LEVEL: 'Please select',
+    PLACEHOLDER_DOCS_NAME: 'Please input name',
+    PLACEHOLDER_DOCS_DESCRIPTION: 'Please input description',
+    PLACEHOLDER_DOCS_FILE: 'Choose a file...',
 
     BUTTON_SUBMIT: 'Submit',
     BUTTON_DELETE: 'Delete',

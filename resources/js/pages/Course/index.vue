@@ -58,6 +58,12 @@
                 :per-page="pagination.perPage"
                 aria-controls="table-course"
               >
+                <template #cell(docs)="data">
+                  <b-button class="btn-custom-green" size="sm" @click="onClickDocs(data.item)">
+                    <i class="fas fa-file" />
+                  </b-button>
+                </template>
+
                 <template #cell(arrangement)="data">
                   <b-button class="btn-custom-green" size="sm" @click="onClickAssignTeacher(data.item)">
                     <i class="fas fa-chalkboard-teacher" />
@@ -367,6 +373,99 @@
           </b-button>
         </template>
       </b-modal>
+
+      <b-modal
+        v-model="visibleModalDocs"
+        size="xl"
+        no-close-on-esc
+        no-close-on-backdrop
+        hide-header-close
+        body-class="modal-docs-content"
+        footer-class="modal-docs-footer"
+      >
+        <template #modal-header>
+          <h5>{{ $t('COURSE.MODAL_TITLE_DOCS') }}</h5>
+        </template>
+
+        <template #default>
+          <b-row>
+            <b-col>
+              <div class="item-input">
+                <label>{{ $t('COURSE.LABEL_DOCS_NAME') }}</label>
+                <b-form-input v-model="isDocs.name" :placeholder="$t('COURSE.PLACEHOLDER_DOCS_NAME')" />
+              </div>
+            </b-col>
+          </b-row>
+          <b-row>
+            <b-col>
+              <div class="item-input">
+                <label>{{ $t('COURSE.LABEL_FORM_DESCRIPTION') }}</label>
+                <b-form-textarea
+                  v-model="isDocs.description"
+                  :placeholder="$t('COURSE.PLACEHOLDER_DOCS_DESCRIPTION')"
+                  rows="5"
+                  max-rows="10"
+                />
+              </div>
+            </b-col>
+          </b-row>
+          <b-row>
+            <b-col>
+              <div class="item-input">
+                <label>{{ $t('COURSE.LABEL_FORM_FILE') }}</label>
+                <input id="input-docs" type="file" name="input-docs">
+                <div>
+                  <b-button
+                    class="btn-custom-green"
+                    @click="clickChooseFile()"
+                  >
+                    <i class="fas fa-cloud-upload-alt" style="margin-right: 10px;" />
+                    {{ $t('COURSE.PLACEHOLDER_DOCS_FILE') }}
+                  </b-button>
+                </div>
+              </div>
+            </b-col>
+          </b-row>
+          <b-row>
+            <b-col>
+              <b-table
+                id="table-docs"
+                bordered
+                striped
+                responsive
+                no-sort-reset
+                no-local-sorting
+                show-empty
+                :fields="fieldsDocs"
+                :items="documents"
+              >
+                <template #cell(file)="data">
+                  <div class="d-flex justify-content-center">
+                    <b-button class="btn-custom-green" size="sm" @click="downloadDocs(data.item)">
+                      <i class="fas fa-cloud-download" />
+                    </b-button>
+                  </div>
+                </template>
+                <template #empty>
+                  <span class="d-flex justify-content-center">
+                    {{ $t('COURSE.TABLE_CONTENT_NO_DATA') }}
+                  </span>
+                </template>
+              </b-table>
+            </b-col>
+          </b-row>
+        </template>
+
+        <template #modal-footer>
+          <b-button class="btn-custom-outline-charade" @click="visibleModalDocs = false">
+            {{ $t('COURSE.BUTTON_CANCEL') }}
+          </b-button>
+
+          <b-button variant="danger" @click="onClickSubmitDocs()">
+            {{ $t('COURSE.BUTTON_SUBMIT') }}
+          </b-button>
+        </template>
+      </b-modal>
     </div>
   </b-overlay>
 </template>
@@ -424,6 +523,7 @@ export default {
       },
 
       items: [],
+      documents: [],
 
       pagination: {
         page: 1,
@@ -443,9 +543,17 @@ export default {
       visibleModalForm: false,
       visibleModalDelete: false,
       visibleModalAssignTeacher: false,
+      visibleModalDocs: false,
       isAction: '',
       idHandle: null,
       isProcess: false,
+
+      isDocs: {
+        course_id: null,
+        name: '',
+        description: '',
+        file: null,
+      },
     };
   },
   computed: {
@@ -459,6 +567,12 @@ export default {
           tdClass: 'base-td',
         },
         {
+          key: 'docs',
+          label: this.$t('COURSE.TABLE_TITLE_DOCS'),
+          thClass: 'base-th base-docs',
+          tdClass: 'base-td base-docs',
+        },
+        {
           key: 'arrangement',
           label: this.$t('COURSE.TABLE_TITLE_ARRANGEMENT'),
           thClass: 'base-th base-arrangement',
@@ -469,6 +583,28 @@ export default {
           lebael: this.$t('COURSE.TABLE_TITLE_ACTIONS'),
           thClass: 'base-th base-actions',
           tdClass: 'base-td base-actions',
+        },
+      ];
+    },
+    fieldsDocs() {
+      return [
+        {
+          key: 'name',
+          label: this.$t('COURSE.LABEL_DOCS_NAME'),
+          thClass: 'base-th',
+          tdClass: 'base-td',
+        },
+        {
+          key: 'description',
+          label: this.$t('COURSE.LABEL_FORM_DESCRIPTION'),
+          thClass: 'base-th',
+          tdClass: 'base-td',
+        },
+        {
+          key: 'file',
+          label: this.$t('COURSE.LABEL_FORM_FILE'),
+          thClass: 'base-th base-docs',
+          tdClass: 'base-td base-docs',
         },
       ];
     },
@@ -532,6 +668,7 @@ export default {
           this.isCourse.name = res['data']['name'];
 
           this.listTeacherSelected = res['data']['teachers'];
+          this.documents = res['data']['documents'];
           this.listTeacherIdSelected = this.getListKey('id', res['data']['teachers']);
         } else {
           NotifyCourse.server(res['message']);
@@ -779,6 +916,24 @@ export default {
 
       return result;
     },
+    async onClickDocs(item) {
+      this.isDocs.course_id = item.id;
+
+      await this.handleGetOneCourse(this.isDocs.course_id);
+
+      this.visibleModalDocs = true;
+      console.log(item);
+    },
+    clickChooseFile() {
+      const FILE = document.getElementById('input-docs');
+      FILE.click();
+    },
+    onClickSubmitDocs() {
+
+    },
+    downloadDocs(item) {
+      console.log(item);
+    },
   },
 };
 </script>
@@ -837,6 +992,10 @@ export default {
                     }
 
                     td.base-td.base-actions {
+                        width: 200px;
+                    }
+
+                    td.base-td.base-docs {
                         width: 200px;
                     }
 
@@ -945,6 +1104,33 @@ export default {
                 }
             }
         }
+    }
+}
+
+.modal-docs-content {
+    .item-input {
+        margin-bottom: 15px;
+
+        #input-docs {
+            display: none;
+        }
+    }
+}
+
+::v-deep table#table-docs {
+    thead {
+        tr {
+            th.base-th {
+                min-width: 130px;
+                background-color: $charade;
+                color: $white;
+                text-align: center;
+            }
+        }
+    }
+
+    td.base-docs {
+        width: 50px;
     }
 }
 

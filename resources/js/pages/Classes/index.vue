@@ -471,6 +471,24 @@
                                 </template>
                               </b-form-datepicker>
                             </div>
+
+                            <div class="item-input">
+                              <label>{{ $t('CLASSES.LABLE_TEACHER') }}</label>
+                              <b-form-select
+                                v-model="listCourseSelected[index]['teacher_id']"
+                              >
+                                <b-form-select-option :value="null">
+                                  {{ $t('CLASSES.PLACEHOLDER_SELECT_TEACHER') }}
+                                </b-form-select-option>
+                                <b-form-select-option
+                                  v-for="teacher in listCourseSelected[index]['teacher_list']"
+                                  :key="teacher.text"
+                                  :value="teacher.value"
+                                >
+                                  {{ teacher.text }}
+                                </b-form-select-option>
+                              </b-form-select>
+                            </div>
                           </div>
                         </template>
                       </b-card>
@@ -565,6 +583,7 @@ const URL_API = {
   getStudent: '/user/students',
   assignStudent: '/classes/students',
   getAllCourse: '/courses',
+  getOneCourse: '/courses',
   assignCourse: '/classes/courses',
 };
 import {
@@ -579,6 +598,7 @@ import {
 } from '@/api/modules/classes';
 import {
   getAllCourse,
+  getOneCourse,
 } from '@/api/modules/course';
 
 import {
@@ -763,6 +783,17 @@ export default {
           this.listStudentIdSelected = this.getListKey('id', res['data']['students']);
 
           this.listCourseSelected = res['data']['courses'];
+
+          let idx = 0;
+          const len = this.listCourseSelected.length;
+
+          while (idx < len) {
+            const LIST_TEACHER = await this.handleGetListTeacherInCourse(this.listCourseSelected[idx]['id']);
+            this.listCourseSelected[idx]['teacher_list'] = await this.createSelectTeacher(LIST_TEACHER);
+
+            idx++;
+          }
+
           this.listCourseIdSelected = this.getListKey('id', res['data']['courses']);
         } else {
           NotifyClasses.server(res['message']);
@@ -966,7 +997,41 @@ export default {
       this.listStudentSelected.splice(index, 1);
       this.listStudentIdSelected = this.removeItemInArr(this.listStudentIdSelected, student.id);
     },
-    addCourseToClass(course, index) {
+    async handleGetListTeacherInCourse(course_id) {
+      const URL = `${URL_API.getOneCourse}/${course_id}`;
+
+      try {
+        const res = await getOneCourse(URL);
+
+        return res['data']['teachers'];
+      } catch (error) {
+        NotifyClasses.server(error);
+        return [];
+      }
+    },
+    createSelectTeacher(list) {
+      let idx = 0;
+      const len = list.length;
+      const result = [];
+
+      while (idx < len) {
+        result.push({
+          value: list[idx]['id'],
+          text: `${list[idx]['user_code']} - ${list[idx]['name']}`,
+        });
+
+        idx++;
+      }
+
+      return result;
+    },
+    async addCourseToClass(course, index) {
+      course['start_date'] = '';
+      course['end_date'] = '';
+      course['teacher_id'] = null;
+      const LIST_TEACHER = await this.handleGetListTeacherInCourse(course.id);
+      course['teacher_list'] = this.createSelectTeacher(LIST_TEACHER);
+
       this.listCourseSelected.push(course);
       this.listCourseIdSelected.push(course.id);
     },
@@ -1056,6 +1121,7 @@ export default {
           course_id: listCourse[idx]['id'],
           start_date: listCourse[idx]['start_date'],
           end_date: listCourse[idx]['end_date'],
+          teacher_id: listCourse[idx]['teacher_id'],
         });
 
         idx++;

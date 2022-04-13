@@ -123,6 +123,9 @@ export default {
 
     LABLE_START: 'Start date',
     LABLE_END: 'End date',
+    LABLE_TEACHER: 'Teacher',
+
+    PLACEHOLDER_SELECT_TEACHER: 'Please select teacher',
   },
   COURSE: {
     LABEL_FILTER_NAME: 'Name',

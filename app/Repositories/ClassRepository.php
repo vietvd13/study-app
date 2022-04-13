@@ -76,6 +76,9 @@ class ClassRepository extends BaseRepository implements ClassRepositoryInterface
         $class = $this->model->with([
             'students' => function ($query) {
                 $query->select(['*']);
+            },
+            'courses' => function ($query) {
+                $query->select(['*']);
             }
         ])->where([
             'id' => $id

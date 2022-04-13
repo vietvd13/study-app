@@ -19,7 +19,8 @@ class CourseResource extends JsonResource
     {
         return [
             'name' => $this->name,
-            'teachers' => $this->teachers
+            'teachers' => $this->teachers,
+            'documents' => $this->files
         ];
     }
 }

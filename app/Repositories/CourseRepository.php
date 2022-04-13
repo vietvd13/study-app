@@ -12,7 +12,6 @@ use App\Repositories\Contracts\CourseRepositoryInterface;
 use Repository\BaseRepository;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Auth;
-
 class CourseRepository extends BaseRepository implements CourseRepositoryInterface
 {
 
@@ -49,5 +48,21 @@ class CourseRepository extends BaseRepository implements CourseRepositoryInterfa
             return $course;
         });
         return $status;
+    }
+
+    public function addDocument($attributes) {
+        // if (isset($attributes['files'])) {
+        //     foreach ($attributes['files'] as $key => $file) {
+        //         $pathFile = $this->uploadFile($file, "attatch{$attributes['course_id']}");
+        //         $fileAttached[] = [
+        //             'course_id' => $attributes['course_id'],
+        //             'teacher_id'  => $attributes['teacher_id'],
+        //             'name'  => $attributes['name'],
+        //             'description'  => $attributes['description'],
+        //             'path'  => $pathFile,
+        //         ];
+        //     }
+        // }
+        // return $fileAttached;
     }
 }

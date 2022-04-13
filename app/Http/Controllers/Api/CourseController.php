@@ -65,4 +65,12 @@ class CourseController extends Controller
     public function AddTeacher(CourseRequest $request) {
         return $this->service->addTeacher($request);
     }
+
+    public function courseDocuments(Request $request) {
+        return $this->service->addDocument($request->all(), $request->user()->id);
+    }
+
+    public function deleteDocument(Request $request) {
+        return $this->service->deleteDocuments($request->course_id, $request->document_id);
+    }
 }

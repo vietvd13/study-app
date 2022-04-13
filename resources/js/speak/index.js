@@ -4,7 +4,7 @@ import { setPermission } from './helper';
 import CONST_TOGGLE_STATUS from '@/const/toggle_status';
 
 function handleSpeak() {
-  console.log('Runing...');
+  console.log('-- VOICE NAVIGATION --');
 
   handleRecord(KEY_START_RECORD);
 }

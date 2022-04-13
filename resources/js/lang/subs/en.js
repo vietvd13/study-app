@@ -99,6 +99,9 @@ export default {
     TITLE_LIST_STUDENT_IN_SYSTEM: 'List student in system',
     TITLE_NUMBER_STUDENT: 'Total number of students: {total}',
 
+    TITLE_LIST_COURSE_IN_CLASS: 'Class: {name}',
+    TITLE_LIST_COURSE_IN_SYSTEM: 'List course in system',
+
     PLACEHOLDER_FORM_NAME: 'Enter name',
     PLACEHOLDER_FORM_LEVEL: 'Please select',
     PLACEHOLDER_SEARCH_USER_CODE: 'Seach by user code',
@@ -113,6 +116,9 @@ export default {
     TEXT_NO: 'No',
     TEXT_ACTIVE: 'Active',
     TEXT_INACTIVE: 'Inactive',
+
+    LABLE_START: 'Start date',
+    LABLE_END: 'End date',
   },
   COURSE: {
     LABEL_FILTER_NAME: 'Name',
@@ -218,8 +224,10 @@ export default {
       DELETE_FAILED: 'You have failed to delete your classes from the system',
 
       VALIDATE_NAME: 'Class name is incorrect',
+      VALIDATE_LIST_ASSIGN_COURSE: 'The list of course is not correct, please check again',
 
-      ASSIGN_STUDENT_SUCCESS: 'You have successfully arranged your students for the class',
+      ASSIGN_STUDENT_SUCCESS: 'You have successfully arranged students for the class',
+      ASSIGN_COURSE_SUCCESS: 'You have successfully arranged courses for the class',
     },
     COURSE: {
       ADD_SUCCESS: 'You have successfully created course {name}',

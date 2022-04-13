@@ -40,8 +40,8 @@ function goToScreen(page) {
 
       default: {
         MakeToast({
-          variant: i18n.t('TOAST.WARNING'),
-          title: 'Voice control',
+          variant: 'warning',
+          title: i18n.t('TOAST.WARNING'),
           content: 'Hành động chưa được tạo',
         });
       }

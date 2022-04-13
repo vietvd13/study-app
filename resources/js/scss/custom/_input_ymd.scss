@@ -1,0 +1,56 @@
+.date_picker {
+    border-color: $silver;
+    box-shadow: none;
+
+    i {
+        font-size: 20px;
+        color: $green-haze;
+    }
+
+    button.btn-outline-secondary {
+        &:hover {
+            box-shadow: none;
+            background-color: $green-haze;
+            color: $white;
+
+            i {
+                color: $white;
+            }
+        }
+
+        &:focus {
+            box-shadow: none;
+            background-color: $green-haze;
+            color: $white;
+
+            i {
+                color: $white;
+            }
+        }
+
+        &:active {
+            box-shadow: none;
+            background-color: $green-haze;
+
+            i {
+                color: $white;
+            }
+        }
+
+        &:not(:disabled):not(.disabled):active:focus, &:not(:disabled):not(.disabled).active:focus, .show > .dropdown-toggle:focus {
+            box-shadow: none;
+            background-color: $green-haze;
+
+            i {
+                color: $white;
+            }
+        }
+    }
+
+    .form-control {
+        &:focus {
+            border-color: $silver;
+            box-shadow: none;
+        }
+    }
+}

@@ -404,12 +404,146 @@
           <h5>{{ $t('CLASSES.MODAL_TITLE_ASSIGN_COURSE') }}</h5>
         </template>
 
+        <template #default>
+          <b-row>
+            <b-col cols="12" sm="12" md="12" lg="12" xl="6">
+              <div class="title-list">
+                <b-card>
+                  <b-card-text>
+                    <h5>{{ $t('CLASSES.TITLE_LIST_COURSE_IN_CLASS', { name: isClassHandle.name }) }}</h5>
+                  </b-card-text>
+                </b-card>
+              </div>
+
+              <div class="list-course">
+                <template v-if="listCourseSelected.length === 0">
+                  <div class="display-course">
+                    <b-card>
+                      <b-card-text>
+                        <span>{{ $t('CLASSES.TABLE_CONTENT_NO_DATA') }}</span>
+                      </b-card-text>
+                    </b-card>
+                  </div>
+                </template>
+
+                <template v-if="listCourseSelected.length > 0">
+                  <div v-for="(course, index) in listCourseSelected" :key="course.id">
+                    <div class="display-course">
+                      <b-card>
+                        <template #header>
+                          <div class="d-flex justify-content-between">
+                            <div class="align-self-center">
+                              <span><b>{{ course.name }}</b></span>
+                            </div>
+                            <b-button variant="danger" size="sm" @click="deleteCourseInClass(course, index)">
+                              <i class="fas fa-trash" />
+                            </b-button>
+                          </div>
+                        </template>
+                        <template #default>
+                          <div class="select-start-end-date">
+                            <div class="item-input">
+                              <label>{{ $t('CLASSES.LABLE_START') }}</label>
+                              <b-form-datepicker
+                                v-model="listCourseSelected[index]['start_date']"
+                                class="date_picker"
+                                :date-format-options="{ year: 'numeric', month: '2-digit', day: '2-digit' }"
+                                :max="listCourseSelected[index]['end_date']"
+                                :locale="locale"
+                              >
+                                <template #button-content>
+                                  <i class="fad fa-calendar-day icon-date" />
+                                </template>
+                              </b-form-datepicker>
+                            </div>
+
+                            <div class="item-input">
+                              <label>{{ $t('CLASSES.LABLE_END') }}</label>
+                              <b-form-datepicker
+                                v-model="listCourseSelected[index]['end_date']"
+                                class="date_picker"
+                                :date-format-options="{ year: 'numeric', month: '2-digit', day: '2-digit' }"
+                                :min="listCourseSelected[index]['start_date']"
+                                :locale="locale"
+                              >
+                                <template #button-content>
+                                  <i class="fad fa-calendar-day icon-date" />
+                                </template>
+                              </b-form-datepicker>
+                            </div>
+                          </div>
+                        </template>
+                      </b-card>
+                    </div>
+                  </div>
+                </template>
+              </div>
+            </b-col>
+
+            <b-col cols="12" sm="12" md="12" lg="12" xl="6">
+              <div class="title-list">
+                <b-card>
+                  <b-card-text>
+                    <h5>{{ $t('CLASSES.TITLE_LIST_COURSE_IN_SYSTEM') }}</h5>
+                  </b-card-text>
+                </b-card>
+              </div>
+
+              <div class="list-course">
+                <template v-if="listCourseSystem.length === 0">
+                  <div class="display-course">
+                    <b-card>
+                      <b-card-text>
+                        <span>{{ $t('CLASSES.TABLE_CONTENT_NO_DATA') }}</span>
+                      </b-card-text>
+                    </b-card>
+                  </div>
+                </template>
+
+                <template v-if="listCourseSystem.length > 0">
+                  <div v-for="(course, index) in listCourseSystem" :key="course.id">
+                    <div class="display-course">
+                      <b-card no-body>
+                        <template #header>
+                          <div class="d-flex justify-content-between item">
+                            <div class="align-self-center">
+                              <span><b>{{ course.name }}</b></span>
+                            </div>
+                            <template v-if="!listCourseIdSelected.includes(course.id)">
+                              <b-button class="btn-custom-green" size="sm" @click="addCourseToClass(course, index)">
+                                <i class="fas fa-plus-circle" />
+                              </b-button>
+                            </template>
+                          </div>
+                        </template>
+                      </b-card>
+                    </div>
+                  </div>
+                </template>
+              </div>
+
+              <div class="pagination-course">
+                <b-pagination
+                  v-model="paginationCourse.page"
+                  pills
+                  size="sm"
+                  first-number
+                  last-number
+                  align="right"
+                  :total-rows="paginationCourse.total"
+                  :per-page="paginationCourse.perPage"
+                />
+              </div>
+            </b-col>
+          </b-row>
+        </template>
+
         <template #modal-footer>
           <b-button variant="outline-danger" :disabled="isProcess" @click="visibleModalAssignCourse = false">
             {{ $t('CLASSES.BUTTON_CANCEL') }}
           </b-button>
-          <b-button class="btn-custom-green">
-            <i v-if="isProcess" :disabled="isProcess" class="fad fa-spinner-third fa-spin" />
+          <b-button class="btn-custom-green" :disabled="isProcess" @click="onSubmitAssignCourse()">
+            <i v-if="isProcess" class="fad fa-spinner-third fa-spin" />
             {{ $t('CLASSES.BUTTON_SUBMIT') }}
           </b-button>
         </template>
@@ -430,6 +564,8 @@ const URL_API = {
   deleteClasses: '/classes',
   getStudent: '/user/students',
   assignStudent: '/classes/students',
+  getAllCourse: '/courses',
+  assignCourse: '/classes/courses',
 };
 import {
   getAllClasses,
@@ -439,11 +575,16 @@ import {
   deleteClasses,
   getStudent,
   assignStudent,
+  assignCourse,
 } from '@/api/modules/classes';
+import {
+  getAllCourse,
+} from '@/api/modules/course';
 
 import {
   validateAddClasses,
   validateUpdateClasses,
+  validateAssingCourse,
 } from './validate';
 
 import NotifyClasses from '@/toast/modules/classes';
@@ -481,11 +622,20 @@ export default {
         perPage: 10,
         total: 0,
       },
+      paginationCourse: {
+        page: 1,
+        perPage: 10,
+        total: 0,
+      },
 
       searchUserCode: '',
       listStudentSelected: [],
       listStudentSystem: [],
       listStudentIdSelected: [],
+
+      listCourseSelected: [],
+      listCourseSystem: [],
+      listCourseIdSelected: [],
 
       visibleModalForm: false,
       visibleModalDelete: false,
@@ -525,6 +675,50 @@ export default {
         },
       ];
     },
+    locale() {
+      const language = this.$store.getters.language;
+
+      if (language === 'en') {
+        return 'en';
+      }
+      if (language === 'vn') {
+        return 'vi';
+      }
+
+      return 'en';
+    },
+    currentPageClass() {
+      return this.pagination.page;
+    },
+    currentPageStudent() {
+      return this.paginationStudent.page;
+    },
+    currentPageCourse() {
+      return this.paginationCourse.page;
+    },
+  },
+  watch: {
+    currentPageClass() {
+      this.overlay.show = true;
+
+      this.handleGetAllClasses();
+
+      this.overlay.show = false;
+    },
+    currentPageStudent() {
+      this.overlay.show = true;
+
+      this.handleGetListStudent();
+
+      this.overlay.show = false;
+    },
+    currentPageCourse() {
+      this.overlay.show = true;
+
+      this.handleGetListCourse();
+
+      this.overlay.show = false;
+    },
   },
   created() {
     this.initData();
@@ -548,8 +742,8 @@ export default {
 
         if (res['status'] === 200) {
           this.items = res['data']['data'];
-          this.pagination.page = res['per_page'];
-          this.pagination.total = res['total'];
+          this.pagination.page = res['data']['current_page'];
+          this.pagination.total = res['data']['total'];
         } else {
           NotifyClasses.server(res['message']);
         }
@@ -567,6 +761,9 @@ export default {
           this.isClass.name = res['data']['name'];
           this.listStudentSelected = res['data']['students'];
           this.listStudentIdSelected = this.getListKey('id', res['data']['students']);
+
+          this.listCourseSelected = res['data']['courses'];
+          this.listCourseIdSelected = this.getListKey('id', res['data']['courses']);
         } else {
           NotifyClasses.server(res['message']);
         }
@@ -670,7 +867,24 @@ export default {
         this.paginationStudent['page'] = res['current_page'];
         this.paginationStudent['total'] = res['total'];
       } catch (error) {
-        NotifyClasses.updateError(error);
+        NotifyClasses.server(error);
+      }
+    },
+    async handleGetListCourse() {
+      const URL = URL_API.getAllCourse;
+      const PARAMS = {
+        page: this.paginationCourse['page'],
+        per_page: this.paginationCourse['perPage'],
+      };
+
+      try {
+        const res = await getAllCourse(URL, PARAMS);
+
+        this.listCourseSystem = res['data']['data'];
+        this.paginationCourse['page'] = res['data']['current_page'];
+        this.paginationCourse['total'] = res['data']['total'];
+      } catch (error) {
+        NotifyClasses.server(error);
       }
     },
     resetModalForm() {
@@ -735,11 +949,13 @@ export default {
       await this.handleGetOneClasses(isClass.id);
       this.visibleModalAssignStudent = true;
     },
-    onClickAssignCourse(isClass) {
+    async onClickAssignCourse(isClass) {
       this.isClassHandle.id = isClass.id;
       this.isClassHandle.name = isClass.name;
       this.isClassHandle.level = 1;
 
+      await this.handleGetListCourse();
+      await this.handleGetOneClasses(isClass.id);
       this.visibleModalAssignCourse = true;
     },
     addStudentToClass(student, index) {
@@ -749,6 +965,14 @@ export default {
     deleteStudentInClass(student, index) {
       this.listStudentSelected.splice(index, 1);
       this.listStudentIdSelected = this.removeItemInArr(this.listStudentIdSelected, student.id);
+    },
+    addCourseToClass(course, index) {
+      this.listCourseSelected.push(course);
+      this.listCourseIdSelected.push(course.id);
+    },
+    deleteCourseInClass(course, index) {
+      this.listCourseSelected.splice(index, 1);
+      this.listCourseIdSelected = this.removeItemInArr(this.listCourseIdSelected, course.id);
     },
     removeItemInArr(arr, value) {
       const index = arr.indexOf(value);
@@ -817,6 +1041,48 @@ export default {
         this.isProcess = false;
         this.hideModalAssignStudent();
       }
+    },
+    createDataAssignCourse(idClass, listCourse) {
+      const DATA = {
+        class_id: idClass,
+        data: [],
+      };
+
+      let idx = 0;
+      const len = listCourse.length;
+
+      while (idx < len) {
+        DATA['data'].push({
+          course_id: listCourse[idx]['id'],
+          start_date: listCourse[idx]['start_date'],
+          end_date: listCourse[idx]['end_date'],
+        });
+
+        idx++;
+      }
+
+      return DATA;
+    },
+    async onSubmitAssignCourse() {
+      this.isProcess = true;
+
+      const URL = URL_API.assignCourse;
+      const DATA = this.createDataAssignCourse(this.isClassHandle.id, this.listCourseSelected);
+
+      if (validateAssingCourse(DATA['data'])) {
+        const res = await assignCourse(URL, DATA);
+
+        if (res['status'] === 200) {
+          this.visibleModalAssignCourse = false;
+          NotifyClasses.assignCourseSuccess();
+        } else {
+          NotifyClasses.server(res['message']);
+        }
+      } else {
+        NotifyClasses.validateForm(`NOTIFY.CLASSES.VALIDATE_LIST_ASSIGN_COURSE`);
+      }
+
+      this.isProcess = false;
     },
   },
 };
@@ -987,8 +1253,70 @@ export default {
     }
 }
 
+.modal-assign-course-content {
+    .title-list {
+        padding: 5px;
+
+        .card {
+            background-color: $charade;
+
+            .card-body {
+                padding: 0.5rem 0.75rem;
+
+                h5 {
+                    margin-bottom: 0;
+                    color: $white;
+                    font-size: 1rem;
+                }
+            }
+        }
+
+        margin-bottom: 5px;
+    }
+
+    .list-course {
+        width: 100%;
+        height: 500px;
+        overflow: auto;
+        margin-bottom: 10px;
+        min-height: 46px;
+
+        .display-course {
+            width: 100%;
+            // overflow: hidden;
+            padding: 5px;
+
+            .card-header {
+                padding: 0.5rem 0.75rem;
+            }
+
+            .card-body {
+                padding: 0.5rem 0.75rem;
+            }
+
+            div {
+                span {
+                    word-wrap: break-word;
+
+                    b {
+                        margin-right: 5px;
+                    }
+                }
+            }
+        }
+    }
+}
+
 .icon-loading {
     font-size: 50px;
     color: $forest-green;
+}
+
+.item-input {
+    margin-bottom: 10px;
+}
+.icon-date {
+    color: $forest-green;
+    font-size: 1.25rem;
 }
 </style>

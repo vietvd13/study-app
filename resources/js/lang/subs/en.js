@@ -99,6 +99,10 @@ export default {
     TITLE_LIST_STUDENT_IN_SYSTEM: 'List student in system',
     TITLE_NUMBER_STUDENT: 'Total number of students: {total}',
 
+    TITLE_LIST_TEACHER_IN_COURSE: 'Course: {name}',
+    TITLE_LIST_TEACHER_IN_SYSTEM: 'List teacher in system',
+    TITLE_NUMBER_TEACHER: 'Total number of teachers: {total}',
+
     TITLE_LIST_COURSE_IN_CLASS: 'Class: {name}',
     TITLE_LIST_COURSE_IN_SYSTEM: 'List course in system',
 
@@ -131,6 +135,7 @@ export default {
 
     TABLE_TITLE_NAME: 'Name',
     TABLE_TITLE_LEVEL: 'Level',
+    TABLE_TITLE_ARRANGEMENT: 'Arrangement',
     TABLE_TITLE_ACTIONS: 'Actions',
 
     TABLE_CONTENT_NO_DATA: 'No data',
@@ -138,6 +143,7 @@ export default {
     MODAL_TITLE_ADD: 'Add new course',
     MODAL_TITLE_UPDATE: 'Update an course',
     MODAL_TITLE_DELETE: 'Delete an course',
+    MODAL_TITLE_ASSIGN_TEACHER: 'Arrange teacher',
     CONTENT_MODAL_DELETE: 'You will delete an course from the system. Are you sure?',
 
     LABEL_FORM_NAME: 'Name',
@@ -236,6 +242,7 @@ export default {
       UPDATE_FAILED: 'You have failed to edit your course information',
       DELETE_SUCCESS: 'You have deleted an course from the system',
       DELETE_FAILED: 'You have failed to delete your course from the system',
+      ASSIGN_TEACHER_SUCCESS: 'You have successfully arranged teacher for the course',
 
       VALIDATE_NAME: 'Course name is incorrect',
     },

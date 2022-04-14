@@ -1,10 +1,9 @@
 export default {
   TOAST: {
-    SUCCESS: 'Sucess',
+    SUCCESS: 'Success',
     WARNING: 'Warning',
     DANGER: 'Error',
   },
-
   ROUTER: {
     LOGIN: 'Account Login',
     PAGE_NOT_FOUND: 'Page Not Found',

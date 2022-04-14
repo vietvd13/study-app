@@ -26,6 +26,15 @@ export default {
   validateForm(message) {
     Notification.notifyWarning(i18n.t(message));
   },
+  validateDocs() {
+    Notification.notifyWarning(i18n.t('NOTIFY.COURSE.VALIDATE_UPLOAD_DOCS'));
+  },
+  uploadDocsSuccess() {
+    Notification.notifySuccess(i18n.t('NOTIFY.COURSE.UPLOAD_DOCS_SUCCESS'));
+  },
+  deleteDocsSuccess() {
+    Notification.notifySuccess(i18n.t('NOTIFY.COURSE.DELETE_DOCS_SUCCESS'));
+  },
   exception() {
     Notification.notifyError(i18n.t('NOTIFY.SYSTEM.EXCEPTION'));
   },

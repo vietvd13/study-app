@@ -1,5 +1,6 @@
 import {
   validCourseName,
+  validateString,
 } from '@/utils/validate';
 
 const VALIDATE = {
@@ -42,4 +43,22 @@ export function validateUpdateCourse(course) {
   }
 
   return validate;
+}
+
+export function validateUploadDocs(data) {
+  if (!validateString(data['name'])) {
+    return false;
+  }
+
+  console.log(data);
+
+  if (!validateString(data['description'])) {
+    return false;
+  }
+
+  if (!data['file']) {
+    return false;
+  }
+
+  return true;
 }

@@ -105,8 +105,6 @@
                 show-empty
                 :fields="fields"
                 :items="items"
-                :per-page="pagination.perPage"
-                :current-page="pagination.page"
               >
                 <template #cell(status)="data">
                   <b-badge v-if="data.item.status === 1" variant="success">
@@ -305,11 +303,12 @@
         </template>
 
         <template #modal-footer>
-          <b-button class="btn-custom-outline-charade" @click="onClickCancelModalDelete()">
+          <b-button class="btn-custom-outline-charade" :disabled="isProcess" @click="onClickCancelModalDelete()">
             {{ $t('ACCOUNT.BUTTON_CANCEL') }}
           </b-button>
 
-          <b-button variant="danger" @click="onClickSubmitModalDelete()">
+          <b-button variant="danger" :disabled="isProcess" @click="onClickSubmitModalDelete()">
+            <i v-if="isProcess" class="fad fa-spinner-third fa-spin" />
             {{ $t('ACCOUNT.BUTTON_DELETE') }}
           </b-button>
         </template>
@@ -446,10 +445,10 @@ export default {
     },
   },
   watch: {
-    currentPageAccount() {
+    async currentPageAccount() {
       this.overlay.show = true;
 
-      this.handleGetAllAccount();
+      await this.handleGetAllAccount();
 
       this.overlay.show = false;
     },
@@ -604,6 +603,7 @@ export default {
       }
     },
     async handleDeleteAccount(id) {
+      this.isProcess = true;
       const URL = `${URL_API.deleteAccount}/${id}`;
 
       try {
@@ -616,7 +616,10 @@ export default {
         } else {
           NotifyAccount.server(res['message']);
         }
+
+        this.isProcess = false;
       } catch {
+        this.isProcess = false;
         NotifyAccount.exception();
       }
     },

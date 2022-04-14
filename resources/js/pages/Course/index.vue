@@ -54,8 +54,6 @@
                 show-empty
                 :fields="fields"
                 :items="items"
-                :total-rows="pagination.total"
-                :per-page="pagination.perPage"
                 aria-controls="table-course"
               >
                 <template #cell(docs)="data">
@@ -128,15 +126,16 @@
         <template #default>
           <div class="item-input">
             <label for="form-name">{{ $t('COURSE.LABEL_FORM_NAME') }}</label>
-            <b-form-input id="form-name" v-model="isCourse.name" :placeholder="$t('COURSE.PLACEHOLDER_FORM_NAME')" />
+            <b-form-input id="form-name" v-model="isCourse.name" :placeholder="$t('COURSE.PLACEHOLDER_FORM_NAME')" :disabled="isProcess" />
           </div>
         </template>
 
         <template #modal-footer>
-          <b-button variant="outline-danger" @click="onClickCancelModalForm()">
+          <b-button variant="outline-danger" :disabled="isProcess" @click="onClickCancelModalForm()">
             {{ $t('COURSE.BUTTON_CANCEL') }}
           </b-button>
-          <b-button class="btn-custom-green" @click="onClickSumbitModalForm()">
+          <b-button class="btn-custom-green" :disabled="isProcess" @click="onClickSumbitModalForm()">
+            <i v-if="isProcess" class="fad fa-spinner-third fa-spin" />
             {{ $t('COURSE.BUTTON_SUBMIT') }}
           </b-button>
         </template>
@@ -159,11 +158,12 @@
         </template>
 
         <template #modal-footer>
-          <b-button class="btn-custom-outline-charade" @click="onClickCancelModalDelete()">
+          <b-button class="btn-custom-outline-charade" :disabled="isProcess" @click="onClickCancelModalDelete()">
             {{ $t('COURSE.BUTTON_CANCEL') }}
           </b-button>
 
-          <b-button variant="danger" @click="onClickSubmitModalDelete()">
+          <b-button variant="danger" :disabled="isProcess" @click="onClickSubmitModalDelete()">
+            <i v-if="isProcess" class="fad fa-spinner-third fa-spin" />
             {{ $t('COURSE.BUTTON_SUBMIT') }}
           </b-button>
         </template>
@@ -223,7 +223,7 @@
                             <div class="align-self-center">
                               <span><b>{{ teacher.user_code }}</b></span>
                             </div>
-                            <b-button variant="danger" size="sm" @click="deleteTeacherInCourse(teacher, index)">
+                            <b-button variant="danger" size="sm" :disabled="isProcess" @click="deleteTeacherInCourse(teacher, index)">
                               <i class="fas fa-trash" />
                             </b-button>
                           </div>
@@ -290,7 +290,7 @@
                               <span><b>{{ teacher.user_code }}</b></span>
                             </div>
                             <template v-if="!listTeacherIdSelected.includes(teacher.id)">
-                              <b-button class="btn-custom-green" size="sm" @click="addTeacherToCourse(teacher, index)">
+                              <b-button class="btn-custom-green" size="sm" :disabled="isProcess" @click="addTeacherToCourse(teacher, index)">
                                 <i class="fas fa-plus-circle" />
                               </b-button>
                             </template>
@@ -335,6 +335,7 @@
                   align="right"
                   :total-rows="paginationTeacher.total"
                   :per-page="paginationTeacher.perPage"
+                  :disabled="isProcess"
                 />
               </div>
             </b-col>
@@ -342,11 +343,12 @@
         </template>
 
         <template #modal-footer>
-          <b-button class="btn-custom-outline-charade" @click="onClickCancelAssignTeacher()">
+          <b-button variant="outline-danger" :disabled="isProcess" @click="onClickCancelAssignTeacher()">
             {{ $t('COURSE.BUTTON_CANCEL') }}
           </b-button>
 
-          <b-button variant="danger" @click="onClickSubmitAssignTeacher()">
+          <b-button class="btn-custom-green" :disabled="isProcess" @click="onClickSubmitAssignTeacher()">
+            <i v-if="isProcess" class="fad fa-spinner-third fa-spin" />
             {{ $t('COURSE.BUTTON_SUBMIT') }}
           </b-button>
         </template>
@@ -371,7 +373,7 @@
             <b-col>
               <div class="item-input">
                 <label>{{ $t('COURSE.LABEL_DOCS_NAME') }}</label>
-                <b-form-input v-model="isDocs.name" :placeholder="$t('COURSE.PLACEHOLDER_DOCS_NAME')" />
+                <b-form-input v-model="isDocs.name" :placeholder="$t('COURSE.PLACEHOLDER_DOCS_NAME')" :disabled="isProcess" />
               </div>
             </b-col>
           </b-row>
@@ -384,6 +386,7 @@
                   :placeholder="$t('COURSE.PLACEHOLDER_DOCS_DESCRIPTION')"
                   rows="5"
                   max-rows="10"
+                  :disabled="isProcess"
                 />
               </div>
             </b-col>
@@ -430,12 +433,12 @@
                   <div class="d-flex justify-content-center">
                     <b-row>
                       <b-col>
-                        <b-button class="btn-custom-green" size="sm" @click="downloadDocs(data.item)">
+                        <b-button class="btn-custom-green" size="sm" :disabled="isProcess" @click="downloadDocs(data.item)">
                           <i class="fas fa-cloud-download" />
                         </b-button>
                       </b-col>
                       <b-col>
-                        <b-button variant="danger" size="sm" @click="onClickRemoveDocs(data.item)">
+                        <b-button variant="danger" size="sm" :disabled="isProcess" @click="onClickRemoveDocs(data.item)">
                           <i class="fas fa-trash" />
                         </b-button>
                       </b-col>
@@ -453,11 +456,12 @@
         </template>
 
         <template #modal-footer>
-          <b-button class="btn-custom-outline-charade" @click="onClickCancelDocs()">
+          <b-button variant="outline-danger" :disabled="isProcess" @click="onClickCancelDocs()">
             {{ $t('COURSE.BUTTON_CANCEL') }}
           </b-button>
 
-          <b-button variant="danger" @click="onClickSubmitDocs()">
+          <b-button class="btn-custom-green" :disabled="isProcess" @click="onClickSubmitDocs()">
+            <i v-if="isProcess" class="fad fa-spinner-third fa-spin" />
             {{ $t('COURSE.BUTTON_SUBMIT') }}
           </b-button>
         </template>
@@ -620,10 +624,10 @@ export default {
     currentPageCourse() {
       this.initData();
     },
-    currentPageStudent() {
+    async currentPageStudent() {
       this.overlay.show = true;
 
-      this.handleGetListTeacher();
+      await this.handleGetListTeacher();
 
       this.overlay.show = false;
     },
@@ -743,6 +747,7 @@ export default {
       }
     },
     async handleDeleteCourse(id) {
+      this.isProcess = true;
       const URL = `${URL_API.deleteCourse}/${id}`;
 
       try {
@@ -755,7 +760,9 @@ export default {
         } else {
           NotifyCourse.server(res['message']);
         }
+        this.isProcess = false;
       } catch {
+        this.isProcess = false;
         NotifyCourse.exception();
       }
     },
@@ -965,10 +972,13 @@ export default {
         document.getElementById('input-docs').value = null;
         this.visibleModalDocs = false;
       } catch (error) {
+        this.visibleModalDocs = false;
+        this.isProcess = false;
         NotifyCourse.updateError(error);
       }
     },
     async onClickSubmitDocs() {
+      this.isProcess = true;
       const DATA = {
         name: this.isDocs.name,
         description: this.isDocs.description,
@@ -980,11 +990,14 @@ export default {
       } else {
         NotifyCourse.validateDocs();
       }
+
+      this.isProcess = false;
     },
     downloadDocs(item) {
       window.open(`/storage/${item['path']}`);
     },
     async handleDeleteDocs(item) {
+      this.isProcess = true;
       try {
         const URL = `${URL_API.deleteDocs}?course_id=${item['course_id']}&document_id=${item['id']}`;
 
@@ -995,7 +1008,10 @@ export default {
 
           NotifyCourse.deleteDocsSuccess();
         }
+
+        this.isProcess = false;
       } catch (error) {
+        this.isProcess = false;
         NotifyCourse.updateError(error);
       }
     },

@@ -14,8 +14,9 @@
 		.login-form-content {
 			&__logo {
 				img {
-					height: 200px;
-					width: auto;
+                    width: 100%;
+                    max-width: 200px;
+                    height: auto;
 				}
 			}
 

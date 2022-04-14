@@ -254,8 +254,10 @@ export default {
       DELETE_SUCCESS: 'You have deleted an course from the system',
       DELETE_FAILED: 'You have failed to delete your course from the system',
       ASSIGN_TEACHER_SUCCESS: 'You have successfully arranged teacher for the course',
+      UPLOAD_DOCS_SUCCESS: 'You have successfully added course material',
 
       VALIDATE_NAME: 'Course name is incorrect',
+      VALIDATE_UPLOAD_DOCS: 'You have not entered the correct information for uploading documents',
     },
   },
 };

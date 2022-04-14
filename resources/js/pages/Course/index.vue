@@ -377,6 +377,7 @@
       <b-modal
         v-model="visibleModalDocs"
         size="xl"
+        scrollable
         no-close-on-esc
         no-close-on-backdrop
         hide-header-close
@@ -413,7 +414,7 @@
             <b-col>
               <div class="item-input">
                 <label>{{ $t('COURSE.LABEL_FORM_FILE') }}</label>
-                <input id="input-docs" type="file" name="input-docs">
+                <input id="input-docs" type="file" name="input-docs" @change="chooseFile">
                 <div>
                   <b-button
                     class="btn-custom-green"
@@ -423,6 +424,14 @@
                     {{ $t('COURSE.PLACEHOLDER_DOCS_FILE') }}
                   </b-button>
                 </div>
+              </div>
+            </b-col>
+          </b-row>
+          <b-row v-if="isDocs.file">
+            <b-col>
+              <div class="item-input">
+                <i class="fas fa-file" />
+                <span style="margin-left: 5px;">{{ isDocs.file.name }}</span>
               </div>
             </b-col>
           </b-row>
@@ -441,9 +450,18 @@
               >
                 <template #cell(file)="data">
                   <div class="d-flex justify-content-center">
-                    <b-button class="btn-custom-green" size="sm" @click="downloadDocs(data.item)">
-                      <i class="fas fa-cloud-download" />
-                    </b-button>
+                    <b-row>
+                      <b-col>
+                        <b-button class="btn-custom-green" size="sm" @click="downloadDocs(data.item)">
+                          <i class="fas fa-cloud-download" />
+                        </b-button>
+                      </b-col>
+                      <b-col>
+                        <b-button variant="danger" size="sm" @click="onClickRemoveDocs(data.item)">
+                          <i class="fas fa-trash" />
+                        </b-button>
+                      </b-col>
+                    </b-row>
                   </div>
                 </template>
                 <template #empty>
@@ -482,6 +500,7 @@ const URL_API = {
   deleteCourse: '/courses',
   getTeacher: '/user/teacher',
   assignTeacher: '/course/add-teacher',
+  uploadDocs: '/course/add-document',
 };
 
 import {
@@ -492,11 +511,13 @@ import {
   deleteCourse,
   getTeacher,
   assignTeacher,
+  uploadDocs,
 } from '@/api/modules/course';
 
 import {
   validateAddCourse,
   validateUpdateCourse,
+  validateUploadDocs,
 } from './validate';
 
 import NotifyCourse from '@/toast/modules/course';
@@ -928,10 +949,56 @@ export default {
       const FILE = document.getElementById('input-docs');
       FILE.click();
     },
-    onClickSubmitDocs() {
+    chooseFile(event) {
+      this.isDocs.file = event.target.files[0];
+    },
+    async handleUploadDocs() {
+      try {
+        const DATA = new FormData();
+        DATA.append('course_id', this.isDocs.course_id);
+        DATA.append('name', this.isDocs.name);
+        DATA.append('description', this.isDocs.description);
+        DATA.append('files[0]', this.isDocs.file);
 
+        const URL = URL_API.uploadDocs;
+
+        const res = await uploadDocs(URL, DATA);
+
+        if (res) {
+          NotifyCourse.uploadDocsSuccess();
+        }
+
+        this.isDocs = {
+          course_id: null,
+          name: '',
+          description: '',
+          file: null,
+        };
+        document.getElementById('input-docs').value = null;
+        this.visibleModalDocs = false;
+      } catch (error) {
+        NotifyCourse.updateError(error);
+      }
+    },
+    async onClickSubmitDocs() {
+      const DATA = {
+        name: this.isDocs.name,
+        description: this.isDocs.description,
+        file: this.isDocs.file,
+      };
+
+      console.log(validateUploadDocs(DATA));
+
+      if (validateUploadDocs(DATA)) {
+        await this.handleUploadDocs();
+      } else {
+        NotifyCourse.validateDocs();
+      }
     },
     downloadDocs(item) {
+      console.log(item);
+    },
+    onClickRemoveDocs(item) {
       console.log(item);
     },
   },
@@ -1127,6 +1194,10 @@ export default {
                 text-align: center;
             }
         }
+    }
+
+    td.base-td {
+        text-align: center;
     }
 
     td.base-docs {

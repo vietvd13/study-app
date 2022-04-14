@@ -241,17 +241,6 @@
                           </div>
                           <div>
                             <span>
-                              <b>{{ $t('ACCOUNT.LABEL_FORM_BLIND') }}:</b>
-                              <b-badge v-if="teacher.status === 1" variant="danger">
-                                {{ $t('CLASSES.TEXT_YES') }}
-                              </b-badge>
-                              <b-badge v-if="teacher.status === 0" variant="success">
-                                {{ $t('CLASSES.TEXT_NO') }}
-                              </b-badge>
-                            </span>
-                          </div>
-                          <div>
-                            <span>
                               <b>{{ $t('ACCOUNT.LABEL_FORM_STATUS') }}:</b>
                               <b-badge v-if="teacher.status === 1" variant="success">
                                 {{ $t('CLASSES.TEXT_ACTIVE') }}
@@ -317,17 +306,6 @@
                           </div>
                           <div>
                             <span><b>{{ $t('ACCOUNT.LABEL_FORM_EMAIL') }}:</b>{{ teacher.email }}</span>
-                          </div>
-                          <div>
-                            <span>
-                              <b>{{ $t('ACCOUNT.LABEL_FORM_BLIND') }}:</b>
-                              <b-badge v-if="teacher.status === 1" variant="danger">
-                                {{ $t('CLASSES.TEXT_YES') }}
-                              </b-badge>
-                              <b-badge v-if="teacher.status === 0" variant="success">
-                                {{ $t('CLASSES.TEXT_NO') }}
-                              </b-badge>
-                            </span>
                           </div>
                           <div>
                             <span>

@@ -13,7 +13,9 @@
 	.display-page-not-found {
 		&__image {
 			img {
-				max-width: 400px;
+				width: 100%;
+                max-width: 300px;
+                height: auto;
 			}
 		}
 

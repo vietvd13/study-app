@@ -475,7 +475,7 @@
         </template>
 
         <template #modal-footer>
-          <b-button class="btn-custom-outline-charade" @click="visibleModalDocs = false">
+          <b-button class="btn-custom-outline-charade" @click="onClickCancelDocs()">
             {{ $t('COURSE.BUTTON_CANCEL') }}
           </b-button>
 
@@ -501,6 +501,7 @@ const URL_API = {
   getTeacher: '/user/teacher',
   assignTeacher: '/course/add-teacher',
   uploadDocs: '/course/add-document',
+  deleteDocs: '/course/delete-document',
 };
 
 import {
@@ -512,6 +513,7 @@ import {
   getTeacher,
   assignTeacher,
   uploadDocs,
+  deleteDocs,
 } from '@/api/modules/course';
 
 import {
@@ -901,7 +903,6 @@ export default {
       }
     },
     async onClickAssignTeacher(item) {
-      console.log(item);
       this.idHandle = item.id;
 
       await this.handleGetOneCourse(item.id);
@@ -943,7 +944,16 @@ export default {
       await this.handleGetOneCourse(this.isDocs.course_id);
 
       this.visibleModalDocs = true;
-      console.log(item);
+    },
+    onClickCancelDocs() {
+      this.visibleModalDocs = false;
+      this.isDocs = {
+        course_id: null,
+        name: '',
+        description: '',
+        file: null,
+      };
+      document.getElementById('input-docs').value = null;
     },
     clickChooseFile() {
       const FILE = document.getElementById('input-docs');
@@ -987,8 +997,6 @@ export default {
         file: this.isDocs.file,
       };
 
-      console.log(validateUploadDocs(DATA));
-
       if (validateUploadDocs(DATA)) {
         await this.handleUploadDocs();
       } else {
@@ -996,10 +1004,25 @@ export default {
       }
     },
     downloadDocs(item) {
-      console.log(item);
+      window.open(`/storage/${item['path']}`);
+    },
+    async handleDeleteDocs(item) {
+      try {
+        const URL = `${URL_API.deleteDocs}?course_id=${item['course_id']}&document_id=${item['id']}`;
+
+        const res = await deleteDocs(URL);
+
+        if (res) {
+          await this.handleGetOneCourse(item.course_id);
+
+          NotifyCourse.deleteDocsSuccess();
+        }
+      } catch (error) {
+        NotifyCourse.updateError(error);
+      }
     },
     onClickRemoveDocs(item) {
-      console.log(item);
+      this.handleDeleteDocs(item);
     },
   },
 };

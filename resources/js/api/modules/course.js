@@ -31,3 +31,7 @@ export function assignTeacher(url, data) {
 export function uploadDocs(url, data) {
   return request.postRequest(url, data);
 }
+
+export function deleteDocs(url) {
+  return request.deleteRequest(url);
+}

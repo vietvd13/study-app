@@ -255,6 +255,7 @@ export default {
       DELETE_FAILED: 'You have failed to delete your course from the system',
       ASSIGN_TEACHER_SUCCESS: 'You have successfully arranged teacher for the course',
       UPLOAD_DOCS_SUCCESS: 'You have successfully added course material',
+      DELETE_DOCS_SUCCESS: 'You have successfully deleted the material from the course',
 
       VALIDATE_NAME: 'Course name is incorrect',
       VALIDATE_UPLOAD_DOCS: 'You have not entered the correct information for uploading documents',

@@ -27,12 +27,24 @@ Route::namespace('Api')->group(function() {
         Route::get('user/students', 'UserController@students');
         Route::get('user/teacher', 'UserController@teacher');
 
+        Route::prefix('class/action')->group(function () {
+            Route::post('create-action', 'ClassController@ClassAction');
+            Route::post('student/handin', 'ClassController@ActionHandin');
+            Route::post('teach/grade', 'ClassController@ActionGrading');
+            Route::get('teacher/handin', 'ClassController@GetAllHandinTeacher');
+        });
+
         Route::apiResource('courses', 'CourseController');
 
         Route::group(['prefix' => 'course'], function () {
             Route::post('add-teacher', 'CourseController@AddTeacher');
             Route::post('add-document', 'CourseController@courseDocuments');
             Route::delete('delete-document', 'CourseController@deleteDocument');
+            Route::get('download', 'CourseController@downloadDocument');
+        });
+
+        Route::group(['prefix' => 'test'], function () {
+            Route::post('import', 'CourseController@importTest');
         });
     });
 });

@@ -79,7 +79,7 @@ class AppServiceProvider extends ServiceProvider
         // course
         $this->app->bind(CourseRepositoryInterface::class, CourseRepository::class);
         $this->app->bind(CourseServiceInterface::class, CourseService::class);
-        // end course
+        // end cours
     }
 
     /**

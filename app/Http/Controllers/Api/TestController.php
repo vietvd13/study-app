@@ -8,9 +8,6 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\TestRequest;
-use App\Http\Resources\BaseResource;
-use App\Http\Resources\TestResource;
 use Illuminate\Http\Request;
 use App\Services\Contracts\TestServiceInterface;
 class TestController extends Controller
@@ -27,6 +24,7 @@ class TestController extends Controller
     }
 
     public function importTest(Request $request) {
-        return [];
+        $file = $request->file('file');
+        return $file;
     }
 }

@@ -73,4 +73,8 @@ class CourseController extends Controller
     public function deleteDocument(Request $request) {
         return $this->service->deleteDocuments($request->course_id, $request->document_id);
     }
+
+    public function downloadDocument(Request $request) {
+        return $this->service->download($request);
+    }
 }

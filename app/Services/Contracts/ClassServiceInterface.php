@@ -16,5 +16,6 @@ interface ClassServiceInterface extends BaseServiceInterface
     public function ActionHandin($request);
     public function ActionGrading($request);
     public function allHandin($request);
+    public function getClassByTeacher($request);
     public function listActionInClass($request);
 }

@@ -146,6 +146,13 @@ class ClassRepository extends BaseRepository implements ClassRepositoryInterface
         return $class_actions;
     }
 
+
+    public function getClassByTeacher(int $teacher_id) {
+        $data = $this->model->whereHas('courses', function ($query) use($teacher_id) {
+            $query->where('teacher_id', $teacher_id);
+        })->get(['*']);
+        return $data;
+    }
     public function allActions($class_id, $per_page=10) {
         $class = $this->model->where('id', $class_id)->first();
         if ($class) {
@@ -154,3 +161,4 @@ class ClassRepository extends BaseRepository implements ClassRepositoryInterface
     }
 
 }
+

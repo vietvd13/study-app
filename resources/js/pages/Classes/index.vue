@@ -32,7 +32,7 @@
 
       <div class="classes__content">
         <b-card>
-          <b-row>
+          <b-row v-if="hasRole(getCurrentRole(), [CONST_ROLE.LIST_ROLE.ADMIN])">
             <b-col>
               <div class="d-flex justify-content-end classes__content__add">
                 <b-button class="btn-custom-green" @click="onClickAdd()">
@@ -57,19 +57,20 @@
                 aria-controls="table-classes"
               >
                 <template #cell(arrangement)="data">
-                  <b-row>
-                    <b-col cols="6" sm="6" md="6" lg="6" xl="6">
-                      <b-button class="btn-custom-green" size="sm" @click="onClickAssignStudent(data.item)">
-                        <i class="fas fa-user-alt" />
-                      </b-button>
-                    </b-col>
-
-                    <b-col cols="6" sm="6" md="6" lg="6" xl="6">
-                      <b-button class="btn-custom-green" size="sm" @click="onClickAssignCourse(data.item)">
-                        <i class="fas fa-books" />
-                      </b-button>
-                    </b-col>
-                  </b-row>
+                  <b-col>
+                    <b-row>
+                      <b-col cols="6" sm="6" md="6" lg="6" xl="6">
+                        <b-button class="btn-custom-green" size="sm" @click="onClickAssignStudent(data.item)">
+                          <i class="fas fa-user-alt" />
+                        </b-button>
+                      </b-col>
+                      <b-col cols="6" sm="6" md="6" lg="6" xl="6">
+                        <b-button class="btn-custom-green" size="sm" @click="onClickAssignCourse(data.item)">
+                          <i class="fas fa-books" />
+                        </b-button>
+                      </b-col>
+                    </b-row>
+                  </b-col>
                 </template>
 
                 <template #cell(actions)="data">
@@ -189,7 +190,7 @@
 
         <template #default>
           <b-row>
-            <b-col cols="12" sm="12" md="12" lg="12" xl="6">
+            <b-col cols="12" sm="12" md="12" lg="12" :xl="hasRole(getCurrentRole(), [CONST_ROLE.LIST_ROLE.ADMIN]) ? 6 : 12">
 
               <div class="title-list">
                 <b-card>
@@ -228,7 +229,7 @@
                             <div class="align-self-center">
                               <span><b>{{ student.user_code }}</b></span>
                             </div>
-                            <b-button variant="danger" size="sm" :disabled="isProcess" @click="deleteStudentInClass(student, index)">
+                            <b-button v-if="hasRole(getCurrentRole(), [CONST_ROLE.LIST_ROLE.ADMIN])" variant="danger" size="sm" :disabled="isProcess" @click="deleteStudentInClass(student, index)">
                               <i class="fas fa-trash" />
                             </b-button>
                           </div>
@@ -274,7 +275,7 @@
               </div>
             </b-col>
 
-            <b-col cols="12" sm="12" md="12" lg="12" xl="6">
+            <b-col v-if="hasRole(getCurrentRole(), [CONST_ROLE.LIST_ROLE.ADMIN])" cols="12" sm="12" md="12" lg="12" xl="6">
 
               <div class="title-list">
                 <b-card>
@@ -382,10 +383,10 @@
 
         <template #modal-footer>
           <b-button variant="outline-danger" :disabled="isProcess" @click="visibleModalAssignStudent = false">
-            {{ $t('CLASSES.BUTTON_CANCEL') }}
+            {{ hasRole(getCurrentRole(), [CONST_ROLE.LIST_ROLE.ADMIN]) ? $t('CLASSES.BUTTON_CANCEL') : $t('CLASSES.BUTTON_CLOSE') }}
           </b-button>
 
-          <b-button class="btn-custom-green" @click="onSubmitAssignStudent()">
+          <b-button v-if="hasRole(getCurrentRole(), [CONST_ROLE.LIST_ROLE.ADMIN])" class="btn-custom-green" @click="onSubmitAssignStudent()">
             <i v-if="isProcess" :disabled="isProcess" class="fad fa-spinner-third fa-spin" />
             {{ $t('CLASSES.BUTTON_SUBMIT') }}
           </b-button>
@@ -407,7 +408,7 @@
 
         <template #default>
           <b-row>
-            <b-col cols="12" sm="12" md="12" lg="12" xl="6">
+            <b-col cols="12" sm="12" md="12" lg="12" :xl="hasRole(getCurrentRole(), [CONST_ROLE.LIST_ROLE.ADMIN]) ? 6 : 12">
               <div class="title-list">
                 <b-card>
                   <b-card-text>
@@ -436,7 +437,7 @@
                             <div class="align-self-center">
                               <span><b>{{ course.name }}</b></span>
                             </div>
-                            <b-button variant="danger" size="sm" :disabled="isProcess" @click="deleteCourseInClass(course, index)">
+                            <b-button v-if="hasRole(getCurrentRole(), [CONST_ROLE.LIST_ROLE.ADMIN])" variant="danger" size="sm" :disabled="isProcess" @click="deleteCourseInClass(course, index)">
                               <i class="fas fa-trash" />
                             </b-button>
                           </div>
@@ -451,7 +452,7 @@
                                 :date-format-options="{ year: 'numeric', month: '2-digit', day: '2-digit' }"
                                 :max="listCourseSelected[index]['end_date']"
                                 :locale="locale"
-                                :disabled="isProcess"
+                                :disabled="isProcess || !hasRole(getCurrentRole(), [CONST_ROLE.LIST_ROLE.ADMIN])"
                               >
                                 <template #button-content>
                                   <i class="fad fa-calendar-day icon-date" />
@@ -467,7 +468,7 @@
                                 :date-format-options="{ year: 'numeric', month: '2-digit', day: '2-digit' }"
                                 :min="listCourseSelected[index]['start_date']"
                                 :locale="locale"
-                                :disabled="isProcess"
+                                :disabled="isProcess || !hasRole(getCurrentRole(), [CONST_ROLE.LIST_ROLE.ADMIN])"
                               >
                                 <template #button-content>
                                   <i class="fad fa-calendar-day icon-date" />
@@ -479,7 +480,7 @@
                               <label>{{ $t('CLASSES.LABLE_TEACHER') }}</label>
                               <b-form-select
                                 v-model="listCourseSelected[index]['teacher_id']"
-                                :disabled="isProcess"
+                                :disabled="isProcess || !hasRole(getCurrentRole(), [CONST_ROLE.LIST_ROLE.ADMIN])"
                               >
                                 <b-form-select-option :value="null">
                                   {{ $t('CLASSES.PLACEHOLDER_SELECT_TEACHER') }}
@@ -502,7 +503,7 @@
               </div>
             </b-col>
 
-            <b-col cols="12" sm="12" md="12" lg="12" xl="6">
+            <b-col v-if="hasRole(getCurrentRole(), [CONST_ROLE.LIST_ROLE.ADMIN])" cols="12" sm="12" md="12" lg="12" xl="6">
               <div class="title-list">
                 <b-card>
                   <b-card-text>
@@ -563,9 +564,10 @@
 
         <template #modal-footer>
           <b-button variant="outline-danger" :disabled="isProcess" @click="visibleModalAssignCourse = false">
-            {{ $t('CLASSES.BUTTON_CANCEL') }}
+            {{ hasRole(getCurrentRole(), [CONST_ROLE.LIST_ROLE.ADMIN]) ? $t('CLASSES.BUTTON_CANCEL') : $t('CLASSES.BUTTON_CLOSE') }}
           </b-button>
-          <b-button class="btn-custom-green" :disabled="isProcess" @click="onSubmitAssignCourse()">
+
+          <b-button v-if="hasRole(getCurrentRole(), [CONST_ROLE.LIST_ROLE.ADMIN])" class="btn-custom-green" :disabled="isProcess" @click="onSubmitAssignCourse()">
             <i v-if="isProcess" class="fad fa-spinner-third fa-spin" />
             {{ $t('CLASSES.BUTTON_SUBMIT') }}
           </b-button>
@@ -612,12 +614,19 @@ import {
   validateAssingCourse,
 } from './validate';
 
+import { hasRole, getCurrentRole } from '@/utils/hasRole';
+import CONST_ROLE from '@/const/role';
+
 import NotifyClasses from '@/toast/modules/classes';
 
 export default {
   name: 'Classes',
   data() {
     return {
+      hasRole,
+      getCurrentRole,
+      CONST_ROLE,
+
       overlay: {
         show: false,
         variant: 'light',
@@ -678,7 +687,7 @@ export default {
   },
   computed: {
     fields() {
-      return [
+      const HEADER = [
         {
           key: 'name',
           label: this.$t('CLASSES.TABLE_TITLE_NAME'),
@@ -686,19 +695,27 @@ export default {
           thClass: 'base-th',
           tdClass: 'base-td',
         },
-        {
+      ];
+
+      if (getCurrentRole() === CONST_ROLE.LIST_ROLE.ADMIN || getCurrentRole() === CONST_ROLE.LIST_ROLE.TEACHER) {
+        HEADER.push({
           key: 'arrangement',
           label: this.$t('CLASSES.TABLE_TITLE_ARRANGEMENT'),
           thClass: 'base-th',
           tdClass: 'base-td base-arrangement',
-        },
-        {
+        });
+      }
+
+      if (getCurrentRole() === CONST_ROLE.LIST_ROLE.ADMIN) {
+        HEADER.push({
           key: 'actions',
           lebael: this.$t('CLASSES.TABLE_TITLE_ACTIONS'),
           thClass: 'base-th',
           tdClass: 'base-td base-actions',
-        },
-      ];
+        });
+      }
+
+      return HEADER;
     },
     locale() {
       const language = this.$store.getters.language;

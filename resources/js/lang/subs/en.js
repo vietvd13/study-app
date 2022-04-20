@@ -67,6 +67,7 @@ export default {
     BUTTON_SUBMIT: 'Submit',
     BUTTON_DELETE: 'Delete',
     BUTTON_CANCEL: 'Cancel',
+    BUTTON_CLOSE: 'Close',
   },
   CLASSES: {
     LABEL_FILTER_NAME: 'Name',
@@ -114,6 +115,7 @@ export default {
     BUTTON_SUBMIT: 'Submit',
     BUTTON_DELETE: 'Delete',
     BUTTON_CANCEL: 'Cancel',
+    BUTTON_CLOSE: 'Close',
 
     TEXT_YES: 'Yes',
     TEXT_NO: 'No',
@@ -165,6 +167,7 @@ export default {
     BUTTON_SUBMIT: 'Submit',
     BUTTON_DELETE: 'Delete',
     BUTTON_CANCEL: 'Cancel',
+    BUTTON_CLOSE: 'Close',
   },
   PAGE_NOT_FOUND: {
     DETAIL: "We can't seem to find the page you're looking for",

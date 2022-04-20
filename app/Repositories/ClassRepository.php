@@ -138,8 +138,19 @@ class ClassRepository extends BaseRepository implements ClassRepositoryInterface
     }
 
     public function allHandin($action_id, $per_page = 10) {
-        $class_actions = ClassAction::where('id', $action_id)->first()->action_handin()->paginate($per_page);
+        $class_actions = ClassAction::where('id', $action_id)->first()->action_handin()->with([
+            'student' => function ($query) {
+                $query->select(['*']);
+            }
+        ])->paginate($per_page);
         return $class_actions;
+    }
+
+    public function allActions($class_id, $per_page=10) {
+        $class = $this->model->where('id', $class_id)->first();
+        if ($class) {
+            return $class->class_action()->orderBy('created_at',  'DESC')->paginate($per_page);
+        }
     }
 
 }

@@ -29,4 +29,8 @@ class ActionHandin extends Model
     public function grading() {
         return $this->hasMany('App\Models\ClassAction', 'class_id', 'id');
     }
+
+    public function student() {
+        return $this->hasOne('App\Models\User', 'id', 'student_id');
+    }
 }

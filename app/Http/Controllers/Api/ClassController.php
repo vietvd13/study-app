@@ -77,6 +77,10 @@ class ClassController extends Controller
         return $this->service->addCourse($request);
     }
 
+    public function ListActionInClass(Request $request) {
+        return $this->service->ListActionInClass($request);
+    }
+
     public function ClassAction(Request $request) {
         return $this->service->addClassAction($request);
     }

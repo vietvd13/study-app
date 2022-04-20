@@ -142,4 +142,12 @@ class ClassRepository extends BaseRepository implements ClassRepositoryInterface
         return $class_actions;
     }
 
+
+    public function getClassByTeacher(int $teacher_id) {
+        $data = $this->model->whereHas('courses', function ($query) use($teacher_id) {
+            $query->where('teacher_id', $teacher_id);
+        })->get(['*']);
+        return $data;
+    }
 }
+

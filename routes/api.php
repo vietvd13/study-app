@@ -27,6 +27,8 @@ Route::namespace('Api')->group(function() {
         Route::get('user/students', 'UserController@students');
         Route::get('user/teacher', 'UserController@teacher');
 
+        Route::get('class/teacher', 'ClassController@getClassByTeacher');
+
         Route::prefix('class/action')->group(function () {
             Route::post('create-action', 'ClassController@ClassAction');
             Route::post('student/handin', 'ClassController@ActionHandin');

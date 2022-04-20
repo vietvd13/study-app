@@ -21,6 +21,12 @@ class TestService extends BaseService implements TestServiceInterface
     }
 
     public function importTest($request) {
+        $class_id =  $request['class_id'];
+        $course_id =  $request['course_id'];
 
+        $class = $this->repository->find($class_id);
+        $course = $class->courses()->find($course_id);
+
+        return $course;
     }
 }

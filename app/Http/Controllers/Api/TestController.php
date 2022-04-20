@@ -25,6 +25,6 @@ class TestController extends Controller
 
     public function importTest(Request $request) {
         $file = $request->file('file');
-        return $file;
+        return $this->service->importTest($request);
     }
 }

@@ -32,6 +32,4 @@ class TestRepository extends BaseRepository implements TestRepositoryInterface
     {
         return Test::class;
     }
-
-
 }

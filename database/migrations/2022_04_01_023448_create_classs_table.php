@@ -65,6 +65,7 @@ class CreateClasssTable extends Migration
             $table->bigInteger('class_id')->unsigned();
             $table->bigInteger('teacher_id')->unsigned();
             $table->text('description');
+            $table->text('name');
             $table->timestamps();
 
             $table->foreign('teacher_id')->references('id')->on('users')

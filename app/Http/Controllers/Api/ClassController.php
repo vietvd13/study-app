@@ -92,4 +92,8 @@ class ClassController extends Controller
     public function GetAllHandinTeacher(Request $request) {
         return $this->service->allHandin($request);
     }
+
+    public function getClassByTeacher(Request $request) {
+        return $this->service->getClassByTeacher($request);
+    }
 }

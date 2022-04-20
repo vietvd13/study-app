@@ -18,7 +18,10 @@ class Test extends Model
 
     protected $table = 'tests';
 
-    protected $fillable = [];
+    protected $fillable = [
+        'limit_time',
+        'created_by'
+    ];
 
     protected $dates = ['deleted_at'];
 

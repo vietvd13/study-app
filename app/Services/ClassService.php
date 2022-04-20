@@ -35,6 +35,7 @@ class ClassService extends BaseService implements ClassServiceInterface
             $request['description']
         );
     }
+
     public function ActionHandin($request) {
         $pathFile = null;
         if (isset($request->files) && count($request->files) > 0) {
@@ -61,7 +62,14 @@ class ClassService extends BaseService implements ClassServiceInterface
     public function allHandin($request) {
         return $this->repository->allHandin(
             $request['action_id'],
-            $request['per_pace']
+            $request['per_page']
+        );
+    }
+
+    public function listActionInClass($request) {
+        return $this->repository->allActions(
+            $request['class_id'],
+            $request['per_page']
         );
     }
 

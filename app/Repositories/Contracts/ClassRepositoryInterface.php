@@ -17,4 +17,5 @@ interface ClassRepositoryInterface extends BaseRepositoryInterface
     public function ActionGrading(int $student_handin_id, int $grade, string $comment);
     public function allHandin($action_id, $per_page);
     public function getClassByTeacher(int $teacher_id);
+    public function allActions($class_id, $per_page=10);
 }

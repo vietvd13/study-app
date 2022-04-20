@@ -10,5 +10,5 @@ namespace App\Services\Contracts;
 
 interface TestServiceInterface extends BaseServiceInterface
 {
-    //
+    public function importTest($request);
 }

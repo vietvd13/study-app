@@ -53,4 +53,14 @@ class CourseService extends BaseService implements CourseServiceInterface
             return $course;
         }
     }
+
+    public function downloadDocument($course_id, $document_id) {
+        $course = $this->repository->find($course_id);
+        if ($course) {
+            $file = $course->files()->where('id', $document_id)->first();
+            // $path = $file->path;
+            // if ()
+            return $course;
+        }
+    }
 }

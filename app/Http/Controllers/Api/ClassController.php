@@ -12,7 +12,7 @@ use App\Http\Requests\ClassRequest;
 use App\Http\Resources\BaseResource;
 use App\Http\Resources\ClassResource;
 use App\Services\Contracts\ClassServiceInterface;
-
+use Illuminate\Http\Request;
 class ClassController extends Controller
 {
 
@@ -75,5 +75,21 @@ class ClassController extends Controller
 
     public function AddCourses(ClassRequest $request) {
         return $this->service->addCourse($request);
+    }
+
+    public function ClassAction(Request $request) {
+        return $this->service->addClassAction($request);
+    }
+
+    public function ActionHandin(Request $request) {
+        return $this->service->ActionHandin($request);
+    }
+
+    public function ActionGrading(Request $request) {
+        return $this->service->ActionGrading($request);
+    }
+
+    public function GetAllHandinTeacher(Request $request) {
+        return $this->service->allHandin($request);
     }
 }

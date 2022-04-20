@@ -14,7 +14,7 @@ export default {
   },
   computed: {
     routes() {
-      return this.$router.options.routes.filter(item => item.hidden !== true);
+      return this.$store.getters.permissionRoutes.filter(item => item.hidden !== true);
     },
   },
 };

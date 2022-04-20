@@ -6,6 +6,7 @@ const Classes = {
   meta: {
     title: 'ROUTER.CLASSES',
     icon: 'fad fa-users-class',
+    roles: ['ADMIN', 'TEACHER'],
   },
   component: Layout,
   redirect: { name: 'ClassesIndex' },

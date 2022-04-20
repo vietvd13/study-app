@@ -12,13 +12,16 @@ import Test from './modules/Test';
 import PageNotFound from './modules/PageNotFound';
 
 export const constantRoutes = [
+  Login,
   {
     path: '/',
-    hidden: true,
     redirect: { name: 'Dashboard' },
+    hidden: true,
   },
-  Login,
   Dashboard,
+];
+
+export const asyncRoutes = [
   Account,
   Classes,
   Course,
@@ -30,8 +33,6 @@ export const constantRoutes = [
     redirect: { name: 'PageNotFound' },
   },
 ];
-
-export const asyncRoutes = [];
 
 const createRouter = () =>
   new VueRouter({

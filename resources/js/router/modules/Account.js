@@ -6,6 +6,7 @@ const Account = {
   meta: {
     title: 'ROUTER.ACCOUNT',
     icon: 'fad fa-user-alt',
+    roles: ['ADMIN'],
   },
   component: Layout,
   redirect: { name: 'AccountIndex' },

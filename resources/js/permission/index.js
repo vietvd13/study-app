@@ -27,7 +27,9 @@ router.beforeEach(async(to, from, next) => {
             roles: ROLES,
             permissions: [],
           });
+
           setRoutes(ACCESS_ROUTES);
+
           next({ ...to, replace: true });
         } catch (err) {
           console.log(err);

@@ -54,8 +54,6 @@
                 show-empty
                 :fields="fields"
                 :items="items"
-                :total-rows="pagination.total"
-                :per-page="pagination.perPage"
                 aria-controls="table-classes"
               >
                 <template #cell(arrangement)="data">
@@ -109,6 +107,7 @@
                 :total-rows="pagination.total"
                 :per-page="pagination.perPage"
                 aria-controls="table-classes"
+                :disabled="isProcess"
               />
             </b-col>
           </b-row>
@@ -164,11 +163,12 @@
         </template>
 
         <template #modal-footer>
-          <b-button class="btn-custom-outline-charade" @click="onClickCancelModalDelete()">
+          <b-button class="btn-custom-outline-charade" :disabled="isProcess" @click="onClickCancelModalDelete()">
             {{ $t('CLASSES.BUTTON_CANCEL') }}
           </b-button>
 
-          <b-button variant="danger" @click="onClickSubmitModalDelete()">
+          <b-button variant="danger" :disabled="isProcess" @click="onClickSubmitModalDelete()">
+            <i v-if="isProcess" class="fad fa-spinner-third fa-spin" />
             {{ $t('CLASSES.BUTTON_SUBMIT') }}
           </b-button>
         </template>
@@ -228,7 +228,7 @@
                             <div class="align-self-center">
                               <span><b>{{ student.user_code }}</b></span>
                             </div>
-                            <b-button variant="danger" size="sm" @click="deleteStudentInClass(student, index)">
+                            <b-button variant="danger" size="sm" :disabled="isProcess" @click="deleteStudentInClass(student, index)">
                               <i class="fas fa-trash" />
                             </b-button>
                           </div>
@@ -316,7 +316,7 @@
                               <span><b>{{ student.user_code }}</b></span>
                             </div>
                             <template v-if="!listStudentIdSelected.includes(student.id)">
-                              <b-button class="btn-custom-green" size="sm" @click="addStudentToClass(student, index)">
+                              <b-button class="btn-custom-green" size="sm" :disabled="isProcess" @click="addStudentToClass(student, index)">
                                 <i class="fas fa-plus-circle" />
                               </b-button>
                             </template>
@@ -372,6 +372,7 @@
                   align="right"
                   :total-rows="paginationStudent.total"
                   :per-page="paginationStudent.perPage"
+                  :disabled="isProcess"
                 />
               </div>
             </b-col>
@@ -435,7 +436,7 @@
                             <div class="align-self-center">
                               <span><b>{{ course.name }}</b></span>
                             </div>
-                            <b-button variant="danger" size="sm" @click="deleteCourseInClass(course, index)">
+                            <b-button variant="danger" size="sm" :disabled="isProcess" @click="deleteCourseInClass(course, index)">
                               <i class="fas fa-trash" />
                             </b-button>
                           </div>
@@ -450,6 +451,7 @@
                                 :date-format-options="{ year: 'numeric', month: '2-digit', day: '2-digit' }"
                                 :max="listCourseSelected[index]['end_date']"
                                 :locale="locale"
+                                :disabled="isProcess"
                               >
                                 <template #button-content>
                                   <i class="fad fa-calendar-day icon-date" />
@@ -465,11 +467,31 @@
                                 :date-format-options="{ year: 'numeric', month: '2-digit', day: '2-digit' }"
                                 :min="listCourseSelected[index]['start_date']"
                                 :locale="locale"
+                                :disabled="isProcess"
                               >
                                 <template #button-content>
                                   <i class="fad fa-calendar-day icon-date" />
                                 </template>
                               </b-form-datepicker>
+                            </div>
+
+                            <div class="item-input">
+                              <label>{{ $t('CLASSES.LABLE_TEACHER') }}</label>
+                              <b-form-select
+                                v-model="listCourseSelected[index]['teacher_id']"
+                                :disabled="isProcess"
+                              >
+                                <b-form-select-option :value="null">
+                                  {{ $t('CLASSES.PLACEHOLDER_SELECT_TEACHER') }}
+                                </b-form-select-option>
+                                <b-form-select-option
+                                  v-for="teacher in listCourseSelected[index]['teacher_list']"
+                                  :key="teacher.text"
+                                  :value="teacher.value"
+                                >
+                                  {{ teacher.text }}
+                                </b-form-select-option>
+                              </b-form-select>
                             </div>
                           </div>
                         </template>
@@ -510,7 +532,7 @@
                               <span><b>{{ course.name }}</b></span>
                             </div>
                             <template v-if="!listCourseIdSelected.includes(course.id)">
-                              <b-button class="btn-custom-green" size="sm" @click="addCourseToClass(course, index)">
+                              <b-button class="btn-custom-green" size="sm" :disabled="isProcess" @click="addCourseToClass(course, index)">
                                 <i class="fas fa-plus-circle" />
                               </b-button>
                             </template>
@@ -532,6 +554,7 @@
                   align="right"
                   :total-rows="paginationCourse.total"
                   :per-page="paginationCourse.perPage"
+                  :disabled="isProcess"
                 />
               </div>
             </b-col>
@@ -565,6 +588,7 @@ const URL_API = {
   getStudent: '/user/students',
   assignStudent: '/classes/students',
   getAllCourse: '/courses',
+  getOneCourse: '/courses',
   assignCourse: '/classes/courses',
 };
 import {
@@ -579,6 +603,7 @@ import {
 } from '@/api/modules/classes';
 import {
   getAllCourse,
+  getOneCourse,
 } from '@/api/modules/course';
 
 import {
@@ -698,24 +723,24 @@ export default {
     },
   },
   watch: {
-    currentPageClass() {
+    async currentPageClass() {
       this.overlay.show = true;
 
-      this.handleGetAllClasses();
+      await this.handleGetAllClasses();
 
       this.overlay.show = false;
     },
-    currentPageStudent() {
+    async currentPageStudent() {
       this.overlay.show = true;
 
-      this.handleGetListStudent();
+      await this.handleGetListStudent();
 
       this.overlay.show = false;
     },
-    currentPageCourse() {
+    async currentPageCourse() {
       this.overlay.show = true;
 
-      this.handleGetListCourse();
+      await this.handleGetListCourse();
 
       this.overlay.show = false;
     },
@@ -763,6 +788,17 @@ export default {
           this.listStudentIdSelected = this.getListKey('id', res['data']['students']);
 
           this.listCourseSelected = res['data']['courses'];
+
+          let idx = 0;
+          const len = this.listCourseSelected.length;
+
+          while (idx < len) {
+            const LIST_TEACHER = await this.handleGetListTeacherInCourse(this.listCourseSelected[idx]['id']);
+            this.listCourseSelected[idx]['teacher_list'] = await this.createSelectTeacher(LIST_TEACHER);
+
+            idx++;
+          }
+
           this.listCourseIdSelected = this.getListKey('id', res['data']['courses']);
         } else {
           NotifyClasses.server(res['message']);
@@ -836,6 +872,7 @@ export default {
       }
     },
     async handleDeleteClasses(id) {
+      this.isProcess = true;
       const URL = `${URL_API.deleteClasses}/${id}`;
 
       try {
@@ -848,7 +885,10 @@ export default {
         } else {
           NotifyClasses.server(res['message']);
         }
+
+        this.isProcess = false;
       } catch {
+        this.isProcess = true;
         NotifyClasses.exception();
       }
     },
@@ -966,7 +1006,41 @@ export default {
       this.listStudentSelected.splice(index, 1);
       this.listStudentIdSelected = this.removeItemInArr(this.listStudentIdSelected, student.id);
     },
-    addCourseToClass(course, index) {
+    async handleGetListTeacherInCourse(course_id) {
+      const URL = `${URL_API.getOneCourse}/${course_id}`;
+
+      try {
+        const res = await getOneCourse(URL);
+
+        return res['data']['teachers'];
+      } catch (error) {
+        NotifyClasses.server(error);
+        return [];
+      }
+    },
+    createSelectTeacher(list) {
+      let idx = 0;
+      const len = list.length;
+      const result = [];
+
+      while (idx < len) {
+        result.push({
+          value: list[idx]['id'],
+          text: `${list[idx]['user_code']} - ${list[idx]['name']}`,
+        });
+
+        idx++;
+      }
+
+      return result;
+    },
+    async addCourseToClass(course, index) {
+      course['start_date'] = '';
+      course['end_date'] = '';
+      course['teacher_id'] = null;
+      const LIST_TEACHER = await this.handleGetListTeacherInCourse(course.id);
+      course['teacher_list'] = this.createSelectTeacher(LIST_TEACHER);
+
       this.listCourseSelected.push(course);
       this.listCourseIdSelected.push(course.id);
     },
@@ -1056,6 +1130,7 @@ export default {
           course_id: listCourse[idx]['id'],
           start_date: listCourse[idx]['start_date'],
           end_date: listCourse[idx]['end_date'],
+          teacher_id: listCourse[idx]['teacher_id'],
         });
 
         idx++;

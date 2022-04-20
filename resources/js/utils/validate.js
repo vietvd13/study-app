@@ -44,3 +44,8 @@ export function validCourseName(string) {
   const re = /\S/;
   return re.test(string);
 }
+
+export function validateString(string) {
+  const re = /\S/;
+  return re.test(string);
+}

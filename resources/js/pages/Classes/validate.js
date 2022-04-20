@@ -54,7 +54,7 @@ export function validateAssingCourse(list) {
       const END_DATE = new Date(list[idx]['end_date']);
       const START_DATE = new Date(list[idx]['start_date']);
 
-      if (END_DATE.getTime() > START_DATE.getTime()) {
+      if (END_DATE.getTime() > START_DATE.getTime() && list['teacher_id'] !== null) {
         count = count + 1;
       }
     }

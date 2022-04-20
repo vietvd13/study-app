@@ -54,10 +54,14 @@
                 show-empty
                 :fields="fields"
                 :items="items"
-                :total-rows="pagination.total"
-                :per-page="pagination.perPage"
                 aria-controls="table-course"
               >
+                <template #cell(docs)="data">
+                  <b-button class="btn-custom-green" size="sm" @click="onClickDocs(data.item)">
+                    <i class="fas fa-file" />
+                  </b-button>
+                </template>
+
                 <template #cell(arrangement)="data">
                   <b-button class="btn-custom-green" size="sm" @click="onClickAssignTeacher(data.item)">
                     <i class="fas fa-chalkboard-teacher" />
@@ -122,15 +126,16 @@
         <template #default>
           <div class="item-input">
             <label for="form-name">{{ $t('COURSE.LABEL_FORM_NAME') }}</label>
-            <b-form-input id="form-name" v-model="isCourse.name" :placeholder="$t('COURSE.PLACEHOLDER_FORM_NAME')" />
+            <b-form-input id="form-name" v-model="isCourse.name" :placeholder="$t('COURSE.PLACEHOLDER_FORM_NAME')" :disabled="isProcess" />
           </div>
         </template>
 
         <template #modal-footer>
-          <b-button variant="outline-danger" @click="onClickCancelModalForm()">
+          <b-button variant="outline-danger" :disabled="isProcess" @click="onClickCancelModalForm()">
             {{ $t('COURSE.BUTTON_CANCEL') }}
           </b-button>
-          <b-button class="btn-custom-green" @click="onClickSumbitModalForm()">
+          <b-button class="btn-custom-green" :disabled="isProcess" @click="onClickSumbitModalForm()">
+            <i v-if="isProcess" class="fad fa-spinner-third fa-spin" />
             {{ $t('COURSE.BUTTON_SUBMIT') }}
           </b-button>
         </template>
@@ -153,11 +158,12 @@
         </template>
 
         <template #modal-footer>
-          <b-button class="btn-custom-outline-charade" @click="onClickCancelModalDelete()">
+          <b-button class="btn-custom-outline-charade" :disabled="isProcess" @click="onClickCancelModalDelete()">
             {{ $t('COURSE.BUTTON_CANCEL') }}
           </b-button>
 
-          <b-button variant="danger" @click="onClickSubmitModalDelete()">
+          <b-button variant="danger" :disabled="isProcess" @click="onClickSubmitModalDelete()">
+            <i v-if="isProcess" class="fad fa-spinner-third fa-spin" />
             {{ $t('COURSE.BUTTON_SUBMIT') }}
           </b-button>
         </template>
@@ -165,7 +171,7 @@
 
       <b-modal
         v-model="visibleModalAssignTeacher"
-        size="lg"
+        size="xl"
         no-close-on-esc
         no-close-on-backdrop
         hide-header-close
@@ -217,7 +223,7 @@
                             <div class="align-self-center">
                               <span><b>{{ teacher.user_code }}</b></span>
                             </div>
-                            <b-button variant="danger" size="sm" @click="deleteTeacherInCourse(teacher, index)">
+                            <b-button variant="danger" size="sm" :disabled="isProcess" @click="deleteTeacherInCourse(teacher, index)">
                               <i class="fas fa-trash" />
                             </b-button>
                           </div>
@@ -232,17 +238,6 @@
                           </div>
                           <div>
                             <span><b>{{ $t('ACCOUNT.LABEL_FORM_EMAIL') }}:</b>{{ teacher.email }}</span>
-                          </div>
-                          <div>
-                            <span>
-                              <b>{{ $t('ACCOUNT.LABEL_FORM_BLIND') }}:</b>
-                              <b-badge v-if="teacher.status === 1" variant="danger">
-                                {{ $t('CLASSES.TEXT_YES') }}
-                              </b-badge>
-                              <b-badge v-if="teacher.status === 0" variant="success">
-                                {{ $t('CLASSES.TEXT_NO') }}
-                              </b-badge>
-                            </span>
                           </div>
                           <div>
                             <span>
@@ -295,7 +290,7 @@
                               <span><b>{{ teacher.user_code }}</b></span>
                             </div>
                             <template v-if="!listTeacherIdSelected.includes(teacher.id)">
-                              <b-button class="btn-custom-green" size="sm" @click="addTeacherToCourse(teacher, index)">
+                              <b-button class="btn-custom-green" size="sm" :disabled="isProcess" @click="addTeacherToCourse(teacher, index)">
                                 <i class="fas fa-plus-circle" />
                               </b-button>
                             </template>
@@ -311,17 +306,6 @@
                           </div>
                           <div>
                             <span><b>{{ $t('ACCOUNT.LABEL_FORM_EMAIL') }}:</b>{{ teacher.email }}</span>
-                          </div>
-                          <div>
-                            <span>
-                              <b>{{ $t('ACCOUNT.LABEL_FORM_BLIND') }}:</b>
-                              <b-badge v-if="teacher.status === 1" variant="danger">
-                                {{ $t('CLASSES.TEXT_YES') }}
-                              </b-badge>
-                              <b-badge v-if="teacher.status === 0" variant="success">
-                                {{ $t('CLASSES.TEXT_NO') }}
-                              </b-badge>
-                            </span>
                           </div>
                           <div>
                             <span>
@@ -351,6 +335,7 @@
                   align="right"
                   :total-rows="paginationTeacher.total"
                   :per-page="paginationTeacher.perPage"
+                  :disabled="isProcess"
                 />
               </div>
             </b-col>
@@ -358,11 +343,125 @@
         </template>
 
         <template #modal-footer>
-          <b-button class="btn-custom-outline-charade" @click="onClickCancelAssignTeacher()">
+          <b-button variant="outline-danger" :disabled="isProcess" @click="onClickCancelAssignTeacher()">
             {{ $t('COURSE.BUTTON_CANCEL') }}
           </b-button>
 
-          <b-button variant="danger" @click="onClickSubmitAssignTeacher()">
+          <b-button class="btn-custom-green" :disabled="isProcess" @click="onClickSubmitAssignTeacher()">
+            <i v-if="isProcess" class="fad fa-spinner-third fa-spin" />
+            {{ $t('COURSE.BUTTON_SUBMIT') }}
+          </b-button>
+        </template>
+      </b-modal>
+
+      <b-modal
+        v-model="visibleModalDocs"
+        size="xl"
+        scrollable
+        no-close-on-esc
+        no-close-on-backdrop
+        hide-header-close
+        body-class="modal-docs-content"
+        footer-class="modal-docs-footer"
+      >
+        <template #modal-header>
+          <h5>{{ $t('COURSE.MODAL_TITLE_DOCS') }}</h5>
+        </template>
+
+        <template #default>
+          <b-row>
+            <b-col>
+              <div class="item-input">
+                <label>{{ $t('COURSE.LABEL_DOCS_NAME') }}</label>
+                <b-form-input v-model="isDocs.name" :placeholder="$t('COURSE.PLACEHOLDER_DOCS_NAME')" :disabled="isProcess" />
+              </div>
+            </b-col>
+          </b-row>
+          <b-row>
+            <b-col>
+              <div class="item-input">
+                <label>{{ $t('COURSE.LABEL_FORM_DESCRIPTION') }}</label>
+                <b-form-textarea
+                  v-model="isDocs.description"
+                  :placeholder="$t('COURSE.PLACEHOLDER_DOCS_DESCRIPTION')"
+                  rows="5"
+                  max-rows="10"
+                  :disabled="isProcess"
+                />
+              </div>
+            </b-col>
+          </b-row>
+          <b-row>
+            <b-col>
+              <div class="item-input">
+                <label>{{ $t('COURSE.LABEL_FORM_FILE') }}</label>
+                <input id="input-docs" type="file" name="input-docs" @change="chooseFile">
+                <div>
+                  <b-button
+                    class="btn-custom-green"
+                    @click="clickChooseFile()"
+                  >
+                    <i class="fas fa-cloud-upload-alt" style="margin-right: 10px;" />
+                    {{ $t('COURSE.PLACEHOLDER_DOCS_FILE') }}
+                  </b-button>
+                </div>
+              </div>
+            </b-col>
+          </b-row>
+          <b-row v-if="isDocs.file">
+            <b-col>
+              <div class="item-input">
+                <i class="fas fa-file" />
+                <span style="margin-left: 5px;">{{ isDocs.file.name }}</span>
+              </div>
+            </b-col>
+          </b-row>
+          <b-row>
+            <b-col>
+              <b-table
+                id="table-docs"
+                bordered
+                striped
+                responsive
+                no-sort-reset
+                no-local-sorting
+                show-empty
+                :fields="fieldsDocs"
+                :items="documents"
+              >
+                <template #cell(file)="data">
+                  <div class="d-flex justify-content-center">
+                    <b-row>
+                      <b-col>
+                        <b-button class="btn-custom-green" size="sm" :disabled="isProcess" @click="downloadDocs(data.item)">
+                          <i class="fas fa-cloud-download" />
+                        </b-button>
+                      </b-col>
+                      <b-col>
+                        <b-button variant="danger" size="sm" :disabled="isProcess" @click="onClickRemoveDocs(data.item)">
+                          <i class="fas fa-trash" />
+                        </b-button>
+                      </b-col>
+                    </b-row>
+                  </div>
+                </template>
+                <template #empty>
+                  <span class="d-flex justify-content-center">
+                    {{ $t('COURSE.TABLE_CONTENT_NO_DATA') }}
+                  </span>
+                </template>
+              </b-table>
+            </b-col>
+          </b-row>
+        </template>
+
+        <template #modal-footer>
+          <b-button variant="outline-danger" :disabled="isProcess" @click="onClickCancelDocs()">
+            {{ $t('COURSE.BUTTON_CANCEL') }}
+          </b-button>
+
+          <b-button class="btn-custom-green" :disabled="isProcess" @click="onClickSubmitDocs()">
+            <i v-if="isProcess" class="fad fa-spinner-third fa-spin" />
             {{ $t('COURSE.BUTTON_SUBMIT') }}
           </b-button>
         </template>
@@ -383,6 +482,8 @@ const URL_API = {
   deleteCourse: '/courses',
   getTeacher: '/user/teacher',
   assignTeacher: '/course/add-teacher',
+  uploadDocs: '/course/add-document',
+  deleteDocs: '/course/delete-document',
 };
 
 import {
@@ -393,11 +494,14 @@ import {
   deleteCourse,
   getTeacher,
   assignTeacher,
+  uploadDocs,
+  deleteDocs,
 } from '@/api/modules/course';
 
 import {
   validateAddCourse,
   validateUpdateCourse,
+  validateUploadDocs,
 } from './validate';
 
 import NotifyCourse from '@/toast/modules/course';
@@ -424,6 +528,7 @@ export default {
       },
 
       items: [],
+      documents: [],
 
       pagination: {
         page: 1,
@@ -443,9 +548,17 @@ export default {
       visibleModalForm: false,
       visibleModalDelete: false,
       visibleModalAssignTeacher: false,
+      visibleModalDocs: false,
       isAction: '',
       idHandle: null,
       isProcess: false,
+
+      isDocs: {
+        course_id: null,
+        name: '',
+        description: '',
+        file: null,
+      },
     };
   },
   computed: {
@@ -457,6 +570,12 @@ export default {
           sortable: true,
           thClass: 'base-th',
           tdClass: 'base-td',
+        },
+        {
+          key: 'docs',
+          label: this.$t('COURSE.TABLE_TITLE_DOCS'),
+          thClass: 'base-th base-docs',
+          tdClass: 'base-td base-docs',
         },
         {
           key: 'arrangement',
@@ -472,6 +591,28 @@ export default {
         },
       ];
     },
+    fieldsDocs() {
+      return [
+        {
+          key: 'name',
+          label: this.$t('COURSE.LABEL_DOCS_NAME'),
+          thClass: 'base-th',
+          tdClass: 'base-td',
+        },
+        {
+          key: 'description',
+          label: this.$t('COURSE.LABEL_FORM_DESCRIPTION'),
+          thClass: 'base-th',
+          tdClass: 'base-td',
+        },
+        {
+          key: 'file',
+          label: this.$t('COURSE.LABEL_FORM_FILE'),
+          thClass: 'base-th base-docs',
+          tdClass: 'base-td base-docs',
+        },
+      ];
+    },
     currentPageCourse() {
       return this.pagination.page;
     },
@@ -483,10 +624,10 @@ export default {
     currentPageCourse() {
       this.initData();
     },
-    currentPageStudent() {
+    async currentPageStudent() {
       this.overlay.show = true;
 
-      this.handleGetListTeacher();
+      await this.handleGetListTeacher();
 
       this.overlay.show = false;
     },
@@ -532,6 +673,7 @@ export default {
           this.isCourse.name = res['data']['name'];
 
           this.listTeacherSelected = res['data']['teachers'];
+          this.documents = res['data']['documents'];
           this.listTeacherIdSelected = this.getListKey('id', res['data']['teachers']);
         } else {
           NotifyCourse.server(res['message']);
@@ -605,6 +747,7 @@ export default {
       }
     },
     async handleDeleteCourse(id) {
+      this.isProcess = true;
       const URL = `${URL_API.deleteCourse}/${id}`;
 
       try {
@@ -617,7 +760,9 @@ export default {
         } else {
           NotifyCourse.server(res['message']);
         }
+        this.isProcess = false;
       } catch {
+        this.isProcess = false;
         NotifyCourse.exception();
       }
     },
@@ -743,7 +888,6 @@ export default {
       }
     },
     async onClickAssignTeacher(item) {
-      console.log(item);
       this.idHandle = item.id;
 
       await this.handleGetOneCourse(item.id);
@@ -778,6 +922,101 @@ export default {
       }
 
       return result;
+    },
+    async onClickDocs(item) {
+      this.isDocs.course_id = item.id;
+
+      await this.handleGetOneCourse(this.isDocs.course_id);
+
+      this.visibleModalDocs = true;
+    },
+    onClickCancelDocs() {
+      this.visibleModalDocs = false;
+      this.isDocs = {
+        course_id: null,
+        name: '',
+        description: '',
+        file: null,
+      };
+      document.getElementById('input-docs').value = null;
+    },
+    clickChooseFile() {
+      const FILE = document.getElementById('input-docs');
+      FILE.click();
+    },
+    chooseFile(event) {
+      this.isDocs.file = event.target.files[0];
+    },
+    async handleUploadDocs() {
+      try {
+        const DATA = new FormData();
+        DATA.append('course_id', this.isDocs.course_id);
+        DATA.append('name', this.isDocs.name);
+        DATA.append('description', this.isDocs.description);
+        DATA.append('files[0]', this.isDocs.file);
+
+        const URL = URL_API.uploadDocs;
+
+        const res = await uploadDocs(URL, DATA);
+
+        if (res) {
+          NotifyCourse.uploadDocsSuccess();
+        }
+
+        this.isDocs = {
+          course_id: null,
+          name: '',
+          description: '',
+          file: null,
+        };
+        document.getElementById('input-docs').value = null;
+        this.visibleModalDocs = false;
+      } catch (error) {
+        this.visibleModalDocs = false;
+        this.isProcess = false;
+        NotifyCourse.updateError(error);
+      }
+    },
+    async onClickSubmitDocs() {
+      this.isProcess = true;
+      const DATA = {
+        name: this.isDocs.name,
+        description: this.isDocs.description,
+        file: this.isDocs.file,
+      };
+
+      if (validateUploadDocs(DATA)) {
+        await this.handleUploadDocs();
+      } else {
+        NotifyCourse.validateDocs();
+      }
+
+      this.isProcess = false;
+    },
+    downloadDocs(item) {
+      window.open(`/storage/${item['path']}`);
+    },
+    async handleDeleteDocs(item) {
+      this.isProcess = true;
+      try {
+        const URL = `${URL_API.deleteDocs}?course_id=${item['course_id']}&document_id=${item['id']}`;
+
+        const res = await deleteDocs(URL);
+
+        if (res) {
+          await this.handleGetOneCourse(item.course_id);
+
+          NotifyCourse.deleteDocsSuccess();
+        }
+
+        this.isProcess = false;
+      } catch (error) {
+        this.isProcess = false;
+        NotifyCourse.updateError(error);
+      }
+    },
+    onClickRemoveDocs(item) {
+      this.handleDeleteDocs(item);
     },
   },
 };
@@ -837,6 +1076,10 @@ export default {
                     }
 
                     td.base-td.base-actions {
+                        width: 200px;
+                    }
+
+                    td.base-td.base-docs {
                         width: 200px;
                     }
 
@@ -945,6 +1188,37 @@ export default {
                 }
             }
         }
+    }
+}
+
+.modal-docs-content {
+    .item-input {
+        margin-bottom: 15px;
+
+        #input-docs {
+            display: none;
+        }
+    }
+}
+
+::v-deep table#table-docs {
+    thead {
+        tr {
+            th.base-th {
+                min-width: 130px;
+                background-color: $charade;
+                color: $white;
+                text-align: center;
+            }
+        }
+    }
+
+    td.base-td {
+        text-align: center;
+    }
+
+    td.base-docs {
+        width: 50px;
     }
 }
 

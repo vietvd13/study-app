@@ -1,10 +1,9 @@
 export default {
   TOAST: {
-    SUCCESS: 'Sucess',
+    SUCCESS: 'Success',
     WARNING: 'Warning',
     DANGER: 'Error',
   },
-
   ROUTER: {
     LOGIN: 'Account Login',
     PAGE_NOT_FOUND: 'Page Not Found',
@@ -99,6 +98,10 @@ export default {
     TITLE_LIST_STUDENT_IN_SYSTEM: 'List student in system',
     TITLE_NUMBER_STUDENT: 'Total number of students: {total}',
 
+    TITLE_LIST_TEACHER_IN_COURSE: 'Course: {name}',
+    TITLE_LIST_TEACHER_IN_SYSTEM: 'List teacher in system',
+    TITLE_NUMBER_TEACHER: 'Total number of teachers: {total}',
+
     TITLE_LIST_COURSE_IN_CLASS: 'Class: {name}',
     TITLE_LIST_COURSE_IN_SYSTEM: 'List course in system',
 
@@ -119,6 +122,9 @@ export default {
 
     LABLE_START: 'Start date',
     LABLE_END: 'End date',
+    LABLE_TEACHER: 'Teacher',
+
+    PLACEHOLDER_SELECT_TEACHER: 'Please select teacher',
   },
   COURSE: {
     LABEL_FILTER_NAME: 'Name',
@@ -131,6 +137,8 @@ export default {
 
     TABLE_TITLE_NAME: 'Name',
     TABLE_TITLE_LEVEL: 'Level',
+    TABLE_TITLE_DOCS: 'Docs',
+    TABLE_TITLE_ARRANGEMENT: 'Arrangement',
     TABLE_TITLE_ACTIONS: 'Actions',
 
     TABLE_CONTENT_NO_DATA: 'No data',
@@ -138,13 +146,21 @@ export default {
     MODAL_TITLE_ADD: 'Add new course',
     MODAL_TITLE_UPDATE: 'Update an course',
     MODAL_TITLE_DELETE: 'Delete an course',
+    MODAL_TITLE_ASSIGN_TEACHER: 'Arrange teacher',
+    MODAL_TITLE_DOCS: 'Docs',
     CONTENT_MODAL_DELETE: 'You will delete an course from the system. Are you sure?',
 
     LABEL_FORM_NAME: 'Name',
     LABEL_FORM_LEVEL: 'Level',
+    LABEL_DOCS_NAME: 'Name',
+    LABEL_FORM_DESCRIPTION: 'Description',
+    LABEL_FORM_FILE: 'File',
 
     PLACEHOLDER_FORM_NAME: 'Enter name',
     PLACEHOLDER_FORM_LEVEL: 'Please select',
+    PLACEHOLDER_DOCS_NAME: 'Please input name',
+    PLACEHOLDER_DOCS_DESCRIPTION: 'Please input description',
+    PLACEHOLDER_DOCS_FILE: 'Choose a file...',
 
     BUTTON_SUBMIT: 'Submit',
     BUTTON_DELETE: 'Delete',
@@ -224,8 +240,10 @@ export default {
       DELETE_FAILED: 'You have failed to delete your classes from the system',
 
       VALIDATE_NAME: 'Class name is incorrect',
+      VALIDATE_LIST_ASSIGN_COURSE: 'The list of course is not correct, please check again',
 
-      ASSIGN_STUDENT_SUCCESS: 'You have successfully arranged your students for the class',
+      ASSIGN_STUDENT_SUCCESS: 'You have successfully arranged students for the class',
+      ASSIGN_COURSE_SUCCESS: 'You have successfully arranged courses for the class',
     },
     COURSE: {
       ADD_SUCCESS: 'You have successfully created course {name}',
@@ -234,8 +252,12 @@ export default {
       UPDATE_FAILED: 'You have failed to edit your course information',
       DELETE_SUCCESS: 'You have deleted an course from the system',
       DELETE_FAILED: 'You have failed to delete your course from the system',
+      ASSIGN_TEACHER_SUCCESS: 'You have successfully arranged teacher for the course',
+      UPLOAD_DOCS_SUCCESS: 'You have successfully added course material',
+      DELETE_DOCS_SUCCESS: 'You have successfully deleted the material from the course',
 
       VALIDATE_NAME: 'Course name is incorrect',
+      VALIDATE_UPLOAD_DOCS: 'You have not entered the correct information for uploading documents',
     },
   },
 };

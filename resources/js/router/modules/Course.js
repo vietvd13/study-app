@@ -6,7 +6,7 @@ const Course = {
   meta: {
     title: 'ROUTER.COURSE',
     icon: 'fad fa-books',
-    roles: ['ADMIN', 'TEACHER'],
+    roles: ['ADMIN', 'TEACHER', 'STUDENT'],
   },
   component: Layout,
   redirect: { name: 'CourseIndex' },

@@ -32,7 +32,7 @@
 
       <div class="course__content">
         <b-card>
-          <b-row>
+          <b-row v-if="hasRole(getCurrentRole(), [CONST_ROLE.LIST_ROLE.ADMIN])">
             <b-col>
               <div class="d-flex justify-content-end course__content__add">
                 <b-button class="btn-custom-green" @click="onClickAdd()">
@@ -184,7 +184,7 @@
 
         <template #default>
           <b-row>
-            <b-col cols="12" sm="12" md="12" lg="12" xl="6">
+            <b-col cols="12" sm="12" md="12" lg="12" :xl="hasRole(getCurrentRole(), [CONST_ROLE.LIST_ROLE.ADMIN]) ? 6 : 12">
 
               <div class="title-list">
                 <b-card>
@@ -223,7 +223,7 @@
                             <div class="align-self-center">
                               <span><b>{{ teacher.user_code }}</b></span>
                             </div>
-                            <b-button variant="danger" size="sm" :disabled="isProcess" @click="deleteTeacherInCourse(teacher, index)">
+                            <b-button v-if="hasRole(getCurrentRole(), [CONST_ROLE.LIST_ROLE.ADMIN])" variant="danger" size="sm" :disabled="isProcess" @click="deleteTeacherInCourse(teacher, index)">
                               <i class="fas fa-trash" />
                             </b-button>
                           </div>
@@ -258,7 +258,7 @@
               </div>
             </b-col>
 
-            <b-col cols="12" sm="12" md="12" lg="12" xl="6">
+            <b-col v-if="hasRole(getCurrentRole(), [CONST_ROLE.LIST_ROLE.ADMIN])" cols="12" sm="12" md="12" lg="12" xl="6">
 
               <div class="title-list">
                 <b-card>
@@ -344,10 +344,10 @@
 
         <template #modal-footer>
           <b-button variant="outline-danger" :disabled="isProcess" @click="onClickCancelAssignTeacher()">
-            {{ $t('COURSE.BUTTON_CANCEL') }}
+            {{ hasRole(getCurrentRole(), [CONST_ROLE.LIST_ROLE.ADMIN]) ? $t('COURSE.BUTTON_CANCEL') : $t('COURSE.BUTTON_CLOSE') }}
           </b-button>
 
-          <b-button class="btn-custom-green" :disabled="isProcess" @click="onClickSubmitAssignTeacher()">
+          <b-button v-if="hasRole(getCurrentRole(), [CONST_ROLE.LIST_ROLE.ADMIN])" class="btn-custom-green" :disabled="isProcess" @click="onClickSubmitAssignTeacher()">
             <i v-if="isProcess" class="fad fa-spinner-third fa-spin" />
             {{ $t('COURSE.BUTTON_SUBMIT') }}
           </b-button>
@@ -369,7 +369,7 @@
         </template>
 
         <template #default>
-          <b-row>
+          <b-row v-if="hasRole(getCurrentRole(), [CONST_ROLE.LIST_ROLE.ADMIN, CONST_ROLE.LIST_ROLE.TEACHER])">
             <b-col>
               <div class="item-input">
                 <label>{{ $t('COURSE.LABEL_DOCS_NAME') }}</label>
@@ -377,7 +377,7 @@
               </div>
             </b-col>
           </b-row>
-          <b-row>
+          <b-row v-if="hasRole(getCurrentRole(), [CONST_ROLE.LIST_ROLE.ADMIN, CONST_ROLE.LIST_ROLE.TEACHER])">
             <b-col>
               <div class="item-input">
                 <label>{{ $t('COURSE.LABEL_FORM_DESCRIPTION') }}</label>
@@ -391,7 +391,7 @@
               </div>
             </b-col>
           </b-row>
-          <b-row>
+          <b-row v-if="hasRole(getCurrentRole(), [CONST_ROLE.LIST_ROLE.ADMIN, CONST_ROLE.LIST_ROLE.TEACHER])">
             <b-col>
               <div class="item-input">
                 <label>{{ $t('COURSE.LABEL_FORM_FILE') }}</label>
@@ -437,7 +437,7 @@
                           <i class="fas fa-cloud-download" />
                         </b-button>
                       </b-col>
-                      <b-col>
+                      <b-col v-if="hasRole(getCurrentRole(), [CONST_ROLE.LIST_ROLE.ADMIN, CONST_ROLE.LIST_ROLE.TEACHER])">
                         <b-button variant="danger" size="sm" :disabled="isProcess" @click="onClickRemoveDocs(data.item)">
                           <i class="fas fa-trash" />
                         </b-button>
@@ -457,10 +457,10 @@
 
         <template #modal-footer>
           <b-button variant="outline-danger" :disabled="isProcess" @click="onClickCancelDocs()">
-            {{ $t('COURSE.BUTTON_CANCEL') }}
+            {{ hasRole(getCurrentRole(), [CONST_ROLE.LIST_ROLE.ADMIN, CONST_ROLE.LIST_ROLE.TEACHER]) ? $t('COURSE.BUTTON_CANCEL') : $t('COURSE.BUTTON_CLOSE') }}
           </b-button>
 
-          <b-button class="btn-custom-green" :disabled="isProcess" @click="onClickSubmitDocs()">
+          <b-button v-if="hasRole(getCurrentRole(), [CONST_ROLE.LIST_ROLE.ADMIN, CONST_ROLE.LIST_ROLE.TEACHER])" class="btn-custom-green" :disabled="isProcess" @click="onClickSubmitDocs()">
             <i v-if="isProcess" class="fad fa-spinner-third fa-spin" />
             {{ $t('COURSE.BUTTON_SUBMIT') }}
           </b-button>
@@ -504,12 +504,20 @@ import {
   validateUploadDocs,
 } from './validate';
 
+import { isAvailable } from '@/utils/isAvailable';
+import { hasRole, getCurrentRole } from '@/utils/hasRole';
+import CONST_ROLE from '@/const/role';
+
 import NotifyCourse from '@/toast/modules/course';
 
 export default {
   name: 'Course',
   data() {
     return {
+      hasRole,
+      getCurrentRole,
+      CONST_ROLE,
+
       overlay: {
         show: false,
         variant: 'light',
@@ -563,7 +571,7 @@ export default {
   },
   computed: {
     fields() {
-      return [
+      const HEADER = [
         {
           key: 'name',
           label: this.$t('COURSE.TABLE_TITLE_NAME'),
@@ -583,13 +591,18 @@ export default {
           thClass: 'base-th base-arrangement',
           tdClass: 'base-td base-arrangement',
         },
-        {
+      ];
+
+      if (getCurrentRole() === CONST_ROLE.LIST_ROLE.ADMIN) {
+        HEADER.push({
           key: 'actions',
           lebael: this.$t('COURSE.TABLE_TITLE_ACTIONS'),
           thClass: 'base-th base-actions',
           tdClass: 'base-td base-actions',
-        },
-      ];
+        });
+      }
+
+      return HEADER;
     },
     fieldsDocs() {
       return [
@@ -938,7 +951,10 @@ export default {
         description: '',
         file: null,
       };
-      document.getElementById('input-docs').value = null;
+
+      if (isAvailable(document.getElementById('input-docs'), 'value')) {
+        document.getElementById('input-docs').value = null;
+      }
     },
     clickChooseFile() {
       const FILE = document.getElementById('input-docs');

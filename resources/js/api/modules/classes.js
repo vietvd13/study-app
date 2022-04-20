@@ -35,3 +35,7 @@ export function assignCourse(url, data) {
 export function postActivity(url, data) {
   return request.postRequest(url, data);
 }
+
+export function getAllActivity(url, params) {
+  return request.getRequest(url, params);
+}

@@ -592,11 +592,12 @@
         no-close-on-esc
         no-close-on-backdrop
         hide-header-close
+        scrollable
         body-class="modal-activity-content"
         footer-class="modal-activity-footer"
       >
         <template #modal-header>
-          <h5>{{ $t('CLASSES.MODAL_TITLE_ACTIVITY') }}</h5>
+          <h5>{{ $t('CLASSES.MODAL_TITLE_ACTIVITY') }}: {{ isClassHandle.name }}</h5>
         </template>
 
         <template #default>
@@ -618,6 +619,45 @@
                   :placeholder="$t('CLASSES.PLACEHOLDER_FORM_DESCRIPTION')"
                   rows="5"
                   max-rows="10"
+                  :disabled="isProcess"
+                />
+              </div>
+            </b-col>
+          </b-row>
+
+          <b-row>
+            <b-col>
+              <div class="item-input">
+                <div v-for="(activity) in itemActivity" :key="`activity-${activity.id}`" class="item-activity">
+                  <b-card>
+                    <template #header>
+                      <div class="d-flex justify-content-between">
+                        <div class="align-self-center">
+                          <span><b>{{ activity.name }}</b></span>
+                        </div>
+                        <b-button v-if="hasRole(getCurrentRole(), [CONST_ROLE.LIST_ROLE.ADMIN])" class="btn-custom-green" size="sm" :disabled="isProcess">
+                          <i class="fas fa-pencil-alt" />
+                        </b-button>
+                      </div>
+                    </template>
+
+                    <template #default>
+                      {{ activity.description }}
+                    </template>
+
+                  </b-card>
+                </div>
+              </div>
+              <div class="pagination-course">
+                <b-pagination
+                  v-model="paginationActivity.page"
+                  pills
+                  size="sm"
+                  first-number
+                  last-number
+                  align="right"
+                  :total-rows="paginationActivity.total"
+                  :per-page="paginationActivity.perPage"
                   :disabled="isProcess"
                 />
               </div>
@@ -656,6 +696,7 @@ const URL_API = {
   getOneCourse: '/courses',
   assignCourse: '/classes/courses',
   postActivity: '/class/action/create-action',
+  getAllActivity: '/class/action/teacher/actions',
 };
 import {
   getAllClasses,
@@ -667,6 +708,7 @@ import {
   assignStudent,
   assignCourse,
   postActivity,
+  getAllActivity,
 } from '@/api/modules/classes';
 import {
   getAllCourse,
@@ -716,6 +758,7 @@ export default {
       },
 
       items: [],
+      itemActivity: [],
 
       pagination: {
         page: 1,
@@ -728,6 +771,11 @@ export default {
         total: 0,
       },
       paginationCourse: {
+        page: 1,
+        perPage: 10,
+        total: 0,
+      },
+      paginationActivity: {
         page: 1,
         perPage: 10,
         total: 0,
@@ -796,6 +844,19 @@ export default {
 
       return HEADER;
     },
+    fieldsActivity() {
+      const HEADER = [
+        {
+          key: 'name',
+          label: this.$t('CLASSES.TABLE_TITLE_NAME'),
+          sortable: true,
+          thClass: 'base-th',
+          tdClass: 'base-td',
+        },
+      ];
+
+      return HEADER;
+    },
     locale() {
       const language = this.$store.getters.language;
 
@@ -816,6 +877,9 @@ export default {
     },
     currentPageCourse() {
       return this.paginationCourse.page;
+    },
+    currentPageActivity() {
+      return this.paginationActivity.page;
     },
   },
   watch: {
@@ -839,6 +903,9 @@ export default {
       await this.handleGetListCourse();
 
       this.overlay.show = false;
+    },
+    async currentPageActivity() {
+      await this.handleGetListActivity();
     },
   },
   created() {
@@ -1255,20 +1322,45 @@ export default {
 
       this.isProcess = false;
     },
-    onClickActivity(item) {
+    async handleGetListActivity() {
+      const URL = `${URL_API.getAllActivity}`;
+      const PARAMS = {
+        class_id: this.isClassHandle.id,
+        page: this.paginationActivity.page,
+        per_page: this.paginationActivity.perPage,
+      };
+
+      try {
+        const res = await getAllActivity(URL, PARAMS);
+
+        this.itemActivity = res['data'];
+        this.paginationActivity.page = res.current_page;
+        this.paginationActivity.total = res.total;
+
+        console.log(res);
+      } catch (error) {
+        console.log(error);
+        NotifyClasses.server(error['response']['data']['message']);
+      }
+    },
+    async onClickActivity(item) {
+      this.isResetModalActivity();
+
       this.isClassHandle.id = item.id;
       this.isClassHandle.name = item.name;
       this.isClassHandle.level = 1;
 
-      this.visibleModalActivity = true;
+      await this.handleGetListActivity(item.id);
 
-      console.log(this.isClassHandle);
+      this.visibleModalActivity = true;
     },
     isResetModalActivity() {
-      this.isActivity = {
+      const isActivity = {
         name: '',
         description: '',
       };
+
+      this.isActivity = isActivity;
     },
     onClickCancelActivity() {
       this.visibleModalActivity = false;
@@ -1287,9 +1379,8 @@ export default {
         try {
           const res = await postActivity(URL, DATA);
 
-          if (res['status'] === 200) {
+          if (res) {
             this.visibleModalActivity = false;
-            this.isResetModalActivity();
             NotifyClasses.createActivitySuccess();
           } else {
             NotifyClasses.server(res['message']);
@@ -1521,6 +1612,23 @@ export default {
                     }
                 }
             }
+        }
+    }
+}
+
+.modal-activity-content {
+    .item-input {
+
+        .item-activity {
+            .card-header {
+                padding: 0.5rem 0.75rem;
+            }
+
+            .card-body {
+                padding: 0.5rem 0.75rem;
+            }
+
+            margin-bottom: 15px;
         }
     }
 }

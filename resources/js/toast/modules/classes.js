@@ -23,11 +23,17 @@ export default {
   validateForm(message) {
     Notification.notifyWarning(i18n.t(message));
   },
+  validateCreateActivity() {
+    Notification.notifyWarning(i18n.t('NOTIFY.CLASSES.VALIDATE_CREATE_ACTIVITY'));
+  },
   assignStudentSuccess() {
     Notification.notifySuccess(i18n.t('NOTIFY.CLASSES.ASSIGN_STUDENT_SUCCESS'));
   },
   assignCourseSuccess() {
     Notification.notifySuccess(i18n.t('NOTIFY.CLASSES.ASSIGN_COURSE_SUCCESS'));
+  },
+  createActivitySuccess() {
+    Notification.notifySuccess(i18n.t('NOTIFY.CLASSES.CREATE_ACTIVITY_SUCCESS'));
   },
   exception() {
     Notification.notifyError(i18n.t('NOTIFY.SYSTEM.EXCEPTION'));

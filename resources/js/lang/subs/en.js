@@ -80,6 +80,7 @@ export default {
 
     TABLE_TITLE_NAME: 'Name',
     TABLE_TITLE_LEVEL: 'Level',
+    TABLE_TITLE_ACTIVITY: 'Activity',
     TABLE_TITLE_ARRANGEMENT: 'Arrangement',
     TABLE_TITLE_ACTIONS: 'Actions',
 
@@ -90,10 +91,12 @@ export default {
     MODAL_TITLE_DELETE: 'Delete an classes',
     MODAL_TITLE_ASSIGN_STUDENT: 'Arrange students',
     MODAL_TITLE_ASSIGN_COURSE: 'Arrange courses',
+    MODAL_TITLE_ACTIVITY: 'Activity',
     CONTENT_MODAL_DELETE: 'You will delete an classes from the system. Are you sure?',
 
     LABEL_FORM_NAME: 'Name',
     LABEL_FORM_LEVEL: 'Level',
+    LABEL_FORM_DESCRIPTION: 'Description',
 
     TITLE_LIST_STUDENT_IN_CLASS: 'Class: {name}',
     TITLE_LIST_STUDENT_IN_SYSTEM: 'List student in system',
@@ -107,6 +110,7 @@ export default {
     TITLE_LIST_COURSE_IN_SYSTEM: 'List course in system',
 
     PLACEHOLDER_FORM_NAME: 'Enter name',
+    PLACEHOLDER_FORM_DESCRIPTION: 'Enter description',
     PLACEHOLDER_FORM_LEVEL: 'Please select',
     PLACEHOLDER_SEARCH_USER_CODE: 'Seach by user code',
 
@@ -247,6 +251,9 @@ export default {
 
       ASSIGN_STUDENT_SUCCESS: 'You have successfully arranged students for the class',
       ASSIGN_COURSE_SUCCESS: 'You have successfully arranged courses for the class',
+
+      VALIDATE_CREATE_ACTIVITY: 'The activity information you received is incorrect',
+      CREATE_ACTIVITY_SUCCESS: 'You have successfully added an activity to your class',
     },
     COURSE: {
       ADD_SUCCESS: 'You have successfully created course {name}',

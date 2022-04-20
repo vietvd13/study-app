@@ -56,6 +56,18 @@
                 :items="items"
                 aria-controls="table-classes"
               >
+                <template #cell(activity)="data">
+                  <b-col>
+                    <b-row>
+                      <b-col>
+                        <b-button class="btn-custom-green" size="sm" @click="onClickActivity(data.item)">
+                          <i class="fas fa-file-alt" />
+                        </b-button>
+                      </b-col>
+                    </b-row>
+                  </b-col>
+                </template>
+
                 <template #cell(arrangement)="data">
                   <b-col>
                     <b-row>
@@ -573,6 +585,57 @@
           </b-button>
         </template>
       </b-modal>
+
+      <b-modal
+        v-model="visibleModalActivity"
+        size="xl"
+        no-close-on-esc
+        no-close-on-backdrop
+        hide-header-close
+        body-class="modal-activity-content"
+        footer-class="modal-activity-footer"
+      >
+        <template #modal-header>
+          <h5>{{ $t('CLASSES.MODAL_TITLE_ACTIVITY') }}</h5>
+        </template>
+
+        <template #default>
+          <b-row>
+            <b-col>
+              <div class="item-input">
+                <label>{{ $t('CLASSES.LABEL_FORM_NAME') }}</label>
+                <b-form-input v-model="isActivity.name" :placeholder="$t('CLASSES.PLACEHOLDER_FORM_NAME')" :disabled="isProcess" />
+              </div>
+            </b-col>
+          </b-row>
+
+          <b-row>
+            <b-col>
+              <div class="item-input">
+                <label>{{ $t('CLASSES.LABEL_FORM_DESCRIPTION') }}</label>
+                <b-form-textarea
+                  v-model="isActivity.description"
+                  :placeholder="$t('CLASSES.PLACEHOLDER_FORM_DESCRIPTION')"
+                  rows="5"
+                  max-rows="10"
+                  :disabled="isProcess"
+                />
+              </div>
+            </b-col>
+          </b-row>
+        </template>
+
+        <template #modal-footer>
+          <b-button variant="outline-danger" :disabled="isProcess" @click="onClickCancelActivity()">
+            {{ hasRole(getCurrentRole(), [CONST_ROLE.LIST_ROLE.ADMIN, CONST_ROLE.LIST_ROLE.TEACHER]) ? $t('CLASSES.BUTTON_CANCEL') : $t('CLASSES.BUTTON_CLOSE') }}
+          </b-button>
+
+          <b-button v-if="hasRole(getCurrentRole(), [CONST_ROLE.LIST_ROLE.ADMIN, CONST_ROLE.LIST_ROLE.TEACHER])" class="btn-custom-green" :disabled="isProcess" @click="onClickSubmitActivity()">
+            <i v-if="isProcess" class="fad fa-spinner-third fa-spin" />
+            {{ $t('CLASSES.BUTTON_SUBMIT') }}
+          </b-button>
+        </template>
+      </b-modal>
     </div>
   </b-overlay>
 </template>
@@ -592,6 +655,7 @@ const URL_API = {
   getAllCourse: '/courses',
   getOneCourse: '/courses',
   assignCourse: '/classes/courses',
+  postActivity: '/class/action/create-action',
 };
 import {
   getAllClasses,
@@ -602,6 +666,7 @@ import {
   getStudent,
   assignStudent,
   assignCourse,
+  postActivity,
 } from '@/api/modules/classes';
 import {
   getAllCourse,
@@ -612,6 +677,7 @@ import {
   validateAddClasses,
   validateUpdateClasses,
   validateAssingCourse,
+  validateActivity,
 } from './validate';
 
 import { hasRole, getCurrentRole } from '@/utils/hasRole';
@@ -638,6 +704,11 @@ export default {
       isClass: {
         name: '',
         level: 1,
+      },
+
+      isActivity: {
+        name: '',
+        description: '',
       },
 
       isFilter: {
@@ -675,6 +746,7 @@ export default {
       visibleModalDelete: false,
       visibleModalAssignStudent: false,
       visibleModalAssignCourse: false,
+      visibleModalActivity: false,
       isAction: '',
       idHandle: null,
       isProcess: false,
@@ -698,6 +770,13 @@ export default {
       ];
 
       if (getCurrentRole() === CONST_ROLE.LIST_ROLE.ADMIN || getCurrentRole() === CONST_ROLE.LIST_ROLE.TEACHER) {
+        HEADER.push({
+          key: 'activity',
+          label: this.$t('CLASSES.TABLE_TITLE_ACTIVITY'),
+          thClass: 'base-th',
+          tdClass: 'base-td base-arrangement',
+        });
+
         HEADER.push({
           key: 'arrangement',
           label: this.$t('CLASSES.TABLE_TITLE_ARRANGEMENT'),
@@ -1175,6 +1254,53 @@ export default {
       }
 
       this.isProcess = false;
+    },
+    onClickActivity(item) {
+      this.isClassHandle.id = item.id;
+      this.isClassHandle.name = item.name;
+      this.isClassHandle.level = 1;
+
+      this.visibleModalActivity = true;
+
+      console.log(this.isClassHandle);
+    },
+    isResetModalActivity() {
+      this.isActivity = {
+        name: '',
+        description: '',
+      };
+    },
+    onClickCancelActivity() {
+      this.visibleModalActivity = false;
+    },
+    async onClickSubmitActivity() {
+      this.visibleModalActivity = false;
+
+      const URL = URL_API.postActivity;
+      const DATA = {
+        class_id: this.isClassHandle.id,
+        name: this.isActivity.name,
+        description: this.isActivity.description,
+      };
+
+      if (validateActivity(DATA)) {
+        try {
+          const res = await postActivity(URL, DATA);
+
+          if (res['status'] === 200) {
+            this.visibleModalActivity = false;
+            this.isResetModalActivity();
+            NotifyClasses.createActivitySuccess();
+          } else {
+            NotifyClasses.server(res['message']);
+          }
+        } catch (error) {
+          console.log(error);
+          NotifyClasses.server(error['response']['data']['message']);
+        }
+      } else {
+        NotifyClasses.validateCreateActivity();
+      }
     },
   },
 };

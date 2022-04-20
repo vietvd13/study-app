@@ -31,3 +31,7 @@ export function assignStudent(url, data) {
 export function assignCourse(url, data) {
   return request.postRequest(url, data);
 }
+
+export function postActivity(url, data) {
+  return request.postRequest(url, data);
+}

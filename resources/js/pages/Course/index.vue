@@ -1010,7 +1010,7 @@ export default {
       this.isProcess = false;
     },
     downloadDocs(item) {
-      window.open(`/storage/${item['path']}`);
+      window.open(`/${item['path']}`);
     },
     async handleDeleteDocs(item) {
       this.isProcess = true;

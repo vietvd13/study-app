@@ -11,11 +11,11 @@ return [
     | by the framework. The "local" disk, as well as a variety of cloud
     | based disks are available to your application. Just store away!
     |
-    */
+    /
 
     'default' => env('FILESYSTEM_DRIVER', 'local'),
 
-    /*
+    /
     |--------------------------------------------------------------------------
     | Filesystem Disks
     |--------------------------------------------------------------------------
@@ -26,7 +26,7 @@ return [
     |
     | Supported Drivers: "local", "ftp", "sftp", "s3"
     |
-    */
+    /
 
     'disks' => [
 
@@ -52,21 +52,36 @@ return [
             'endpoint' => env('AWS_ENDPOINT'),
             'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
         ],
+
+        'documents' => [
+            'driver' => 'local',
+            'root' => storage_path('app/documents'),
+            'url' => env('APP_URL').'/documents',
+            'visibility' => 'public',
+        ],
+
+        'classactions' => [
+            'driver' => 'local',
+            'root' => storage_path('app/classactions'),
+            'url' => env('APP_URL').'/classactions',
+            'visibility' => 'public',
+        ],
     ],
 
-    /*
+    /
     |--------------------------------------------------------------------------
     | Symbolic Links
     |--------------------------------------------------------------------------
     |
     | Here you may configure the symbolic links that will be created when the
-    | `storage:link` Artisan command is executed. The array keys should be
+    | storage:link Artisan command is executed. The array keys should be
     | the locations of the links and the values should be their targets.
     |
     */
 
     'links' => [
         public_path('storage') => storage_path('app/public'),
-    ],
-
+        public_path('classactions') => storage_path('app/classactions'),
+        public_path('documents') => storage_path('app/documents'),
+    ]
 ];

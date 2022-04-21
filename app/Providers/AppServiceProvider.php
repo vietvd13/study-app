@@ -39,6 +39,9 @@ use App\Services\Contracts\UserServiceInterface;
 
 use App\Repositories\Contracts\UserRepositoryInterface;
 use Repository\UserRepository;
+
+use App\Services\Contracts\TestServiceInterface;
+use Service\TestService;
 class AppServiceProvider extends ServiceProvider
 {
     /**

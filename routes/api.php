@@ -47,7 +47,7 @@ Route::namespace('Api')->group(function() {
         });
 
         Route::group(['prefix' => 'test'], function () {
-            Route::post('import', 'CourseController@importTest');
+            Route::post('import', 'TestController@importTest');
         });
     });
 });

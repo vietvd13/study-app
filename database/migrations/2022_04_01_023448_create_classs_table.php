@@ -81,7 +81,6 @@ class CreateClasssTable extends Migration
             $table->id();
             $table->bigInteger('student_id')->unsigned();
             $table->bigInteger('action_id')->unsigned();
-            $table->string('name');
             $table->string('file_path')->nullable();
             $table->text('description');
             $table->integer('grade')->nullable();

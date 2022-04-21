@@ -768,7 +768,7 @@
         <template #default>
           <b-row>
             <b-col cols="12" sm="12" md="12" lg="12" xl="3">
-              <div v-for="handin in itemHandinActivity" :key="handin.id" class="item-input">
+              <div v-for="handin in itemHandinActivity" :key="handin.id" class="item-input list-student">
                 <b-card>
                   <template #header>
                     {{ handin['student']['user_code'] }}
@@ -874,8 +874,14 @@ import CONST_ROLE from '@/const/role';
 
 import NotifyClasses from '@/toast/modules/classes';
 
+import VuePdfApp from 'vue-pdf-app';
+import 'vue-pdf-app/dist/icons/main.css';
+
 export default {
   name: 'Classes',
+  components: {
+    VuePdfApp,
+  },
   data() {
     return {
       hasRole,
@@ -1904,6 +1910,10 @@ export default {
 }
 
 .modal-grade-activity-content {
+
+    .list-student {
+        overflow: auto;
+    }
     .item-input {
         .card-header {
             padding: 0.5rem 0.75rem;

@@ -1010,7 +1010,17 @@ export default {
       this.isProcess = false;
     },
     downloadDocs(item) {
-      window.open(`/${item['path']}`);
+      var link = document.createElement('a');
+
+      const re = /([^\/]+$)/;
+
+      link.setAttribute('download', item['path'].match(re)[0]);
+      link.href = `/${item['path']}`;
+
+      document.body.appendChild(link);
+
+      link.click();
+      link.remove();
     },
     async handleDeleteDocs(item) {
       this.isProcess = true;

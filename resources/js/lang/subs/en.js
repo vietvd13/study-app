@@ -97,6 +97,7 @@ export default {
     LABEL_FORM_NAME: 'Name',
     LABEL_FORM_LEVEL: 'Level',
     LABEL_FORM_DESCRIPTION: 'Description',
+    LABEL_FORM_FILE: 'File',
 
     TITLE_LIST_STUDENT_IN_CLASS: 'Class: {name}',
     TITLE_LIST_STUDENT_IN_SYSTEM: 'List student in system',
@@ -113,6 +114,7 @@ export default {
     PLACEHOLDER_FORM_DESCRIPTION: 'Enter description',
     PLACEHOLDER_FORM_LEVEL: 'Please select',
     PLACEHOLDER_SEARCH_USER_CODE: 'Seach by user code',
+    PLACEHOLDER_DOCS_FILE: 'Choose a file...',
 
     BUTTON_ADD: 'Add',
     BUTTON_REMOVE: 'Remove',
@@ -254,6 +256,7 @@ export default {
 
       VALIDATE_CREATE_ACTIVITY: 'The activity information you received is incorrect',
       CREATE_ACTIVITY_SUCCESS: 'You have successfully added an activity to your class',
+      HANDIN_ACTIVITY_SUCCESS: 'You have successfully submitted your assignment',
     },
     COURSE: {
       ADD_SUCCESS: 'You have successfully created course {name}',

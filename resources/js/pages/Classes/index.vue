@@ -601,7 +601,7 @@
         </template>
 
         <template #default>
-          <b-row>
+          <b-row v-if="hasRole(getCurrentRole(), [CONST_ROLE.LIST_ROLE.ADMIN])">
             <b-col>
               <div class="item-input">
                 <label>{{ $t('CLASSES.LABEL_FORM_NAME') }}</label>
@@ -610,7 +610,7 @@
             </b-col>
           </b-row>
 
-          <b-row>
+          <b-row v-if="hasRole(getCurrentRole(), [CONST_ROLE.LIST_ROLE.ADMIN])">
             <b-col>
               <div class="item-input">
                 <label>{{ $t('CLASSES.LABEL_FORM_DESCRIPTION') }}</label>
@@ -635,8 +635,12 @@
                         <div class="align-self-center">
                           <span><b>{{ activity.name }}</b></span>
                         </div>
-                        <b-button v-if="hasRole(getCurrentRole(), [CONST_ROLE.LIST_ROLE.ADMIN])" class="btn-custom-green" size="sm" :disabled="isProcess">
+                        <b-button v-if="hasRole(getCurrentRole(), [CONST_ROLE.LIST_ROLE.TEACHER])" class="btn-custom-green" size="sm" :disabled="isProcess">
                           <i class="fas fa-pencil-alt" />
+                        </b-button>
+
+                        <b-button v-if="hasRole(getCurrentRole(), [CONST_ROLE.LIST_ROLE.STUDENT])" class="btn-custom-green" size="sm" :disabled="isProcess" @click="onClickHandinActivity(activity)">
+                          <i class="fas fa-paper-plane" />
                         </b-button>
                       </div>
                     </template>
@@ -676,6 +680,77 @@
           </b-button>
         </template>
       </b-modal>
+
+      <b-modal
+        v-model="visibleModalHandinActivity"
+        size="xl"
+        no-close-on-esc
+        no-close-on-backdrop
+        hide-header-close
+        scrollable
+        centered
+        body-class="modal-handin-activity-content"
+        footer-class="modal-handin-activity-footer"
+      >
+        <template #modal-header>
+          <h5>{{ isActivityHandle.name }}</h5>
+        </template>
+
+        <template #default>
+          <b-row>
+            <b-col>
+              <div class="item-input">
+                <label>{{ $t('CLASSES.LABEL_FORM_DESCRIPTION') }}</label>
+                <b-form-textarea
+                  v-model="isHandinActivity.description"
+                  :placeholder="$t('CLASSES.PLACEHOLDER_FORM_DESCRIPTION')"
+                  rows="5"
+                  max-rows="10"
+                  :disabled="isProcess"
+                />
+              </div>
+            </b-col>
+          </b-row>
+
+          <b-row>
+            <b-col>
+              <div class="item-input">
+                <label>{{ $t('CLASSES.LABEL_FORM_FILE') }}</label>
+                <input id="input-handin-activity" type="file" name="input-handin-activity" @change="chooseFile">
+                <div>
+                  <b-button
+                    class="btn-custom-green"
+                    @click="clickChooseFile()"
+                  >
+                    <i class="fas fa-cloud-upload-alt" style="margin-right: 10px;" />
+                    {{ $t('CLASSES.PLACEHOLDER_DOCS_FILE') }}
+                  </b-button>
+                </div>
+              </div>
+            </b-col>
+          </b-row>
+
+          <b-row v-if="isHandinActivity.file">
+            <b-col>
+              <div class="item-input">
+                <i class="fas fa-file" />
+                <span style="margin-left: 5px;">{{ isHandinActivity.file.name }}</span>
+              </div>
+            </b-col>
+          </b-row>
+        </template>
+
+        <template #modal-footer>
+          <b-button variant="outline-danger" :disabled="isProcess" @click="onClickCancelHandinActivity()">
+            {{ $t('CLASSES.BUTTON_CANCEL') }}
+          </b-button>
+
+          <b-button class="btn-custom-green" :disabled="isProcess" @click="onClickSubmitHandinActivity()">
+            <i v-if="isProcess" class="fad fa-spinner-third fa-spin" />
+            {{ $t('CLASSES.BUTTON_SUBMIT') }}
+          </b-button>
+        </template>
+      </b-modal>
     </div>
   </b-overlay>
 </template>
@@ -697,6 +772,7 @@ const URL_API = {
   assignCourse: '/classes/courses',
   postActivity: '/class/action/create-action',
   getAllActivity: '/class/action/teacher/actions',
+  postHandinActivity: '/class/action/student/handin',
 };
 import {
   getAllClasses,
@@ -709,6 +785,7 @@ import {
   assignCourse,
   postActivity,
   getAllActivity,
+  postHandinActivity,
 } from '@/api/modules/classes';
 import {
   getAllCourse,
@@ -722,6 +799,7 @@ import {
   validateActivity,
 } from './validate';
 
+import { isAvailable } from '@/utils/isAvailable';
 import { hasRole, getCurrentRole } from '@/utils/hasRole';
 import CONST_ROLE from '@/const/role';
 
@@ -751,6 +829,11 @@ export default {
       isActivity: {
         name: '',
         description: '',
+      },
+
+      isHandinActivity: {
+        description: '',
+        file: null,
       },
 
       isFilter: {
@@ -795,6 +878,8 @@ export default {
       visibleModalAssignStudent: false,
       visibleModalAssignCourse: false,
       visibleModalActivity: false,
+      visibleModalHandinActivity: false,
+
       isAction: '',
       idHandle: null,
       isProcess: false,
@@ -802,6 +887,13 @@ export default {
         id: null,
         name: '',
         level: 1,
+      },
+      isActivityHandle: {
+        id: '',
+        class_id: '',
+        teacher_id: '',
+        name: '',
+        description: '',
       },
     };
   },
@@ -817,7 +909,7 @@ export default {
         },
       ];
 
-      if (getCurrentRole() === CONST_ROLE.LIST_ROLE.ADMIN || getCurrentRole() === CONST_ROLE.LIST_ROLE.TEACHER) {
+      if (getCurrentRole() === CONST_ROLE.LIST_ROLE.ADMIN || getCurrentRole() === CONST_ROLE.LIST_ROLE.TEACHER || getCurrentRole() === CONST_ROLE.LIST_ROLE.STUDENT) {
         HEADER.push({
           key: 'activity',
           label: this.$t('CLASSES.TABLE_TITLE_ACTIVITY'),
@@ -1393,6 +1485,59 @@ export default {
         NotifyClasses.validateCreateActivity();
       }
     },
+    onClickHandinActivity(activity) {
+      this.visibleModalHandinActivity = true;
+      this.isActivityHandle.id = activity.id;
+      this.isActivityHandle.class_id = activity.class_id;
+      this.isActivityHandle.teacher_id = activity.teacher_id;
+      this.isActivityHandle.name = activity.name;
+      this.isActivityHandle.description = activity.description;
+    },
+    onClickCancelHandinActivity() {
+      this.visibleModalHandinActivity = false;
+    },
+    isResetModalHandinActivity() {
+      const isHandinActivity = {
+        description: '',
+        file: null,
+      };
+
+      if (isAvailable(document.getElementById('input-handin-activity'), 'value')) {
+        document.getElementById('input-handin-activity').value = null;
+      }
+
+      this.isHandinActivity = isHandinActivity;
+    },
+    async onClickSubmitHandinActivity() {
+      const URL = URL_API.postHandinActivity;
+
+      const DATA = new FormData();
+      DATA.append('action_id', this.isActivityHandle.id);
+      DATA.append('class_id', this.isActivityHandle.class_id);
+      DATA.append('description', this.isHandinActivity.description);
+      DATA.append('files[0]', this.isHandinActivity.file);
+
+      try {
+        await postHandinActivity(URL, DATA);
+
+        this.visibleModalHandinActivity = false;
+        this.isResetModalHandinActivity();
+
+        NotifyClasses.handinActivitySuccess();
+      } catch (error) {
+        console.log(error);
+        NotifyClasses.exception();
+        this.visibleModalHandinActivity = false;
+        this.isResetModalHandinActivity();
+      }
+    },
+    clickChooseFile() {
+      const FILE = document.getElementById('input-handin-activity');
+      FILE.click();
+    },
+    chooseFile(event) {
+      this.isHandinActivity.file = event.target.files[0];
+    },
   },
 };
 </script>
@@ -1629,6 +1774,14 @@ export default {
             }
 
             margin-bottom: 15px;
+        }
+    }
+}
+
+.modal-handin-activity-content {
+    .item-input {
+        #input-handin-activity {
+            display: none;
         }
     }
 }

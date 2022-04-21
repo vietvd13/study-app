@@ -35,6 +35,9 @@ export default {
   createActivitySuccess() {
     Notification.notifySuccess(i18n.t('NOTIFY.CLASSES.CREATE_ACTIVITY_SUCCESS'));
   },
+  handinActivitySuccess() {
+    Notification.notifySuccess(i18n.t('NOTIFY.CLASSES.HANDIN_ACTIVITY_SUCCESS'));
+  },
   exception() {
     Notification.notifyError(i18n.t('NOTIFY.SYSTEM.EXCEPTION'));
   },

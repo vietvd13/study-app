@@ -808,7 +808,9 @@
               </div>
             </b-col>
 
-            <b-col cols="12" sm="12" md="12" lg="12" xl="9" />
+            <b-col cols="12" sm="12" md="12" lg="12" xl="9">
+                <vue-pdf-app pdf="/documents/1/CW_GROUP.pdf"></vue-pdf-app>
+            </b-col>
           </b-row>
         </template>
 
@@ -1912,7 +1914,7 @@ export default {
 .modal-grade-activity-content {
 
     .list-student {
-        overflow: auto;
+
     }
     .item-input {
         .card-header {

@@ -11,11 +11,11 @@ return [
     | by the framework. The "local" disk, as well as a variety of cloud
     | based disks are available to your application. Just store away!
     |
-    /
+    */
 
     'default' => env('FILESYSTEM_DRIVER', 'local'),
 
-    /
+    /*
     |--------------------------------------------------------------------------
     | Filesystem Disks
     |--------------------------------------------------------------------------
@@ -26,7 +26,7 @@ return [
     |
     | Supported Drivers: "local", "ftp", "sftp", "s3"
     |
-    /
+    */
 
     'disks' => [
 
@@ -68,13 +68,13 @@ return [
         ],
     ],
 
-    /
+    /*
     |--------------------------------------------------------------------------
     | Symbolic Links
     |--------------------------------------------------------------------------
     |
     | Here you may configure the symbolic links that will be created when the
-    | storage:link Artisan command is executed. The array keys should be
+    | `storage:link` Artisan command is executed. The array keys should be
     | the locations of the links and the values should be their targets.
     |
     */
@@ -84,4 +84,7 @@ return [
         public_path('classactions') => storage_path('app/classactions'),
         public_path('documents') => storage_path('app/documents'),
     ]
+
 ];
+
+

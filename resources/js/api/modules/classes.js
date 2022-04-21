@@ -43,3 +43,7 @@ export function getAllActivity(url, params) {
 export function postHandinActivity(url, data) {
   return request.postRequest(url, data);
 }
+
+export function getAllHandinActivity(url, params) {
+  return request.getRequest(url, params);
+}

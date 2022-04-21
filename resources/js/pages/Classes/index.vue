@@ -249,28 +249,28 @@
 
                         <b-card-text>
                           <div>
-                            <span><b>{{ $t('ACCOUNT.LABEL_FORM_FULLNAME') }}:</b>{{ student.name }}</span>
+                            <span><b>{{ $t('ACCOUNT.LABEL_FORM_FULLNAME') }}: </b>{{ student.name }}</span>
                           </div>
                           <div>
-                            <span><b>{{ $t('ACCOUNT.LABEL_FORM_TELEPHONE') }}:</b>{{ student.phone }}</span>
+                            <span><b>{{ $t('ACCOUNT.LABEL_FORM_TELEPHONE') }}: </b>{{ student.phone }}</span>
                           </div>
                           <div>
-                            <span><b>{{ $t('ACCOUNT.LABEL_FORM_EMAIL') }}:</b>{{ student.email }}</span>
+                            <span><b>{{ $t('ACCOUNT.LABEL_FORM_EMAIL') }}: </b>{{ student.email }}</span>
                           </div>
                           <div>
                             <span>
-                              <b>{{ $t('ACCOUNT.LABEL_FORM_BLIND') }}:</b>
-                              <b-badge v-if="student.status === 1" variant="danger">
+                              <b>{{ $t('ACCOUNT.LABEL_FORM_BLIND') }}: </b>
+                              <b-badge v-if="student.isBlind === 1" variant="danger">
                                 {{ $t('CLASSES.TEXT_YES') }}
                               </b-badge>
-                              <b-badge v-if="student.status === 0" variant="success">
+                              <b-badge v-if="student.isBlind === 0" variant="success">
                                 {{ $t('CLASSES.TEXT_NO') }}
                               </b-badge>
                             </span>
                           </div>
                           <div>
                             <span>
-                              <b>{{ $t('ACCOUNT.LABEL_FORM_STATUS') }}:</b>
+                              <b>{{ $t('ACCOUNT.LABEL_FORM_STATUS') }}: </b>
                               <b-badge v-if="student.status === 1" variant="success">
                                 {{ $t('CLASSES.TEXT_ACTIVE') }}
                               </b-badge>
@@ -601,7 +601,7 @@
         </template>
 
         <template #default>
-          <b-row v-if="hasRole(getCurrentRole(), [CONST_ROLE.LIST_ROLE.ADMIN])">
+          <b-row v-if="hasRole(getCurrentRole(), [CONST_ROLE.LIST_ROLE.ADMIN, CONST_ROLE.LIST_ROLE.TEACHER])">
             <b-col>
               <div class="item-input">
                 <label>{{ $t('CLASSES.LABEL_FORM_NAME') }}</label>
@@ -610,7 +610,7 @@
             </b-col>
           </b-row>
 
-          <b-row v-if="hasRole(getCurrentRole(), [CONST_ROLE.LIST_ROLE.ADMIN])">
+          <b-row v-if="hasRole(getCurrentRole(), [CONST_ROLE.LIST_ROLE.ADMIN, CONST_ROLE.LIST_ROLE.TEACHER])">
             <b-col>
               <div class="item-input">
                 <label>{{ $t('CLASSES.LABEL_FORM_DESCRIPTION') }}</label>
@@ -635,7 +635,7 @@
                         <div class="align-self-center">
                           <span><b>{{ activity.name }}</b></span>
                         </div>
-                        <b-button v-if="hasRole(getCurrentRole(), [CONST_ROLE.LIST_ROLE.TEACHER])" class="btn-custom-green" size="sm" :disabled="isProcess">
+                        <b-button v-if="hasRole(getCurrentRole(), [CONST_ROLE.LIST_ROLE.TEACHER])" class="btn-custom-green" size="sm" :disabled="isProcess" @click="onClickGradeActivity(activity)">
                           <i class="fas fa-pencil-alt" />
                         </b-button>
 
@@ -688,7 +688,6 @@
         no-close-on-backdrop
         hide-header-close
         scrollable
-        centered
         body-class="modal-handin-activity-content"
         footer-class="modal-handin-activity-footer"
       >
@@ -751,6 +750,74 @@
           </b-button>
         </template>
       </b-modal>
+
+      <b-modal
+        v-model="visibleModalGradeActivity"
+        size="xl"
+        no-close-on-esc
+        no-close-on-backdrop
+        hide-header-close
+        scrollable
+        body-class="modal-grade-activity-content"
+        footer-class="modal-grade-activity-footer"
+      >
+        <template #modal-header>
+          <h5>{{ isActivityHandle.name }}</h5>
+        </template>
+
+        <template #default>
+          <b-row>
+            <b-col cols="12" sm="12" md="12" lg="12" xl="3">
+              <div v-for="handin in itemHandinActivity" :key="handin.id" class="item-input">
+                <b-card>
+                  <template #header>
+                    {{ handin['student']['user_code'] }}
+                  </template>
+
+                  <b-card-text>
+                    <div>
+                      <span><b>{{ $t('ACCOUNT.LABEL_FORM_FULLNAME') }}: </b>{{ handin['student']['name'] }}</span>
+                    </div>
+                    <div>
+                      <span><b>{{ $t('ACCOUNT.LABEL_FORM_TELEPHONE') }}: </b>{{ handin['student']['phone'] }}</span>
+                    </div>
+                    <div>
+                      <span>
+                        <b>{{ $t('ACCOUNT.LABEL_FORM_BLIND') }}: </b>
+                        <b-badge v-if="handin['student']['isBlind'] === 1" variant="danger">
+                          {{ $t('CLASSES.TEXT_YES') }}
+                        </b-badge>
+                        <b-badge v-if="handin['student']['isBlind'] === 0" variant="success">
+                          {{ $t('CLASSES.TEXT_NO') }}
+                        </b-badge>
+                      </span>
+                    </div>
+                    <div>
+                      <span>
+                        <b>{{ $t('ACCOUNT.LABEL_FORM_STATUS') }}: </b>
+                        <b-badge v-if="handin['student']['status'] === 1" variant="success">
+                          {{ $t('CLASSES.TEXT_ACTIVE') }}
+                        </b-badge>
+                        <b-badge v-if="handin['student']['status'] === 0" variant="danger">
+                          {{ $t('CLASSES.TEXT_INACTIVE') }}
+                        </b-badge>
+                      </span>
+                    </div>
+                  </b-card-text>
+                </b-card>
+              </div>
+            </b-col>
+
+            <b-col cols="12" sm="12" md="12" lg="12" xl="9" />
+          </b-row>
+        </template>
+
+        <template #modal-footer>
+          <b-button variant="outline-danger" :disabled="isProcess" @click="onClickCloseGradeActivity()">
+            {{ $t('CLASSES.BUTTON_CLOSE') }}
+          </b-button>
+        </template>
+      </b-modal>
     </div>
   </b-overlay>
 </template>
@@ -773,6 +840,7 @@ const URL_API = {
   postActivity: '/class/action/create-action',
   getAllActivity: '/class/action/teacher/actions',
   postHandinActivity: '/class/action/student/handin',
+  getAllHandinActivity: '/class/action/teacher/handin',
 };
 import {
   getAllClasses,
@@ -786,6 +854,7 @@ import {
   postActivity,
   getAllActivity,
   postHandinActivity,
+  getAllHandinActivity,
 } from '@/api/modules/classes';
 import {
   getAllCourse,
@@ -842,6 +911,7 @@ export default {
 
       items: [],
       itemActivity: [],
+      itemHandinActivity: [],
 
       pagination: {
         page: 1,
@@ -863,6 +933,11 @@ export default {
         perPage: 10,
         total: 0,
       },
+      paginationHandinActivity: {
+        page: 1,
+        perPage: 10,
+        total: 0,
+      },
 
       searchUserCode: '',
       listStudentSelected: [],
@@ -879,6 +954,7 @@ export default {
       visibleModalAssignCourse: false,
       visibleModalActivity: false,
       visibleModalHandinActivity: false,
+      visibleModalGradeActivity: false,
 
       isAction: '',
       idHandle: null,
@@ -973,6 +1049,9 @@ export default {
     currentPageActivity() {
       return this.paginationActivity.page;
     },
+    currenPageHandinActivity() {
+      return this.paginationHandinActivity.page;
+    },
   },
   watch: {
     async currentPageClass() {
@@ -998,6 +1077,9 @@ export default {
     },
     async currentPageActivity() {
       await this.handleGetListActivity();
+    },
+    async currenPageHandinActivity() {
+
     },
   },
   created() {
@@ -1538,6 +1620,41 @@ export default {
     chooseFile(event) {
       this.isHandinActivity.file = event.target.files[0];
     },
+    async onClickGradeActivity(activity) {
+      this.visibleModalGradeActivity = true;
+
+      try {
+        const URL = URL_API.getAllHandinActivity;
+        const PARAMS = {
+          action_id: activity.id,
+          page: this.paginationHandinActivity.page,
+          per_page: this.paginationHandinActivity.perPage,
+        };
+
+        const res = await getAllHandinActivity(URL, PARAMS);
+
+        if (res) {
+          this.itemHandinActivity = res['data'];
+          this.paginationHandinActivity.page = res['current_page'];
+          this.paginationHandinActivity.total = res['total'];
+        } else {
+          NotifyClasses.exception();
+        }
+
+        console.log(res);
+      } catch (error) {
+        console.log(error);
+      }
+
+      this.isActivityHandle.id = activity.id;
+      this.isActivityHandle.class_id = activity.class_id;
+      this.isActivityHandle.teacher_id = activity.teacher_id;
+      this.isActivityHandle.name = activity.name;
+      this.isActivityHandle.description = activity.description;
+    },
+    onClickCloseGradeActivity() {
+      this.visibleModalGradeActivity = false;
+    },
   },
 };
 </script>
@@ -1783,6 +1900,21 @@ export default {
         #input-handin-activity {
             display: none;
         }
+    }
+}
+
+.modal-grade-activity-content {
+    .item-input {
+        .card-header {
+            padding: 0.5rem 0.75rem;
+            font-weight: bold;
+        }
+
+        .card-body {
+            padding: 0.5rem 0.75rem;
+        }
+
+        margin-bottom: 15px;
     }
 }
 

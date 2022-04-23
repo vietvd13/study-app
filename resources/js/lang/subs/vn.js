@@ -67,6 +67,7 @@ export default {
     BUTTON_SUBMIT: 'Submit',
     BUTTON_DELETE: 'Delete',
     BUTTON_CANCEL: 'Cancel',
+    BUTTON_CLOSE: 'Close',
   },
   CLASSES: {
     LABEL_FILTER_NAME: 'Name',
@@ -79,6 +80,7 @@ export default {
 
     TABLE_TITLE_NAME: 'Name',
     TABLE_TITLE_LEVEL: 'Level',
+    TABLE_TITLE_ACTIVITY: 'Activity',
     TABLE_TITLE_ARRANGEMENT: 'Arrangement',
     TABLE_TITLE_ACTIONS: 'Actions',
 
@@ -89,10 +91,13 @@ export default {
     MODAL_TITLE_DELETE: 'Delete an classes',
     MODAL_TITLE_ASSIGN_STUDENT: 'Arrange students',
     MODAL_TITLE_ASSIGN_COURSE: 'Arrange courses',
+    MODAL_TITLE_ACTIVITY: 'Activity',
     CONTENT_MODAL_DELETE: 'You will delete an classes from the system. Are you sure?',
 
     LABEL_FORM_NAME: 'Name',
     LABEL_FORM_LEVEL: 'Level',
+    LABEL_FORM_DESCRIPTION: 'Description',
+    LABEL_FORM_FILE: 'File',
 
     TITLE_LIST_STUDENT_IN_CLASS: 'Class: {name}',
     TITLE_LIST_STUDENT_IN_SYSTEM: 'List student in system',
@@ -106,14 +111,17 @@ export default {
     TITLE_LIST_COURSE_IN_SYSTEM: 'List course in system',
 
     PLACEHOLDER_FORM_NAME: 'Enter name',
+    PLACEHOLDER_FORM_DESCRIPTION: 'Enter description',
     PLACEHOLDER_FORM_LEVEL: 'Please select',
     PLACEHOLDER_SEARCH_USER_CODE: 'Seach by user code',
+    PLACEHOLDER_DOCS_FILE: 'Choose a file...',
 
     BUTTON_ADD: 'Add',
     BUTTON_REMOVE: 'Remove',
     BUTTON_SUBMIT: 'Submit',
     BUTTON_DELETE: 'Delete',
     BUTTON_CANCEL: 'Cancel',
+    BUTTON_CLOSE: 'Close',
 
     TEXT_YES: 'Yes',
     TEXT_NO: 'No',
@@ -125,6 +133,11 @@ export default {
     LABLE_TEACHER: 'Teacher',
 
     PLACEHOLDER_SELECT_TEACHER: 'Please select teacher',
+
+    ALERT_NO_SUBMIT: 'You have not submitted an activity assignment',
+    GRADE: 'Grade',
+    COMMENT: 'Comment',
+    NOT_GRADE: 'Not grade',
   },
   COURSE: {
     LABEL_FILTER_NAME: 'Name',
@@ -165,6 +178,7 @@ export default {
     BUTTON_SUBMIT: 'Submit',
     BUTTON_DELETE: 'Delete',
     BUTTON_CANCEL: 'Cancel',
+    BUTTON_CLOSE: 'Close',
   },
   PAGE_NOT_FOUND: {
     DETAIL: "We can't seem to find the page you're looking for",
@@ -244,6 +258,10 @@ export default {
 
       ASSIGN_STUDENT_SUCCESS: 'You have successfully arranged students for the class',
       ASSIGN_COURSE_SUCCESS: 'You have successfully arranged courses for the class',
+
+      VALIDATE_CREATE_ACTIVITY: 'The activity information you received is incorrect',
+      CREATE_ACTIVITY_SUCCESS: 'You have successfully added an activity to your class',
+      HANDIN_ACTIVITY_SUCCESS: 'You have successfully submitted your assignment',
     },
     COURSE: {
       ADD_SUCCESS: 'You have successfully created course {name}',

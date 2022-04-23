@@ -51,3 +51,15 @@ export function getAllHandinActivity(url, params) {
 export function postSubmitGrade(url, data) {
   return request.postRequest(url, data);
 }
+
+export function getAllClassTeacher(url, params) {
+  return request.getRequest(url, params);
+}
+
+export function getAllClassStudent(url, params) {
+  return request.getRequest(url, params);
+}
+
+export function getActionDetail(url, params) {
+  return request.getRequest(url, params);
+}

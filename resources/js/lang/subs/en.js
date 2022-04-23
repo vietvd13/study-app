@@ -133,6 +133,11 @@ export default {
     LABLE_TEACHER: 'Teacher',
 
     PLACEHOLDER_SELECT_TEACHER: 'Please select teacher',
+
+    ALERT_NO_SUBMIT: 'You have not submitted an activity assignment',
+    GRADE: 'Grade',
+    COMMENT: 'Comment',
+    NOT_GRADE: 'Not grade',
   },
   COURSE: {
     LABEL_FILTER_NAME: 'Name',

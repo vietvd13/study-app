@@ -646,9 +646,34 @@
                     </template>
 
                     <template #default>
-                      {{ activity.description }}
+                      <b-row>
+                        <b-col>
+                          <div class="item-input">
+                            {{ activity.description }}
+                          </div>
+                        </b-col>
+                      </b-row>
                     </template>
 
+                    <template #footer>
+                      <b-row v-if="activity['file_path']">
+                        <b-col>
+                          <div class="item-input">
+                            <b>{{ $t('CLASSES.GRADE') }}: </b> {{ activity.grade ? activity.grade : $t('CLASSES.NOT_GRADE') }}
+                          </div>
+                          <div class="item-input">
+                            <b v-if="activity.grade">{{ $t('CLASSES.COMMENT') }}: </b> {{ activity.comment ? activity.comment : '' }}
+                          </div>
+                        </b-col>
+                      </b-row>
+                      <b-row v-else>
+                        <b-col>
+                          <div class="item-input">
+                            {{ $t('CLASSES.ALERT_NO_SUBMIT') }}
+                          </div>
+                        </b-col>
+                      </b-row>
+                    </template>
                   </b-card>
                 </div>
               </div>
@@ -808,7 +833,7 @@
                 </div>
               </div>
 
-              <div class="zone-active-grade">
+              <div v-if="itemHandinActivity.length && isActivityHandle['id']" class="zone-active-grade">
                 <div class="item-input">
                   <b-input-group class="mt-3">
                     <template #append>
@@ -825,12 +850,13 @@
                     :disabled="isProcess"
                   />
                 </div>
-              </div>
-              <div class="item-input">
-                <b-button block class="btn-custom-green" :disabled="isProcess" @click="submitGrade()">
-                  <i v-if="isProcess" class="fad fa-spinner-third fa-spin" />
-                  {{ $t('CLASSES.BUTTON_SUBMIT') }}
-                </b-button>
+
+                <div class="item-input">
+                  <b-button block class="btn-custom-green" :disabled="isProcess" @click="submitGrade()">
+                    <i v-if="isProcess" class="fad fa-spinner-third fa-spin" />
+                    {{ $t('CLASSES.BUTTON_SUBMIT') }}
+                  </b-button>
+                </div>
               </div>
             </b-col>
 
@@ -856,6 +882,8 @@ const ACTION_UPDATE = 'UPDATE';
 
 const URL_API = {
   getAll: '/classes',
+  getAllClassTeacher: '/class/teacher/list',
+  getAllClassStudent: '/classes/student/list',
   getOne: '/classes',
   postClasses: '/classes',
   putClasses: '/classes',
@@ -870,9 +898,12 @@ const URL_API = {
   postHandinActivity: '/class/action/student/handin',
   getAllHandinActivity: '/class/action/teacher/handin',
   postSubmitGrade: '/class/action/teacher/grade',
+  getActionDetail: '/class/action/student/action-detail',
 };
 import {
   getAllClasses,
+  getAllClassTeacher,
+  getAllClassStudent,
   getOneClasses,
   postClasses,
   putClasses,
@@ -885,6 +916,7 @@ import {
   postHandinActivity,
   getAllHandinActivity,
   postSubmitGrade,
+  getActionDetail,
 } from '@/api/modules/classes';
 import {
   getAllCourse,
@@ -1143,25 +1175,53 @@ export default {
       this.overlay.show = false;
     },
     async handleGetAllClasses() {
-      const URL = URL_API['getAll'];
-
       const PARAMS = {
         page: this.pagination.page,
         per_page: this.pagination.perPage,
       };
 
-      try {
-        const res = await getAllClasses(URL, PARAMS);
+      let res;
 
-        if (res['status'] === 200) {
-          this.items = res['data']['data'];
-          this.pagination.page = res['data']['current_page'];
-          this.pagination.total = res['data']['total'];
-        } else {
-          NotifyClasses.server(res['message']);
+      try {
+        if (getCurrentRole() === CONST_ROLE.LIST_ROLE.ADMIN) {
+          const URL = URL_API['getAll'];
+          res = await getAllClasses(URL, PARAMS);
+
+          if (res) {
+            this.items = res['data']['data'];
+            this.pagination.page = res['data']['current_page'];
+            this.pagination.total = res['data']['total'];
+          } else {
+            NotifyClasses.server(res['message']);
+          }
         }
-      } catch {
+
+        if (getCurrentRole() === CONST_ROLE.LIST_ROLE.TEACHER) {
+          const URL = URL_API['getAllClassTeacher'];
+          res = await getAllClassTeacher(URL, PARAMS);
+          if (res) {
+            this.items = res['data'];
+            this.pagination.page = res['current_page'];
+            this.pagination.total = res['total'];
+          } else {
+            NotifyClasses.server(res['message']);
+          }
+        }
+
+        if (getCurrentRole() === CONST_ROLE.LIST_ROLE.STUDENT) {
+          const URL = URL_API['getAllClassStudent'];
+          res = await getAllClassStudent(URL, PARAMS);
+          if (res) {
+            this.items = res['data'];
+            this.pagination.page = res['current_page'];
+            this.pagination.total = res['total'];
+          } else {
+            NotifyClasses.server(res['message']);
+          }
+        }
+      } catch (error) {
         NotifyClasses.exception();
+        console.log(error);
       }
     },
     async handleGetOneClasses(id) {
@@ -1537,6 +1597,8 @@ export default {
 
         if (res['status'] === 200) {
           this.visibleModalAssignCourse = false;
+
+          await this.handleGetA;
           NotifyClasses.assignCourseSuccess();
         } else {
           NotifyClasses.server(res['message']);
@@ -1562,10 +1624,39 @@ export default {
         this.paginationActivity.page = res.current_page;
         this.paginationActivity.total = res.total;
 
-        console.log(res);
+        let idx = 0;
+        const len = res['data'].length;
+
+        while (idx < len) {
+          await this.handleGetActivityDetail(res['data'][idx]['id'], idx);
+
+          idx++;
+        }
       } catch (error) {
         console.log(error);
         NotifyClasses.server(error['response']['data']['message']);
+      }
+    },
+    async handleGetActivityDetail(id, index) {
+      try {
+        const URL = URL_API.getActionDetail;
+        const PARAMS = {
+          action_id: id,
+        };
+
+        const res = await getActionDetail(URL, PARAMS);
+
+        if (res['handin']) {
+          this.itemActivity[index].grade = res['handin']['grade'];
+          this.itemActivity[index].comment = res['handin']['comment'];
+          this.itemActivity[index].file_path = res['handin']['file_path'];
+        } else {
+          this.itemActivity[index].grade = '';
+          this.itemActivity[index].comment = '';
+          this.itemActivity[index].file_path = '';
+        }
+      } catch (error) {
+        console.log(`Error get deatil action: ${id}`);
       }
     },
     async onClickActivity(item) {
@@ -1591,8 +1682,6 @@ export default {
       this.visibleModalActivity = false;
     },
     async onClickSubmitActivity() {
-      this.visibleModalActivity = false;
-
       const URL = URL_API.postActivity;
       const DATA = {
         class_id: this.isClassHandle.id,
@@ -1688,6 +1777,12 @@ export default {
           this.itemHandinActivity = res['data'];
           this.paginationHandinActivity.page = res['current_page'];
           this.paginationHandinActivity.total = res['total'];
+
+          this.isActivityHandle.id = activity.id;
+          this.isActivityHandle.class_id = activity.class_id;
+          this.isActivityHandle.teacher_id = activity.teacher_id;
+          this.isActivityHandle.name = activity.name;
+          this.isActivityHandle.description = activity.description;
         } else {
           NotifyClasses.exception();
         }
@@ -1696,15 +1791,10 @@ export default {
       } catch (error) {
         console.log(error);
       }
-
-      this.isActivityHandle.id = activity.id;
-      this.isActivityHandle.class_id = activity.class_id;
-      this.isActivityHandle.teacher_id = activity.teacher_id;
-      this.isActivityHandle.name = activity.name;
-      this.isActivityHandle.description = activity.description;
     },
     onClickCloseGradeActivity() {
       this.visibleModalGradeActivity = false;
+      this.resetViewHandin();
     },
     onClickViewHandin(handin) {
       console.log(handin);
@@ -1724,10 +1814,24 @@ export default {
         },
       };
     },
+    resetViewHandin() {
+      this.isGrade = {
+        id: '',
+        grade: 0,
+        comment: '',
+        pdf: '',
+        student: {
+          email: '',
+          id: '',
+          isBlind: '',
+          name: '',
+          phone: '',
+          status: '',
+          user_code: '',
+        },
+      };
+    },
     async submitGrade() {
-      console.log('AAA');
-      console.log(this.isGrade);
-
       this.isProcess = true;
 
       try {
@@ -1740,7 +1844,10 @@ export default {
 
         const res = await postSubmitGrade(URL, DATA);
 
-        console.log(res);
+        if (res['status'] === 200) {
+          this.onClickGradeActivity(this.isActivityHandle);
+        }
+
         this.isProcess = false;
       } catch (error) {
         this.isProcess = false;
@@ -2024,7 +2131,9 @@ export default {
 }
 
 .item-input {
-    margin-bottom: 10px;
+    &:not(:last-child) {
+        margin-bottom: 10px;
+    }
 }
 .icon-date {
     color: $forest-green;

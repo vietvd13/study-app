@@ -768,48 +768,74 @@
         <template #default>
           <b-row>
             <b-col cols="12" sm="12" md="12" lg="12" xl="3">
-              <div v-for="handin in itemHandinActivity" :key="handin.id" class="item-input list-student">
-                <b-card>
-                  <template #header>
-                    {{ handin['student']['user_code'] }}
-                  </template>
+              <div class="list-student">
+                <div v-for="handin in itemHandinActivity" :key="handin.id" class="item-input" @click="onClickViewHandin(handin)">
+                  <b-card>
+                    <template #header>
+                      {{ handin['student']['user_code'] }}
+                    </template>
+                    <b-card-text>
+                      <div>
+                        <span><b>{{ $t('ACCOUNT.LABEL_FORM_FULLNAME') }}: </b>{{ handin['student']['name'] }}</span>
+                      </div>
+                      <div>
+                        <span><b>{{ $t('ACCOUNT.LABEL_FORM_TELEPHONE') }}: </b>{{ handin['student']['phone'] }}</span>
+                      </div>
+                      <div>
+                        <span>
+                          <b>{{ $t('ACCOUNT.LABEL_FORM_BLIND') }}: </b>
+                          <b-badge v-if="handin['student']['isBlind'] === 1" variant="danger">
+                            {{ $t('CLASSES.TEXT_YES') }}
+                          </b-badge>
+                          <b-badge v-if="handin['student']['isBlind'] === 0" variant="success">
+                            {{ $t('CLASSES.TEXT_NO') }}
+                          </b-badge>
+                        </span>
+                      </div>
+                      <div>
+                        <span>
+                          <b>{{ $t('ACCOUNT.LABEL_FORM_STATUS') }}: </b>
+                          <b-badge v-if="handin['student']['status'] === 1" variant="success">
+                            {{ $t('CLASSES.TEXT_ACTIVE') }}
+                          </b-badge>
+                          <b-badge v-if="handin['student']['status'] === 0" variant="danger">
+                            {{ $t('CLASSES.TEXT_INACTIVE') }}
+                          </b-badge>
+                        </span>
+                      </div>
+                    </b-card-text>
+                  </b-card>
+                </div>
+              </div>
 
-                  <b-card-text>
-                    <div>
-                      <span><b>{{ $t('ACCOUNT.LABEL_FORM_FULLNAME') }}: </b>{{ handin['student']['name'] }}</span>
-                    </div>
-                    <div>
-                      <span><b>{{ $t('ACCOUNT.LABEL_FORM_TELEPHONE') }}: </b>{{ handin['student']['phone'] }}</span>
-                    </div>
-                    <div>
-                      <span>
-                        <b>{{ $t('ACCOUNT.LABEL_FORM_BLIND') }}: </b>
-                        <b-badge v-if="handin['student']['isBlind'] === 1" variant="danger">
-                          {{ $t('CLASSES.TEXT_YES') }}
-                        </b-badge>
-                        <b-badge v-if="handin['student']['isBlind'] === 0" variant="success">
-                          {{ $t('CLASSES.TEXT_NO') }}
-                        </b-badge>
-                      </span>
-                    </div>
-                    <div>
-                      <span>
-                        <b>{{ $t('ACCOUNT.LABEL_FORM_STATUS') }}: </b>
-                        <b-badge v-if="handin['student']['status'] === 1" variant="success">
-                          {{ $t('CLASSES.TEXT_ACTIVE') }}
-                        </b-badge>
-                        <b-badge v-if="handin['student']['status'] === 0" variant="danger">
-                          {{ $t('CLASSES.TEXT_INACTIVE') }}
-                        </b-badge>
-                      </span>
-                    </div>
-                  </b-card-text>
-                </b-card>
+              <div class="zone-active-grade">
+                <div class="item-input">
+                  <b-input-group class="mt-3">
+                    <template #append>
+                      <b-input-group-text>100</b-input-group-text>
+                    </template>
+                    <b-form-input v-model="isGrade['grade']" type="number" :min="0" :max="100" :disabled="isProcess" />
+                  </b-input-group>
+                </div>
+                <div class="item-input">
+                  <b-form-textarea
+                    v-model="isGrade['comment']"
+                    rows="8"
+                    max-rows="8"
+                    :disabled="isProcess"
+                  />
+                </div>
+              </div>
+              <div class="item-input">
+                <b-button block class="btn-custom-green" :disabled="isProcess" @click="submitGrade()">
+                  <i v-if="isProcess" class="fad fa-spinner-third fa-spin" />
+                  {{ $t('CLASSES.BUTTON_SUBMIT') }}
+                </b-button>
               </div>
             </b-col>
 
             <b-col cols="12" sm="12" md="12" lg="12" xl="9">
-                <vue-pdf-app pdf="/documents/1/CW_GROUP.pdf"></vue-pdf-app>
+              <vue-pdf-app id="view-pdf" :pdf="isGrade['pdf']" style="min-height: 700px;" />
             </b-col>
           </b-row>
         </template>
@@ -843,6 +869,7 @@ const URL_API = {
   getAllActivity: '/class/action/teacher/actions',
   postHandinActivity: '/class/action/student/handin',
   getAllHandinActivity: '/class/action/teacher/handin',
+  postSubmitGrade: '/class/action/teacher/grade',
 };
 import {
   getAllClasses,
@@ -857,6 +884,7 @@ import {
   getAllActivity,
   postHandinActivity,
   getAllHandinActivity,
+  postSubmitGrade,
 } from '@/api/modules/classes';
 import {
   getAllCourse,
@@ -978,6 +1006,21 @@ export default {
         teacher_id: '',
         name: '',
         description: '',
+      },
+      isGrade: {
+        id: '',
+        grade: 0,
+        comment: '',
+        pdf: '',
+        student: {
+          email: '',
+          id: '',
+          isBlind: '',
+          name: '',
+          phone: '',
+          status: '',
+          user_code: '',
+        },
       },
     };
   },
@@ -1663,6 +1706,47 @@ export default {
     onClickCloseGradeActivity() {
       this.visibleModalGradeActivity = false;
     },
+    onClickViewHandin(handin) {
+      console.log(handin);
+      this.isGrade = {
+        id: handin.id ? handin.id : '',
+        grade: handin.grade ? handin.grade : 0,
+        comment: handin.comment ? handin.comment : '',
+        pdf: handin.file_path ? handin.file_path : '',
+        student: handin.student ? handin.student : {
+          email: '',
+          id: '',
+          isBlind: '',
+          name: '',
+          phone: '',
+          status: '',
+          user_code: '',
+        },
+      };
+    },
+    async submitGrade() {
+      console.log('AAA');
+      console.log(this.isGrade);
+
+      this.isProcess = true;
+
+      try {
+        const URL = URL_API.postSubmitGrade;
+        const DATA = {
+          student_handin_id: this.isGrade.id,
+          grade: this.isGrade.grade,
+          comment: this.isGrade.comment,
+        };
+
+        const res = await postSubmitGrade(URL, DATA);
+
+        console.log(res);
+        this.isProcess = false;
+      } catch (error) {
+        this.isProcess = false;
+        console.log(error);
+      }
+    },
   },
 };
 </script>
@@ -1914,8 +1998,12 @@ export default {
 .modal-grade-activity-content {
 
     .list-student {
-
+      max-height: 350px;
+      overflow: auto;
+      margin-bottom: 10px;
+      padding: 10px;
     }
+
     .item-input {
         .card-header {
             padding: 0.5rem 0.75rem;
@@ -1941,5 +2029,8 @@ export default {
 .icon-date {
     color: $forest-green;
     font-size: 1.25rem;
+}
+.input-group-text {
+  border-color: transparent;
 }
 </style>

@@ -47,3 +47,7 @@ export function postHandinActivity(url, data) {
 export function getAllHandinActivity(url, params) {
   return request.getRequest(url, params);
 }
+
+export function postSubmitGrade(url, data) {
+  return request.postRequest(url, data);
+}

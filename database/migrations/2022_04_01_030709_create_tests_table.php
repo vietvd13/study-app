@@ -17,6 +17,8 @@ class CreateTestsTable extends Migration
             $table->id();
             $table->bigInteger('created_by')->unsigned();
             $table->integer('limit_time');
+            $table->boolean('blind_support')->default(false);
+            $table->string('test_name');
             $table->timestamps();
             $table->softDeletes();
 

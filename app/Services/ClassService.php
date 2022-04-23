@@ -9,6 +9,7 @@ namespace Service;
 use Service\BaseService;
 use App\Services\Contracts\ClassServiceInterface;
 use App\Repositories\Contracts\ClassRepositoryInterface;
+use Illuminate\Support\Arr;
 class ClassService extends BaseService implements ClassServiceInterface
 {
 
@@ -74,7 +75,11 @@ class ClassService extends BaseService implements ClassServiceInterface
     }
 
     public function getClassByTeacher($request) {
-        return $this->repository->getClassByTeacher($request['teacher_id']);
+        $teacher_id = Arr::get($request->all(), 'teacher_id', null);
+        if ($teacher_id == null) {
+            $teacher_id = $request->user()->id;
+        }
+        return $this->repository->getClassByTeacher($teacher_id , $request->per_page);
     }
 
     public function ListClassStudent($request) {

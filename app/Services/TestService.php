@@ -6,6 +6,9 @@
  */
 
 namespace Service;
+
+use App\Jobs\TestImport;
+use App\Models\Classes;
 use App\Services\Contracts\BaseServiceInterface;
 use Service\BaseService;
 use App\Services\Contracts\TestServiceInterface;
@@ -23,15 +26,20 @@ class TestService extends BaseService implements TestServiceInterface
     public function importTest($request) {
         $class_id =  $request['class_id'];
         $course_id =  $request['course_id'];
-        $class = $this->repository->find($class_id);
+        $class = Classes::find($class_id);
         $course = $class->courses()->find($course_id);
-
+        $fileImport = $request->file('file');
         if ($class) {
             if ($course) {
+                $queued = TestImport::dispatch([
 
+                ])->onQueue('test_import');
+                return [];//$queued;
             }
         }
-
-        return $course;
+        return [
+            'code' => 500,
+            'message' => 'faild'
+        ];
     }
 }

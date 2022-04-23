@@ -180,6 +180,30 @@ export default {
     BUTTON_CANCEL: 'Cancel',
     BUTTON_CLOSE: 'Close',
   },
+  TEST: {
+    BUTTON_ADD_NEW: 'Add new',
+
+    TITLE_MODAL_ADD: 'Add new test',
+    TITLE_MODAL_UPDATE: 'Update a test',
+
+    LABLE_FORM_NAME: 'Name',
+    LABLE_FORM_CLASS: 'Class',
+    LABEL_FORM_COURSE: 'Course',
+    LABEL_FORM_BLIND_SUPPORT: 'Blind support',
+    LABEL_FORM_LIMIT_TIME: 'Limit time',
+    LABEL_FORM_FILE: 'File',
+
+    PLACEHOLDER_FORM_NAME: 'Enter name',
+    PLACEHOLDER_FORM_CLASS: 'Please select class',
+    PLACEHOLDER_FORM_COURSE: 'Please select course',
+    PLACEHOLDER_FORM_LIMIT_TIME: 'Enter limit time',
+    PLACEHOLDER_FORM_FILE: 'Choose a file...',
+
+    BUTTON_SUBMIT: 'Submit',
+    BUTTON_DELETE: 'Delete',
+    BUTTON_CANCEL: 'Cancel',
+    BUTTON_CLOSE: 'Close',
+  },
   PAGE_NOT_FOUND: {
     DETAIL: "We can't seem to find the page you're looking for",
     GO_TO_HOME: 'Go To Home Page',

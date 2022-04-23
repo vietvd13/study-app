@@ -27,4 +27,26 @@ class TestController extends Controller
         $file = $request->file('file');
         return $this->service->importTest($request);
     }
+
+    public function answerQuestion(Request $request) {
+
+    }
+
+    public function testDetailTestByTeacher(Request $request) {
+
+    }
+
+    public function testDetailTestByStudent(Request $request) {
+            // response về arrray of question [
+                // trong array of question answers
+                // return ve text va file voice
+            // ]
+    }
+
+    public function testDetailByStudent(Request $request) {
+        // response về arrray of question [
+            // trong array of question answers
+            // return ve text va file voice
+        // ]
+    }
 }

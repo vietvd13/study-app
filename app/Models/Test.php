@@ -20,6 +20,8 @@ class Test extends Model
 
     protected $fillable = [
         'limit_time',
+        'test_name',
+        'blind_support',
         'created_by'
     ];
 

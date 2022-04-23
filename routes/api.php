@@ -32,7 +32,7 @@ Route::namespace('Api')->group(function() {
         Route::prefix('class/action')->group(function () {
             Route::post('create-action', 'ClassController@ClassAction');
             Route::post('student/handin', 'ClassController@ActionHandin');
-            Route::post('teach/grade', 'ClassController@ActionGrading');
+            Route::post('teacher/grade', 'ClassController@ActionGrading');
             Route::get('teacher/handin', 'ClassController@GetAllHandinTeacher');
             Route::get('teacher/actions', 'ClassController@ListActionInClass');
         });

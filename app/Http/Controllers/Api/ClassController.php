@@ -81,6 +81,10 @@ class ClassController extends Controller
         return $this->service->ListActionInClass($request);
     }
 
+    public function ListClassStudent(Request $request) {
+        return $this->service->ListClassStudent($request);
+    }
+
     public function ClassAction(Request $request) {
         return $this->service->addClassAction($request);
     }
@@ -99,5 +103,13 @@ class ClassController extends Controller
 
     public function getClassByTeacher(Request $request) {
         return $this->service->getClassByTeacher($request);
+    }
+
+    public function getClassByStudent(Request $request) {
+        return $this->service->ListClassStudent($request);
+    }
+
+    public function studentGetActionDetail(Request $request) {
+        return $this->service->actionDetail($request);
     }
 }

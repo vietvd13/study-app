@@ -77,5 +77,11 @@ class ClassService extends BaseService implements ClassServiceInterface
         return $this->repository->getClassByTeacher($request['teacher_id']);
     }
 
+    public function ListClassStudent($request) {
+        return $this->repository->ListClassStudent($request->user()->id, $request->per_page);
+    }
 
+    public function actionDetail($request) {
+        return $this->repository->actionDetail($request->action_id, $request->user()->id);
+    }
 }

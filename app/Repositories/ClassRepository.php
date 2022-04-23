@@ -14,7 +14,7 @@ use App\Repositories\Contracts\ClassRepositoryInterface;
 use Repository\BaseRepository;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Carbon;
-
+use App\Models\User;
 class ClassRepository extends BaseRepository implements ClassRepositoryInterface
 {
 
@@ -137,7 +137,7 @@ class ClassRepository extends BaseRepository implements ClassRepositoryInterface
         }
     }
 
-    public function allHandin($action_id, $per_page = 10) {
+    public function allHandin(int $action_id, int $per_page = 10) {
         $class_actions = ClassAction::where('id', $action_id)->first()->action_handin()->with([
             'student' => function ($query) {
                 $query->select(['*']);
@@ -153,12 +153,31 @@ class ClassRepository extends BaseRepository implements ClassRepositoryInterface
         })->get(['*']);
         return $data;
     }
-    public function allActions($class_id, $per_page=10) {
+    public function allActions(int $class_id, int $per_page=10) {
         $class = $this->model->where('id', $class_id)->first();
         if ($class) {
             return $class->class_action()->orderBy('created_at',  'DESC')->paginate($per_page);
         }
     }
 
+    public function ListClassStudent(int $student_id, $per_page = 10) {
+        $classOfStudents = User::where('id', $student_id)->first();
+        if ($classOfStudents) {
+            return $classOfStudents->classes()->paginate($per_page);
+        }
+        else return [];
+    }
+
+    public function actionDetail(int $action_id, int $student_id) {
+        $action = ClassAction::where('id', $action_id)->first();
+        if ($action) {
+            $result = [
+                'action' => $action,
+                'handin' => $action->action_handin()->where('student_id', $student_id)->first()
+            ];
+            return $result;
+        }
+        return [];
+    }
 }
 

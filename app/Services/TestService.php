@@ -74,7 +74,7 @@ class TestService extends BaseService implements TestServiceInterface
         }
         return [
             'code' => 500,
-            'message' => 'faild'
+            'message' => 'faild - course is not in the class or class not found'
         ];
     }
 

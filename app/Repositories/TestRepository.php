@@ -59,7 +59,7 @@ class TestRepository extends BaseRepository implements TestRepositoryInterface
     }
 
     public function listTestByClass(int $class_id, int $per_page) {
-        $this->model->where('class_id', $class_id)->paginate($per_page);
+        return $this->model->where('class_id', $class_id)->paginate($per_page);
     }
 
     public function listTestCreatedByTeacher(int $teacher_id, int $per_page) {

@@ -8,7 +8,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-
+use App\Imports\ImportTestQuestion;
 class TestImport implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
@@ -18,6 +18,7 @@ class TestImport implements ShouldQueue
      *
      * @return void
      */
+    protected $test;
     public function __construct()
     {
         //
@@ -30,6 +31,6 @@ class TestImport implements ShouldQueue
      */
     public function handle()
     {
-        //
+
     }
 }

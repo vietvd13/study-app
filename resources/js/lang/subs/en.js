@@ -12,6 +12,9 @@ export default {
     CLASSES: 'Classes Management',
     COURSE: 'Course Management',
     TEST: 'Test Management',
+    STUDENT_TEST: 'Student Test',
+    CHOOSE_CLASS: 'Choose Class',
+    CHOOSE_TEST: 'Choose Test',
   },
   LOGIN: {
     TITLE: 'Account Login',
@@ -215,6 +218,16 @@ export default {
     BUTTON_DELETE: 'Delete',
     BUTTON_CANCEL: 'Cancel',
     BUTTON_CLOSE: 'Close',
+  },
+  CHOOSE_CLASS: {
+    TEXT_CLASS: 'Class',
+    TEXT_GO_TO_CLASS: 'Go to class',
+    TEXT_NO_DATA: 'No data',
+  },
+  CHOOSE_TEST: {
+    TEXT_TEST: 'Test',
+    TEXT_GO_TO_TEST: 'Go to test',
+    TEXT_NO_DATA: 'No data',
   },
   PAGE_NOT_FOUND: {
     DETAIL: "We can't seem to find the page you're looking for",

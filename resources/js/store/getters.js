@@ -12,6 +12,7 @@ const getters = {
   blind: state => state.blind.blind,
   permissionRoutes: state => state.permissions.routes,
   addRoutes: state => state.permissions.addRoutes,
+  choose_class: state => state.studentTest.choose_class,
 };
 
 export default getters;

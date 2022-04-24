@@ -9,6 +9,7 @@ import Account from './modules/Account';
 import Classes from './modules/Classes';
 import Course from './modules/Course';
 import Test from './modules/Test';
+import StudentTest from './modules/StudentTest';
 import PageNotFound from './modules/PageNotFound';
 
 export const constantRoutes = [
@@ -26,6 +27,7 @@ export const asyncRoutes = [
   Classes,
   Course,
   Test,
+  StudentTest,
   PageNotFound,
   {
     path: '*',

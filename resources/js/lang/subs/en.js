@@ -301,5 +301,13 @@ export default {
       VALIDATE_NAME: 'Course name is incorrect',
       VALIDATE_UPLOAD_DOCS: 'You have not entered the correct information for uploading documents',
     },
+    TEST: {
+      ADD_SUCCESS: 'You have added a new test to the system',
+      ADD_FAILD: 'You have added a new test that failed',
+      UPDATE_SUCCESS: 'You have successfully updated the test information',
+      UPDATE_FAILED: 'You have updated the information of the failed test',
+
+      VALIDATE_FORM: 'The test information you entered is not correct',
+    },
   },
 };

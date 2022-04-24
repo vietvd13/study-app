@@ -8,7 +8,7 @@ export function getAllClassTeacher(url, params) {
   return request.getRequest(url, params);
 }
 
-export function getAllCourse(url, params) {
+export function getDetailClass(url, params) {
   return request.getRequest(url, params);
 }
 

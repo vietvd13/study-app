@@ -50,7 +50,7 @@
 
           <div class="item-input">
             <label for="form-class">{{ $t('TEST.LABLE_FORM_CLASS') }}</label>
-            <b-form-select id="form-class" v-model="isTest.class_id" :disabled="isProcess">
+            <b-form-select id="form-class" v-model="isTest.class_id" :disabled="isProcess" @change="handleGetDetailClass()">
               <b-form-select-option :value="null" :disabled="true">
                 {{ $t('TEST.PLACEHOLDER_FORM_CLASS') }}
               </b-form-select-option>
@@ -99,10 +99,11 @@
 
           <div class="item-input">
             <label>{{ $t('TEST.LABEL_FORM_FILE') }}</label>
-            <input id="input-file-test" type="file" name="input-file-test" @change="chooseFile">
+            <input id="input-file-test" type="file" name="input-file-test" :disabled="isProcess" accept=".csv" @change="chooseFile">
             <div>
               <b-button
                 class="btn-custom-green"
+                :disabled="isProcess"
                 @click="clickChooseFile()"
               >
                 <i class="fas fa-cloud-upload-alt" style="margin-right: 10px;" />
@@ -137,20 +138,24 @@
 const URL_API = {
   getAll: '/classes',
   getAllClassTeacher: '/class/teacher/list',
-  getAllCourse: '/courses',
+  getDetailClass: '/classes',
   postCreateTest: '/test/import',
 };
 
 import {
   getAllClasses,
   getAllClassTeacher,
-  getAllCourse,
+  getDetailClass,
   postCreateTest,
 } from '@/api/modules/test';
 
 import { isAvailable } from '@/utils/isAvailable';
-import { hasRole, getCurrentRole } from '@/utils/hasRole';
+import { getCurrentRole } from '@/utils/hasRole';
+import { validatePostTest } from './validate';
+
 import CONST_ROLE from '@/const/role';
+
+import NotifyTest from '@/toast/modules/test';
 
 export default {
   name: 'Test',
@@ -188,7 +193,7 @@ export default {
   methods: {
     async initData() {
       await this.handleGetAllClasses();
-      await this.handleGetAllCourse();
+      await this.handleGetDetailClass();
     },
     async handleGetAllClasses() {
       const PARAMS = {
@@ -223,24 +228,23 @@ export default {
         console.log(error);
       }
     },
-    async handleGetAllCourse() {
-      const URL = URL_API['getAllCourse'];
+    async handleGetDetailClass() {
+      if (this.isTest.class_id) {
+        const URL = `${URL_API['getDetailClass']}/${this.isTest.class_id}`;
 
-      const PARAMS = {
-        page: 1,
-        per_page: 10000,
-      };
+        try {
+          const res = await getDetailClass(URL);
 
-      try {
-        const res = await getAllCourse(URL, PARAMS);
-
-        if (res['status'] === 200) {
-          this.listCourse = res['data']['data'];
-        } else {
-          console.log('Can not get data class');
+          if (res['status'] === 200) {
+            this.listCourse = res['data']['courses'];
+          } else {
+            console.log('Can not get data class');
+          }
+        } catch (error) {
+          console.log(error);
         }
-      } catch (error) {
-        console.log(error);
+      } else {
+        this.listCourse = [];
       }
     },
     onClickAdd() {
@@ -248,15 +252,17 @@ export default {
     },
     onClickCancelModalForm() {
       this.visibleModalForm = false;
+      this.isResetModalForm();
     },
     isResetModalForm() {
       this.isTest = {
         test_id: '',
         test_name: '',
-        class_id: '',
-        course_id: '',
+        class_id: null,
+        course_id: null,
         blind_support: false,
         limit_time: '',
+        file: null,
       };
 
       if (isAvailable(document.getElementById('input-file-test'), 'value')) {
@@ -273,27 +279,35 @@ export default {
     async onClickSumbitModalForm() {
       this.isProcess = true;
 
-      try {
-        const URL = URL_API['postCreateTest'];
+      if (validatePostTest(this.isTest)) {
+        try {
+          const URL = URL_API['postCreateTest'];
 
-        const DATA = new FormData();
-        DATA.append('name', this.isTest.test_name ? this.isTest.test_name : '');
-        DATA.append('class_id', this.isTest.class_id ? this.isTest.class_id : null);
-        DATA.append('course_id', this.isTest.course_id ? this.isTest.course_id : null);
-        DATA.append('limit_time', this.isTest.limit ? this.isTest.limit : 0);
-        DATA.append('blind_support', this.isTest.blind_support ? 1 : 0);
-        DATA.append('file', this.isTest.file ? this.isTest.file : null);
+          const DATA = new FormData();
+          DATA.append('test_name', this.isTest.test_name ? this.isTest.test_name : '');
+          DATA.append('class_id', this.isTest.class_id ? this.isTest.class_id : null);
+          DATA.append('course_id', this.isTest.course_id ? this.isTest.course_id : null);
+          DATA.append('limit_time', this.isTest.limit_time ? this.isTest.limit_time : 0);
+          DATA.append('blind_support', this.isTest.blind_support ? 1 : 0);
+          DATA.append('file', this.isTest.file ? this.isTest.file : null);
 
-        const res = await postCreateTest(URL, DATA);
+          const res = await postCreateTest(URL, DATA);
 
-        console.log(res);
+          console.log(res);
 
-        this.visibleModalForm = false;
-        this.isResetModalForm();
+          this.visibleModalForm = false;
+          this.isProcess = false;
+          this.isResetModalForm();
+
+          NotifyTest.addSuccess();
+        } catch (error) {
+          this.isProcess = false;
+          console.log(error);
+          NotifyTest.addError();
+        }
+      } else {
+        NotifyTest.validateForm();
         this.isProcess = false;
-      } catch (error) {
-        this.isProcess = false;
-        console.log(error);
       }
     },
   },
@@ -323,15 +337,15 @@ export default {
     }
 
     .modal-form-content {
-    	.item-input {
+        .item-input {
             #input-file-test {
                 display: none;
             }
 
             &:not(:last-child) {
-			    margin-bottom: 10px;
+                margin-bottom: 10px;
             }
-		}
+        }
     }
 
     .icon-loading {

@@ -33,20 +33,18 @@ class TestController extends Controller
     }
 
     public function testDetailTestByTeacher(Request $request) {
-
+        return $this->service->testDetailByTeachers($request);
     }
 
     public function testDetailTestByStudent(Request $request) {
-            // response về arrray of question [
-                // trong array of question answers
-                // return ve text va file voice
-            // ]
+        return $this->service->testDetailByStudent($request);
     }
 
-    public function testDetailByStudent(Request $request) {
-        // response về arrray of question [
-            // trong array of question answers
-            // return ve text va file voice
-        // ]
+    public function studentListTestByClass(Request $request) {
+        return $this->service->studentListTestByClass($request);
+    }
+
+    public function listTestCreatedByTeacher(Request $request) {
+        return $this->service->listTestCreatedByTeacher($request);
     }
 }

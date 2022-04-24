@@ -46,6 +46,9 @@ Route::namespace('Api')->group(function() {
 
         Route::group(['prefix' => 'test'], function () {
             Route::post('import', 'TestController@importTest');
+            Route::get('student/detail',  'TestController@testDetailTestByStudent');
+            Route::get('student/list-test',  'TestController@studentListTestByClass');
+            Route::get('teacher/list-test',  'TestController@listTestCreatedByTeacher');
         });
     });
 });

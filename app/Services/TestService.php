@@ -77,4 +77,20 @@ class TestService extends BaseService implements TestServiceInterface
             'message' => 'faild'
         ];
     }
+
+    public function testDetailByTeachers($request) {
+
+    }
+
+    public function testDetailByStudent($request) {
+        return $this->repository->testDetailByStudent($request->test_id, $request->user()->id);
+    }
+
+    public function studentListTestByClass($request) {
+        return $this->repository->listTestByClass($request->class_id, $request->per_page);
+    }
+
+    public function listTestCreatedByTeacher($request) {
+        return $this->repository->listTestCreatedByTeacher($request->user()->id, $request->per_page);
+    }
 }

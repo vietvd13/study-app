@@ -16,6 +16,8 @@ class CreateTestsTable extends Migration
         Schema::create('tests', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('created_by')->unsigned();
+            $table->bigInteger('course_id')->unsigned();
+            $table->bigInteger('class_id')->unsigned();
             $table->integer('limit_time');
             $table->boolean('blind_support')->default(false);
             $table->string('test_name');
@@ -23,6 +25,14 @@ class CreateTestsTable extends Migration
             $table->softDeletes();
 
             $table->foreign('created_by')->references('id')->on('users')
+            ->onDelete('cascade')
+            ->onUpdate('cascade');
+
+            $table->foreign('course_id')->references('id')->on('courses')
+            ->onDelete('cascade')
+            ->onUpdate('cascade');
+
+            $table->foreign('class_id')->references('id')->on('classes')
             ->onDelete('cascade')
             ->onUpdate('cascade');
         });

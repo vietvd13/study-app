@@ -41,6 +41,8 @@ class TestService extends BaseService implements TestServiceInterface
                             'limit_time' => $request->limit_time,
                             'test_name' => $request->test_name,
                             'blind_support' => $request->blind_support,
+                            'course_id' => $request->course_id,
+                            'class_id' => $request->class_id,
                             'created_by' => $request->user()->id
                         ]);
                         $test_id = $test->id;
@@ -49,6 +51,8 @@ class TestService extends BaseService implements TestServiceInterface
                             'limit_time' => $request->limit_time,
                             'test_name' => $request->test_name,
                             'blind_support' => $request->blind_support,
+                            'course_id' => $request->course_id,
+                            'class_id' => $request->class_id,
                             'created_by' => $request->user()->id
                         ]);
                         Storage::deleteDirectory("/testfiles/{$test_id}");
@@ -56,7 +60,9 @@ class TestService extends BaseService implements TestServiceInterface
                     $pathFile = $this->uploadFile($fileImport, $fileImport->getClientOriginalName(), "testfiles/{$test_id}");
                     $queued = TestImport::dispatch([
                         'test_id' => $test_id,
-                        'file_path' => $pathFile
+                        'file_path' => $pathFile,
+                        'folder_path' => "testfiles/{$test_id}",
+                        'blind' => ($request->blind_support == 0) ? false : true
                     ])->onQueue('test_import');
                     return [
                         'test' => $test,

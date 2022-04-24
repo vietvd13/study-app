@@ -199,6 +199,18 @@ export default {
     PLACEHOLDER_FORM_LIMIT_TIME: 'Enter limit time',
     PLACEHOLDER_FORM_FILE: 'Choose a file...',
 
+    TABLE_HEADER_TEST_NAME: 'Name',
+    TABLE_HEADER_CLASS: 'Class',
+    TABLE_HEADER_COURSE: 'Course',
+    TABLE_HEADER_LIMIT_TIME: 'Limit time',
+    TABLE_HEADER_BLIND_SUPPORT: 'Blind support',
+    TABLE_HEADER_ACTIONS: 'Actions',
+
+    TABLE_CONTENT_YES: 'Yes',
+    TABLE_CONTENT_NO: 'No',
+
+    TABLE_CONTENT_NO_DATA: 'No data',
+
     BUTTON_SUBMIT: 'Submit',
     BUTTON_DELETE: 'Delete',
     BUTTON_CANCEL: 'Cancel',

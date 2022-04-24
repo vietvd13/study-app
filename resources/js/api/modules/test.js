@@ -15,3 +15,7 @@ export function getDetailClass(url, params) {
 export function postCreateTest(url, data) {
   return request.postRequest(url, data);
 }
+
+export function getAllTestTeacher(url, params) {
+  return request.getRequest(url, params);
+}

@@ -22,7 +22,84 @@
         </div>
       </div>
 
-      <div class="test-management__content" />
+      <div class="test-management__content">
+        <b-card>
+          <b-row>
+            <b-col>
+              <b-table
+                id="table-test"
+                bordered
+                striped
+                responsive
+                no-sort-reset
+                no-local-sorting
+                show-empty
+                :fields="fields"
+                :items="listTest"
+                aria-controls="table-test"
+              >
+                <template #cell(test_name)="data">
+                  {{ data['item']['test_name'] }}
+                </template>
+
+                <template #cell(class)="data">
+                  {{ data['item']['class_id'] }}
+                </template>
+
+                <template #cell(course)="data">
+                  {{ data['item']['course_id'] }}
+                </template>
+
+                <template #cell(limit_time)="data">
+                  {{ data['item']['limit_time'] }}
+                </template>
+
+                <template #cell(blind_support)="data">
+                  <b-badge v-if="data['item']['blind_support'] === 1" variant="success">
+                    {{ $t('TEST.TABLE_CONTENT_YES') }}
+                  </b-badge>
+                  <b-badge v-if="data['item']['blind_support'] === 0" variant="danger">
+                    {{ $t('TEST.TABLE_CONTENT_NO') }}
+                  </b-badge>
+                </template>
+
+                <template #cell(actions)="data">
+                  <div class="td-actions">
+                    <div class="actions-edit">
+                      <b-button variant="warning" size="sm" @click="onClickUpdate(data.item.id)">
+                        <i class="fas fa-pencil-alt" />
+                      </b-button>
+                    </div>
+                  </div>
+                </template>
+
+                <template #empty>
+                  <span class="d-flex justify-content-center">
+                    {{ $t('TEST.TABLE_CONTENT_NO_DATA') }}
+                  </span>
+                </template>
+              </b-table>
+            </b-col>
+          </b-row>
+
+          <b-row>
+            <b-col>
+              <b-pagination
+                v-model="pagination.page"
+                pills
+                size="sm"
+                first-number
+                last-number
+                align="right"
+                :total-rows="pagination.total"
+                :per-page="pagination.perPage"
+                aria-controls="table-test"
+                :disabled="isProcess"
+              />
+            </b-col>
+          </b-row>
+        </b-card>
+      </div>
 
       <b-modal
         v-model="visibleModalForm"
@@ -140,6 +217,7 @@ const URL_API = {
   getAllClassTeacher: '/class/teacher/list',
   getDetailClass: '/classes',
   postCreateTest: '/test/import',
+  getAllTestTeacher: '/test/teacher/list-test',
 };
 
 import {
@@ -147,6 +225,7 @@ import {
   getAllClassTeacher,
   getDetailClass,
   postCreateTest,
+  getAllTestTeacher,
 } from '@/api/modules/test';
 
 import { isAvailable } from '@/utils/isAvailable';
@@ -183,17 +262,97 @@ export default {
         file: null,
       },
 
+      listTest: [],
       listClass: [],
       listCourse: [],
+
+      pagination: {
+        page: 1,
+        perPage: 10,
+        total: 0,
+      },
     };
+  },
+  computed: {
+    fields() {
+      return [
+        {
+          key: 'test_name',
+          label: this.$t('TEST.TABLE_HEADER_TEST_NAME'),
+          thClass: 'base-th',
+          tdClass: 'base-td',
+        },
+        {
+          key: 'class',
+          label: this.$t('TEST.TABLE_HEADER_CLASS'),
+          thClass: 'base-th',
+          tdClass: 'base-td',
+        },
+        {
+          key: 'course',
+          label: this.$t('TEST.TABLE_HEADER_COURSE'),
+          thClass: 'base-th',
+          tdClass: 'base-td',
+        },
+        {
+          key: 'limit_time',
+          label: this.$t('TEST.TABLE_HEADER_LIMIT_TIME'),
+          thClass: 'base-th',
+          tdClass: 'base-td',
+        },
+        {
+          key: 'blind_support',
+          label: this.$t('TEST.TABLE_HEADER_BLIND_SUPPORT'),
+          thClass: 'base-th',
+          tdClass: 'base-td',
+        },
+        // {
+        //   key: 'actions',
+        //   label: this.$t('TEST.TABLE_HEADER_ACTIONS'),
+        //   thClass: 'base-th base-actions',
+        //   tdClass: 'base-td base-actions',
+        // },
+      ];
+    },
+    currentPageTest() {
+      return this.pagination.page;
+    },
+  },
+  watch: {
+    currentPageTest() {
+      this.initData();
+    },
   },
   created() {
     this.initData();
   },
   methods: {
     async initData() {
+      this.overlay.show = true;
+
+      await this.handleGetAllTest();
       await this.handleGetAllClasses();
-      await this.handleGetDetailClass();
+
+      this.overlay.show = false;
+    },
+    async handleGetAllTest() {
+      try {
+        const URL = URL_API['getAllTestTeacher'];
+        const PARAMS = {
+          page: this.pagination.page,
+          per_page: this.pagination.perPage,
+        };
+
+        const res = await getAllTestTeacher(URL, PARAMS);
+
+        if (res) {
+          this.listTest = res['data'];
+        }
+
+        console.log(res);
+      } catch (error) {
+        console.log(error);
+      }
     },
     async handleGetAllClasses() {
       const PARAMS = {
@@ -310,6 +469,9 @@ export default {
         this.isProcess = false;
       }
     },
+    onClickUpdate(id) {
+      console.log(id);
+    },
   },
 };
 </script>
@@ -332,6 +494,49 @@ export default {
 						margin-right: 10px;
 					}
 				}
+            }
+        }
+
+        &__content {
+            margin-bottom: 10px;
+
+            ::v-deep table#table-test {
+                thead {
+                    tr {
+                        th.base-th {
+                            min-width: 130px;
+                            background-color: $charade;
+                            color: $white;
+                            text-align: center;
+                        }
+                    }
+                }
+
+                tbody {
+                    tr {
+                        td.base-td {
+                            text-align: center;
+                        }
+
+                        td.base-td.base-actions {
+                            width: 200px;
+                        }
+
+                        td {
+                            .td-actions {
+                                display: flex;
+
+                                .actions-edit {
+                                    width: 100%;
+
+                                    i {
+                                        color: $white;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
     }

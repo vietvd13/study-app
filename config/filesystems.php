@@ -66,6 +66,13 @@ return [
             'url' => env('APP_URL').'/classactions',
             'visibility' => 'public',
         ],
+
+        'testfiles' => [
+            'driver' => 'local',
+            'root' => storage_path('app/testfiles'),
+            'url' => env('APP_URL').'/testfiles',
+            'visibility' => 'public',
+        ],
     ],
 
     /*
@@ -83,6 +90,7 @@ return [
         public_path('storage') => storage_path('app/public'),
         public_path('classactions') => storage_path('app/classactions'),
         public_path('documents') => storage_path('app/documents'),
+        public_path('testfiles') => storage_path('app/testfiles'),
     ]
 
 ];

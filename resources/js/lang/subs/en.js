@@ -15,6 +15,7 @@ export default {
     STUDENT_TEST: 'Student Test',
     CHOOSE_CLASS: 'Choose Class',
     CHOOSE_TEST: 'Choose Test',
+    DO_TEST: 'Do Test',
   },
   LOGIN: {
     TITLE: 'Account Login',
@@ -228,6 +229,9 @@ export default {
     TEXT_TEST: 'Test',
     TEXT_GO_TO_TEST: 'Go to test',
     TEXT_NO_DATA: 'No data',
+  },
+  DO_TEST: {
+    TEXT_QUESTION: 'Question',
   },
   PAGE_NOT_FOUND: {
     DETAIL: "We can't seem to find the page you're looking for",

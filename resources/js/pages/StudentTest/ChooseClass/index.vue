@@ -96,9 +96,10 @@ export default {
     },
     onClickGoToClass(id) {
       if (id > 0) {
-        this.$store.dispatch('studentTest/setChooseClass', id).then(() => {
-          this.$router.push('/student-test/choose-test');
-        })
+        this.$store.dispatch('studentTest/setChooseClass', id)
+          .then(() => {
+            this.$router.push('/student-test/choose-test');
+          })
           .catch((error) => {
             console.log(error);
           });

@@ -27,6 +27,14 @@ const StudentTest = {
       },
       component: () => import(/* webpackChunkName: "ChooseTest" */ '@/pages/StudentTest/ChooseTest/index'),
     },
+    {
+      path: 'do-test',
+      name: 'DoTest',
+      meta: {
+        title: 'ROUTER.DO_TEST',
+      },
+      component: () => import(/* webpackChunkName: "ChooseTest" */ '@/pages/StudentTest/DoTest/index'),
+    },
   ],
 };
 

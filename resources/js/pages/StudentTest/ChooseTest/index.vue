@@ -23,7 +23,25 @@
           </b-col>
         </b-row>
         <b-row v-show="listTest.length > 0">
-          <b-col />
+          <template v-for="item in listTest">
+            <b-col :key="item.id" cols="12" sm="12" md="6" lg="6" xl="3">
+              <div class="display-test">
+                <b-card>
+                  <template #header>
+                    <h6 class="mb-0 text-center">{{ $t('CHOOSE_TEST.TEXT_TEST') }}</h6>
+                  </template>
+                  <div class="text-center">{{ item['test_name'] }}</div>
+                  <div class="text-center">{{ item['course_id'] }}</div>
+                  <template #footer>
+                    <b-button block class="btn-custom-green" @click="onClickGoToTest(item['id'])">
+                      <i class="far fa-paper-plane" style="margin-right: 5px" />
+                      {{ $t('CHOOSE_TEST.TEXT_GO_TO_TEST') }}
+                    </b-button>
+                  </template>
+                </b-card>
+              </div>
+            </b-col>
+          </template>
         </b-row>
       </b-col>
     </div>
@@ -81,9 +99,23 @@ export default {
 
         const res = await getAllTestByClass(URL, PARAMS);
 
-        console.log(res);
+        if (res) {
+          this.listTest = res['data'];
+        }
       } catch (error) {
         console.log(error);
+      }
+    },
+    onClickGoToTest(id) {
+      console.log(id);
+      if (id) {
+        this.$store.dispatch('studentTest/setChooseTest', id)
+          .then(() => {
+            this.$router.push('/student-test/do-test');
+          })
+          .catch((error) => {
+            console.log(error);
+          });
       }
     },
   },
@@ -96,5 +128,9 @@ export default {
     .student-test {
         padding: 10px;
         height: calc(100vh - 57px);
+
+        .display-test {
+          margin-bottom: 10px;
+        }
     }
 </style>

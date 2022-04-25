@@ -7,9 +7,9 @@ import {
   setRecord,
   getProccess,
   setProcess,
+  getBlind,
 } from './helper';
 import { isLogged } from '@/utils/auth';
-import { getBlind } from './helper';
 import CONST_TOGGLE_STATUS from '@/const/toggle_status';
 import { handleRequestNavigation } from './request';
 import { playSound, clearSound } from './sound';

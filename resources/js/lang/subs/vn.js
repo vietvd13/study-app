@@ -232,6 +232,7 @@ export default {
   },
   DO_TEST: {
     TEXT_QUESTION: 'Question',
+    SUBMIT: 'Submit',
   },
   PAGE_NOT_FOUND: {
     DETAIL: "We can't seem to find the page you're looking for",
@@ -337,6 +338,9 @@ export default {
       UPDATE_FAILED: 'You have updated the information of the failed test',
 
       VALIDATE_FORM: 'The test information you entered is not correct',
+    },
+    DO_TEST: {
+      SUMIT_ANSWER_VALIDATE: 'Please check your test again',
     },
   },
 };

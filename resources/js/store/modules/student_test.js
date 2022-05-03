@@ -14,6 +14,10 @@ function getStateInCookie(key) {
 const state = {
   choose_class: getStateInCookie(ConstCookie['CHOOSE_CLASS']),
   choose_test: getStateInCookie(ConstCookie['CHOOSE_TEST']),
+  control_question: {
+    step: 0,
+    action: null,
+  },
 };
 
 const mutations = {
@@ -25,6 +29,9 @@ const mutations = {
     state.choose_test = id;
     Cookies.set(ConstCookie['CHOOSE_TEST'], id);
   },
+  SET_CONTROL_QUESTION: (state, control) => {
+    state.control_question = control;
+  },
 };
 
 const actions = {
@@ -33,6 +40,9 @@ const actions = {
   },
   setChooseTest({ commit }, id) {
     commit('SET_CHOOSE_TEST', id);
+  },
+  setControlQuestion({ commit }, control) {
+    commit('SET_CONTROL_QUESTION', control);
   },
 };
 

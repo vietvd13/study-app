@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Route;
 Route::namespace('Api')->group(function() {
     Route::post('/auth/login','AuthController@login');
     Route::middleware(['auth:sanctum'])->group(function () {
+        Route::post('navigation/voice', 'SpeechController@userIntent');
         Route::get('/auth/user','AuthController@user');
         Route::apiResource('/users', 'UserController');
         Route::get('/roles', 'UserController@roles');
@@ -50,5 +51,7 @@ Route::namespace('Api')->group(function() {
             Route::get('student/list-test',  'TestController@studentListTestByClass');
             Route::get('teacher/list-test',  'TestController@listTestCreatedByTeacher');
         });
+
+        Route::post('/test/student/answer', 'TestController@testAnswer');
     });
 });

@@ -78,10 +78,9 @@ class CreateTestsTable extends Migration
             $table->bigInteger('question_id')->unsigned();
             $table->bigInteger('answer_id')->unsigned();
             $table->datetime('created_at');
-
+            $table->datetime('updated_at');
             $table->primary(['student_id', 'question_id', 'answer_id', 'created_at'], 'pk_student_test_answer');
 
-            $table->datetime('upadated_at');
 
             $table->foreign('student_id')->references('id')->on('users')
             ->onDelete('cascade')

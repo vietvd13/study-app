@@ -47,4 +47,8 @@ class TestController extends Controller
     public function listTestCreatedByTeacher(Request $request) {
         return $this->service->listTestCreatedByTeacher($request);
     }
+
+    public function testAnswer(Request $request) {
+        return $this->service->studentAnswerTest($request);
+    }
 }

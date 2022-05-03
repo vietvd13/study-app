@@ -71,6 +71,14 @@
           </b-col>
         </b-row>
       </b-col>
+
+      <b-col>
+        <b-row>
+          <b-col cols="12" sm="12" md="12" lg="12" xl="8">
+            <b-button block class="btn-custom-green" @click="handleSubmit()">{{ $t('DO_TEST.SUBMIT') }}</b-button>
+          </b-col>
+        </b-row>
+      </b-col>
     </div>
 
   </b-overlay>
@@ -80,12 +88,17 @@
 
 const URL_API = {
   getOneTest: '/test/student/detail',
+  postAnswerTest: '/test/student/answer',
 };
 
-import { getOneTest } from '@/api/modules/do_test';
+import { getOneTest, postAnswerTest } from '@/api/modules/do_test';
 
 import { playSound, clearSound } from '@/speak/sound';
 import { getBlind } from '@/speak/helper';
+
+import NotifyDoTest from '@/toast/modules/doTest';
+
+import { validateSubmitAnswer } from './validate';
 
 const KEY = {
   up: {
@@ -115,49 +128,38 @@ export default {
       current_question: null,
     };
   },
+  computed: {
+    controlQuestion() {
+      return this.$store.getters.controlQuestion;
+    },
+  },
+  watch: {
+    controlQuestion: {
+      handler: function() {
+        const CONTROL_QUESTION = this.$store.getters.controlQuestion;
+
+        if (CONTROL_QUESTION['action'] === 'next_question') {
+          this.handleNextQuestion();
+        }
+
+        if (CONTROL_QUESTION['action'] === 'back_question') {
+          this.handleBackQuestion();
+        }
+      },
+      deep: true,
+    },
+  },
   created() {
     this.handleCheckFlow();
 
     window.addEventListener('keydown', (event) => {
       if (getBlind() && this.overlay.show === false) {
         if (KEY.up.code === event.code && KEY.up.keyCode === event.keyCode) {
-          console.log('Up');
-
-          if (this.checkIndexQuestion()) {
-            this.current_question = this.current_question + 1;
-
-            if (this.current_question >= this.listQuestions.length) {
-              this.current_question = 0;
-            }
-          } else {
-            this.current_question = 0;
-          }
-
-          console.log(this.current_question);
-
-          if (this.checkIndexQuestion()) {
-            this.handlePlaySound(this.listQuestions[this.current_question]['question_audio']);
-          }
+          this.handleNextQuestion();
         }
 
         if (KEY.down.code === event.code && KEY.down.keyCode === event.keyCode) {
-          console.log('Down');
-
-          if (this.checkIndexQuestion()) {
-            this.current_question = this.current_question - 1;
-
-            if (this.current_question < 0) {
-              this.current_question = this.listQuestions.length - 1;
-            }
-          } else {
-            this.current_question = this.listQuestions.length - 1;
-          }
-
-          console.log(this.current_question);
-
-          if (this.checkIndexQuestion()) {
-            this.handlePlaySound(this.listQuestions[this.current_question]['question_audio']);
-          }
+          this.handleBackQuestion();
         }
       }
     });
@@ -222,6 +224,83 @@ export default {
     },
     checkIndexQuestion() {
       return this.current_question >= 0 && this.current_question < this.listQuestions.length;
+    },
+    handleNextQuestion() {
+      console.log('NEXT');
+      if (this.checkIndexQuestion()) {
+        this.current_question = this.current_question + 1;
+
+        if (this.current_question >= this.listQuestions.length) {
+          this.current_question = 0;
+        }
+      } else {
+        this.current_question = 0;
+      }
+
+      console.log(this.current_question);
+
+      if (this.checkIndexQuestion()) {
+        this.handlePlaySound(this.listQuestions[this.current_question]['question_audio']);
+      }
+    },
+    handleBackQuestion() {
+      console.log('BACK');
+      if (this.checkIndexQuestion()) {
+        this.current_question = this.current_question - 1;
+
+        if (this.current_question < 0) {
+          this.current_question = this.listQuestions.length - 1;
+        }
+      } else {
+        this.current_question = this.listQuestions.length - 1;
+      }
+
+      console.log(this.current_question);
+
+      if (this.checkIndexQuestion()) {
+        this.handlePlaySound(this.listQuestions[this.current_question]['question_audio']);
+      }
+    },
+    async handleSubmit() {
+      console.log(this.listQuestions);
+
+      const DATA = [];
+
+      const len = this.listQuestions.length;
+      let idx = 0;
+
+      while (idx < len) {
+        const ANSWER = {
+          question_id: this.listQuestions[idx]['id'] || null,
+          answer_id: this.listQuestions[idx]['current_answer'] || null,
+        };
+
+        DATA.push(ANSWER);
+
+        idx++;
+      }
+
+      if (validateSubmitAnswer(DATA)) {
+        try {
+          const URL = URL_API.postAnswerTest;
+          const BODY = {
+            answers: DATA,
+          };
+
+          const res = await postAnswerTest(URL, BODY);
+
+          if (res['status'] === 200) {
+            NotifyDoTest.submitAnswerSuccess(res['message']);
+          }
+        } catch (error) {
+          console.log(error);
+          NotifyDoTest.exception();
+        }
+      } else {
+        NotifyDoTest.validateSubmitAnswer();
+      }
+
+      console.log(DATA);
     },
   },
 };

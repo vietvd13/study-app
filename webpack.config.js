@@ -10,6 +10,10 @@ const plugins = [
 ];
 
 module.exports = {
+  stats: {
+    children: true,
+    warnings: false 
+  },
 	resolve: {
 		extensions: ['.js', '.vue', '.json'],
 		alias: {

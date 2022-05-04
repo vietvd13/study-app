@@ -32,7 +32,7 @@
 
       <div class="classes__content">
         <b-card>
-          <b-row>
+          <b-row v-if="hasRole(getCurrentRole(), [CONST_ROLE.LIST_ROLE.ADMIN])">
             <b-col>
               <div class="d-flex justify-content-end classes__content__add">
                 <b-button class="btn-custom-green" @click="onClickAdd()">
@@ -56,20 +56,33 @@
                 :items="items"
                 aria-controls="table-classes"
               >
-                <template #cell(arrangement)="data">
-                  <b-row>
-                    <b-col cols="6" sm="6" md="6" lg="6" xl="6">
-                      <b-button class="btn-custom-green" size="sm" @click="onClickAssignStudent(data.item)">
-                        <i class="fas fa-user-alt" />
-                      </b-button>
-                    </b-col>
+                <template #cell(activity)="data">
+                  <b-col>
+                    <b-row>
+                      <b-col>
+                        <b-button class="btn-custom-green" size="sm" @click="onClickActivity(data.item)">
+                          <i class="fas fa-file-alt" />
+                        </b-button>
+                      </b-col>
+                    </b-row>
+                  </b-col>
+                </template>
 
-                    <b-col cols="6" sm="6" md="6" lg="6" xl="6">
-                      <b-button class="btn-custom-green" size="sm" @click="onClickAssignCourse(data.item)">
-                        <i class="fas fa-books" />
-                      </b-button>
-                    </b-col>
-                  </b-row>
+                <template #cell(arrangement)="data">
+                  <b-col>
+                    <b-row>
+                      <b-col cols="6" sm="6" md="6" lg="6" xl="6">
+                        <b-button class="btn-custom-green" size="sm" @click="onClickAssignStudent(data.item)">
+                          <i class="fas fa-user-alt" />
+                        </b-button>
+                      </b-col>
+                      <b-col cols="6" sm="6" md="6" lg="6" xl="6">
+                        <b-button class="btn-custom-green" size="sm" @click="onClickAssignCourse(data.item)">
+                          <i class="fas fa-books" />
+                        </b-button>
+                      </b-col>
+                    </b-row>
+                  </b-col>
                 </template>
 
                 <template #cell(actions)="data">
@@ -189,7 +202,7 @@
 
         <template #default>
           <b-row>
-            <b-col cols="12" sm="12" md="12" lg="12" xl="6">
+            <b-col cols="12" sm="12" md="12" lg="12" :xl="hasRole(getCurrentRole(), [CONST_ROLE.LIST_ROLE.ADMIN]) ? 6 : 12">
 
               <div class="title-list">
                 <b-card>
@@ -228,7 +241,7 @@
                             <div class="align-self-center">
                               <span><b>{{ student.user_code }}</b></span>
                             </div>
-                            <b-button variant="danger" size="sm" :disabled="isProcess" @click="deleteStudentInClass(student, index)">
+                            <b-button v-if="hasRole(getCurrentRole(), [CONST_ROLE.LIST_ROLE.ADMIN])" variant="danger" size="sm" :disabled="isProcess" @click="deleteStudentInClass(student, index)">
                               <i class="fas fa-trash" />
                             </b-button>
                           </div>
@@ -236,28 +249,28 @@
 
                         <b-card-text>
                           <div>
-                            <span><b>{{ $t('ACCOUNT.LABEL_FORM_FULLNAME') }}:</b>{{ student.name }}</span>
+                            <span><b>{{ $t('ACCOUNT.LABEL_FORM_FULLNAME') }}: </b>{{ student.name }}</span>
                           </div>
                           <div>
-                            <span><b>{{ $t('ACCOUNT.LABEL_FORM_TELEPHONE') }}:</b>{{ student.phone }}</span>
+                            <span><b>{{ $t('ACCOUNT.LABEL_FORM_TELEPHONE') }}: </b>{{ student.phone }}</span>
                           </div>
                           <div>
-                            <span><b>{{ $t('ACCOUNT.LABEL_FORM_EMAIL') }}:</b>{{ student.email }}</span>
+                            <span><b>{{ $t('ACCOUNT.LABEL_FORM_EMAIL') }}: </b>{{ student.email }}</span>
                           </div>
                           <div>
                             <span>
-                              <b>{{ $t('ACCOUNT.LABEL_FORM_BLIND') }}:</b>
-                              <b-badge v-if="student.status === 1" variant="danger">
+                              <b>{{ $t('ACCOUNT.LABEL_FORM_BLIND') }}: </b>
+                              <b-badge v-if="student.isBlind === 1" variant="danger">
                                 {{ $t('CLASSES.TEXT_YES') }}
                               </b-badge>
-                              <b-badge v-if="student.status === 0" variant="success">
+                              <b-badge v-if="student.isBlind === 0" variant="success">
                                 {{ $t('CLASSES.TEXT_NO') }}
                               </b-badge>
                             </span>
                           </div>
                           <div>
                             <span>
-                              <b>{{ $t('ACCOUNT.LABEL_FORM_STATUS') }}:</b>
+                              <b>{{ $t('ACCOUNT.LABEL_FORM_STATUS') }}: </b>
                               <b-badge v-if="student.status === 1" variant="success">
                                 {{ $t('CLASSES.TEXT_ACTIVE') }}
                               </b-badge>
@@ -274,7 +287,7 @@
               </div>
             </b-col>
 
-            <b-col cols="12" sm="12" md="12" lg="12" xl="6">
+            <b-col v-if="hasRole(getCurrentRole(), [CONST_ROLE.LIST_ROLE.ADMIN])" cols="12" sm="12" md="12" lg="12" xl="6">
 
               <div class="title-list">
                 <b-card>
@@ -382,10 +395,10 @@
 
         <template #modal-footer>
           <b-button variant="outline-danger" :disabled="isProcess" @click="visibleModalAssignStudent = false">
-            {{ $t('CLASSES.BUTTON_CANCEL') }}
+            {{ hasRole(getCurrentRole(), [CONST_ROLE.LIST_ROLE.ADMIN]) ? $t('CLASSES.BUTTON_CANCEL') : $t('CLASSES.BUTTON_CLOSE') }}
           </b-button>
 
-          <b-button class="btn-custom-green" @click="onSubmitAssignStudent()">
+          <b-button v-if="hasRole(getCurrentRole(), [CONST_ROLE.LIST_ROLE.ADMIN])" class="btn-custom-green" @click="onSubmitAssignStudent()">
             <i v-if="isProcess" :disabled="isProcess" class="fad fa-spinner-third fa-spin" />
             {{ $t('CLASSES.BUTTON_SUBMIT') }}
           </b-button>
@@ -407,7 +420,7 @@
 
         <template #default>
           <b-row>
-            <b-col cols="12" sm="12" md="12" lg="12" xl="6">
+            <b-col cols="12" sm="12" md="12" lg="12" :xl="hasRole(getCurrentRole(), [CONST_ROLE.LIST_ROLE.ADMIN]) ? 6 : 12">
               <div class="title-list">
                 <b-card>
                   <b-card-text>
@@ -436,7 +449,7 @@
                             <div class="align-self-center">
                               <span><b>{{ course.name }}</b></span>
                             </div>
-                            <b-button variant="danger" size="sm" :disabled="isProcess" @click="deleteCourseInClass(course, index)">
+                            <b-button v-if="hasRole(getCurrentRole(), [CONST_ROLE.LIST_ROLE.ADMIN])" variant="danger" size="sm" :disabled="isProcess" @click="deleteCourseInClass(course, index)">
                               <i class="fas fa-trash" />
                             </b-button>
                           </div>
@@ -451,7 +464,7 @@
                                 :date-format-options="{ year: 'numeric', month: '2-digit', day: '2-digit' }"
                                 :max="listCourseSelected[index]['end_date']"
                                 :locale="locale"
-                                :disabled="isProcess"
+                                :disabled="isProcess || !hasRole(getCurrentRole(), [CONST_ROLE.LIST_ROLE.ADMIN])"
                               >
                                 <template #button-content>
                                   <i class="fad fa-calendar-day icon-date" />
@@ -467,7 +480,7 @@
                                 :date-format-options="{ year: 'numeric', month: '2-digit', day: '2-digit' }"
                                 :min="listCourseSelected[index]['start_date']"
                                 :locale="locale"
-                                :disabled="isProcess"
+                                :disabled="isProcess || !hasRole(getCurrentRole(), [CONST_ROLE.LIST_ROLE.ADMIN])"
                               >
                                 <template #button-content>
                                   <i class="fad fa-calendar-day icon-date" />
@@ -479,7 +492,7 @@
                               <label>{{ $t('CLASSES.LABLE_TEACHER') }}</label>
                               <b-form-select
                                 v-model="listCourseSelected[index]['teacher_id']"
-                                :disabled="isProcess"
+                                :disabled="isProcess || !hasRole(getCurrentRole(), [CONST_ROLE.LIST_ROLE.ADMIN])"
                               >
                                 <b-form-select-option :value="null">
                                   {{ $t('CLASSES.PLACEHOLDER_SELECT_TEACHER') }}
@@ -502,7 +515,7 @@
               </div>
             </b-col>
 
-            <b-col cols="12" sm="12" md="12" lg="12" xl="6">
+            <b-col v-if="hasRole(getCurrentRole(), [CONST_ROLE.LIST_ROLE.ADMIN])" cols="12" sm="12" md="12" lg="12" xl="6">
               <div class="title-list">
                 <b-card>
                   <b-card-text>
@@ -563,11 +576,299 @@
 
         <template #modal-footer>
           <b-button variant="outline-danger" :disabled="isProcess" @click="visibleModalAssignCourse = false">
-            {{ $t('CLASSES.BUTTON_CANCEL') }}
+            {{ hasRole(getCurrentRole(), [CONST_ROLE.LIST_ROLE.ADMIN]) ? $t('CLASSES.BUTTON_CANCEL') : $t('CLASSES.BUTTON_CLOSE') }}
           </b-button>
-          <b-button class="btn-custom-green" :disabled="isProcess" @click="onSubmitAssignCourse()">
+
+          <b-button v-if="hasRole(getCurrentRole(), [CONST_ROLE.LIST_ROLE.ADMIN])" class="btn-custom-green" :disabled="isProcess" @click="onSubmitAssignCourse()">
             <i v-if="isProcess" class="fad fa-spinner-third fa-spin" />
             {{ $t('CLASSES.BUTTON_SUBMIT') }}
+          </b-button>
+        </template>
+      </b-modal>
+
+      <b-modal
+        v-model="visibleModalActivity"
+        size="xl"
+        no-close-on-esc
+        no-close-on-backdrop
+        hide-header-close
+        scrollable
+        body-class="modal-activity-content"
+        footer-class="modal-activity-footer"
+      >
+        <template #modal-header>
+          <h5>{{ $t('CLASSES.MODAL_TITLE_ACTIVITY') }}: {{ isClassHandle.name }}</h5>
+        </template>
+
+        <template #default>
+          <b-row v-if="hasRole(getCurrentRole(), [CONST_ROLE.LIST_ROLE.ADMIN, CONST_ROLE.LIST_ROLE.TEACHER])">
+            <b-col>
+              <div class="item-input">
+                <label>{{ $t('CLASSES.LABEL_FORM_NAME') }}</label>
+                <b-form-input v-model="isActivity.name" :placeholder="$t('CLASSES.PLACEHOLDER_FORM_NAME')" :disabled="isProcess" />
+              </div>
+            </b-col>
+          </b-row>
+
+          <b-row v-if="hasRole(getCurrentRole(), [CONST_ROLE.LIST_ROLE.ADMIN, CONST_ROLE.LIST_ROLE.TEACHER])">
+            <b-col>
+              <div class="item-input">
+                <label>{{ $t('CLASSES.LABEL_FORM_DESCRIPTION') }}</label>
+                <b-form-textarea
+                  v-model="isActivity.description"
+                  :placeholder="$t('CLASSES.PLACEHOLDER_FORM_DESCRIPTION')"
+                  rows="5"
+                  max-rows="10"
+                  :disabled="isProcess"
+                />
+              </div>
+            </b-col>
+          </b-row>
+
+          <b-row>
+            <b-col>
+              <div class="item-input">
+                <div v-for="(activity) in itemActivity" :key="`activity-${activity.id}`" class="item-activity">
+                  <b-card>
+                    <template #header>
+                      <div class="d-flex justify-content-between">
+                        <div class="align-self-center">
+                          <span><b>{{ activity.name }}</b></span>
+                        </div>
+                        <b-button v-if="hasRole(getCurrentRole(), [CONST_ROLE.LIST_ROLE.TEACHER])" class="btn-custom-green" size="sm" :disabled="isProcess" @click="onClickGradeActivity(activity)">
+                          <i class="fas fa-pencil-alt" />
+                        </b-button>
+
+                        <b-button v-if="hasRole(getCurrentRole(), [CONST_ROLE.LIST_ROLE.STUDENT])" class="btn-custom-green" size="sm" :disabled="isProcess" @click="onClickHandinActivity(activity)">
+                          <i class="fas fa-paper-plane" />
+                        </b-button>
+                      </div>
+                    </template>
+
+                    <template #default>
+                      <b-row>
+                        <b-col>
+                          <div class="item-input">
+                            {{ activity.description }}
+                          </div>
+                        </b-col>
+                      </b-row>
+                    </template>
+
+                    <template #footer>
+                      <b-row v-if="activity['file_path']">
+                        <b-col>
+                          <div class="item-input">
+                            <b>{{ $t('CLASSES.GRADE') }}: </b> {{ activity.grade ? activity.grade : $t('CLASSES.NOT_GRADE') }}
+                          </div>
+                          <div class="item-input">
+                            <b v-if="activity.grade">{{ $t('CLASSES.COMMENT') }}: </b> {{ activity.comment ? activity.comment : '' }}
+                          </div>
+                        </b-col>
+                      </b-row>
+                      <b-row v-else>
+                        <b-col>
+                          <div class="item-input">
+                            {{ $t('CLASSES.ALERT_NO_SUBMIT') }}
+                          </div>
+                        </b-col>
+                      </b-row>
+                    </template>
+                  </b-card>
+                </div>
+              </div>
+              <div class="pagination-course">
+                <b-pagination
+                  v-model="paginationActivity.page"
+                  pills
+                  size="sm"
+                  first-number
+                  last-number
+                  align="right"
+                  :total-rows="paginationActivity.total"
+                  :per-page="paginationActivity.perPage"
+                  :disabled="isProcess"
+                />
+              </div>
+            </b-col>
+          </b-row>
+        </template>
+
+        <template #modal-footer>
+          <b-button variant="outline-danger" :disabled="isProcess" @click="onClickCancelActivity()">
+            {{ hasRole(getCurrentRole(), [CONST_ROLE.LIST_ROLE.ADMIN, CONST_ROLE.LIST_ROLE.TEACHER]) ? $t('CLASSES.BUTTON_CANCEL') : $t('CLASSES.BUTTON_CLOSE') }}
+          </b-button>
+
+          <b-button v-if="hasRole(getCurrentRole(), [CONST_ROLE.LIST_ROLE.ADMIN, CONST_ROLE.LIST_ROLE.TEACHER])" class="btn-custom-green" :disabled="isProcess" @click="onClickSubmitActivity()">
+            <i v-if="isProcess" class="fad fa-spinner-third fa-spin" />
+            {{ $t('CLASSES.BUTTON_SUBMIT') }}
+          </b-button>
+        </template>
+      </b-modal>
+
+      <b-modal
+        v-model="visibleModalHandinActivity"
+        size="xl"
+        no-close-on-esc
+        no-close-on-backdrop
+        hide-header-close
+        scrollable
+        body-class="modal-handin-activity-content"
+        footer-class="modal-handin-activity-footer"
+      >
+        <template #modal-header>
+          <h5>{{ isActivityHandle.name }}</h5>
+        </template>
+
+        <template #default>
+          <b-row>
+            <b-col>
+              <div class="item-input">
+                <label>{{ $t('CLASSES.LABEL_FORM_DESCRIPTION') }}</label>
+                <b-form-textarea
+                  v-model="isHandinActivity.description"
+                  :placeholder="$t('CLASSES.PLACEHOLDER_FORM_DESCRIPTION')"
+                  rows="5"
+                  max-rows="10"
+                  :disabled="isProcess"
+                />
+              </div>
+            </b-col>
+          </b-row>
+
+          <b-row>
+            <b-col>
+              <div class="item-input">
+                <label>{{ $t('CLASSES.LABEL_FORM_FILE') }}</label>
+                <input id="input-handin-activity" type="file" name="input-handin-activity" @change="chooseFile">
+                <div>
+                  <b-button
+                    class="btn-custom-green"
+                    @click="clickChooseFile()"
+                  >
+                    <i class="fas fa-cloud-upload-alt" style="margin-right: 10px;" />
+                    {{ $t('CLASSES.PLACEHOLDER_DOCS_FILE') }}
+                  </b-button>
+                </div>
+              </div>
+            </b-col>
+          </b-row>
+
+          <b-row v-if="isHandinActivity.file">
+            <b-col>
+              <div class="item-input">
+                <i class="fas fa-file" />
+                <span style="margin-left: 5px;">{{ isHandinActivity.file.name }}</span>
+              </div>
+            </b-col>
+          </b-row>
+        </template>
+
+        <template #modal-footer>
+          <b-button variant="outline-danger" :disabled="isProcess" @click="onClickCancelHandinActivity()">
+            {{ $t('CLASSES.BUTTON_CANCEL') }}
+          </b-button>
+
+          <b-button class="btn-custom-green" :disabled="isProcess" @click="onClickSubmitHandinActivity()">
+            <i v-if="isProcess" class="fad fa-spinner-third fa-spin" />
+            {{ $t('CLASSES.BUTTON_SUBMIT') }}
+          </b-button>
+        </template>
+      </b-modal>
+
+      <b-modal
+        v-model="visibleModalGradeActivity"
+        size="xl"
+        no-close-on-esc
+        no-close-on-backdrop
+        hide-header-close
+        scrollable
+        body-class="modal-grade-activity-content"
+        footer-class="modal-grade-activity-footer"
+      >
+        <template #modal-header>
+          <h5>{{ isActivityHandle.name }}</h5>
+        </template>
+
+        <template #default>
+          <b-row>
+            <b-col cols="12" sm="12" md="12" lg="12" xl="3">
+              <div class="list-student">
+                <div v-for="handin in itemHandinActivity" :key="handin.id" class="item-input" @click="onClickViewHandin(handin)">
+                  <b-card>
+                    <template #header>
+                      {{ handin['student']['user_code'] }}
+                    </template>
+                    <b-card-text>
+                      <div>
+                        <span><b>{{ $t('ACCOUNT.LABEL_FORM_FULLNAME') }}: </b>{{ handin['student']['name'] }}</span>
+                      </div>
+                      <div>
+                        <span><b>{{ $t('ACCOUNT.LABEL_FORM_TELEPHONE') }}: </b>{{ handin['student']['phone'] }}</span>
+                      </div>
+                      <div>
+                        <span>
+                          <b>{{ $t('ACCOUNT.LABEL_FORM_BLIND') }}: </b>
+                          <b-badge v-if="handin['student']['isBlind'] === 1" variant="danger">
+                            {{ $t('CLASSES.TEXT_YES') }}
+                          </b-badge>
+                          <b-badge v-if="handin['student']['isBlind'] === 0" variant="success">
+                            {{ $t('CLASSES.TEXT_NO') }}
+                          </b-badge>
+                        </span>
+                      </div>
+                      <div>
+                        <span>
+                          <b>{{ $t('ACCOUNT.LABEL_FORM_STATUS') }}: </b>
+                          <b-badge v-if="handin['student']['status'] === 1" variant="success">
+                            {{ $t('CLASSES.TEXT_ACTIVE') }}
+                          </b-badge>
+                          <b-badge v-if="handin['student']['status'] === 0" variant="danger">
+                            {{ $t('CLASSES.TEXT_INACTIVE') }}
+                          </b-badge>
+                        </span>
+                      </div>
+                    </b-card-text>
+                  </b-card>
+                </div>
+              </div>
+
+              <div v-if="itemHandinActivity.length && isActivityHandle['id']" class="zone-active-grade">
+                <div class="item-input">
+                  <b-input-group class="mt-3">
+                    <template #append>
+                      <b-input-group-text>100</b-input-group-text>
+                    </template>
+                    <b-form-input v-model="isGrade['grade']" type="number" :min="0" :max="100" :disabled="isProcess" />
+                  </b-input-group>
+                </div>
+                <div class="item-input">
+                  <b-form-textarea
+                    v-model="isGrade['comment']"
+                    rows="8"
+                    max-rows="8"
+                    :disabled="isProcess"
+                  />
+                </div>
+
+                <div class="item-input">
+                  <b-button block class="btn-custom-green" :disabled="isProcess" @click="submitGrade()">
+                    <i v-if="isProcess" class="fad fa-spinner-third fa-spin" />
+                    {{ $t('CLASSES.BUTTON_SUBMIT') }}
+                  </b-button>
+                </div>
+              </div>
+            </b-col>
+
+            <b-col cols="12" sm="12" md="12" lg="12" xl="9">
+              <vue-pdf-app id="view-pdf" :pdf="isGrade['pdf']" style="min-height: 700px;" />
+            </b-col>
+          </b-row>
+        </template>
+
+        <template #modal-footer>
+          <b-button variant="outline-danger" :disabled="isProcess" @click="onClickCloseGradeActivity()">
+            {{ $t('CLASSES.BUTTON_CLOSE') }}
           </b-button>
         </template>
       </b-modal>
@@ -581,6 +882,8 @@ const ACTION_UPDATE = 'UPDATE';
 
 const URL_API = {
   getAll: '/classes',
+  getAllClassTeacher: '/class/teacher/list',
+  getAllClassStudent: '/classes/student/list',
   getOne: '/classes',
   postClasses: '/classes',
   putClasses: '/classes',
@@ -590,9 +893,17 @@ const URL_API = {
   getAllCourse: '/courses',
   getOneCourse: '/courses',
   assignCourse: '/classes/courses',
+  postActivity: '/class/action/create-action',
+  getAllActivity: '/class/action/teacher/actions',
+  postHandinActivity: '/class/action/student/handin',
+  getAllHandinActivity: '/class/action/teacher/handin',
+  postSubmitGrade: '/class/action/teacher/grade',
+  getActionDetail: '/class/action/student/action-detail',
 };
 import {
   getAllClasses,
+  getAllClassTeacher,
+  getAllClassStudent,
   getOneClasses,
   postClasses,
   putClasses,
@@ -600,6 +911,12 @@ import {
   getStudent,
   assignStudent,
   assignCourse,
+  postActivity,
+  getAllActivity,
+  postHandinActivity,
+  getAllHandinActivity,
+  postSubmitGrade,
+  getActionDetail,
 } from '@/api/modules/classes';
 import {
   getAllCourse,
@@ -610,14 +927,29 @@ import {
   validateAddClasses,
   validateUpdateClasses,
   validateAssingCourse,
+  validateActivity,
 } from './validate';
+
+import { isAvailable } from '@/utils/isAvailable';
+import { hasRole, getCurrentRole } from '@/utils/hasRole';
+import CONST_ROLE from '@/const/role';
 
 import NotifyClasses from '@/toast/modules/classes';
 
+import VuePdfApp from 'vue-pdf-app';
+import 'vue-pdf-app/dist/icons/main.css';
+
 export default {
   name: 'Classes',
+  components: {
+    VuePdfApp,
+  },
   data() {
     return {
+      hasRole,
+      getCurrentRole,
+      CONST_ROLE,
+
       overlay: {
         show: false,
         variant: 'light',
@@ -631,11 +963,23 @@ export default {
         level: 1,
       },
 
+      isActivity: {
+        name: '',
+        description: '',
+      },
+
+      isHandinActivity: {
+        description: '',
+        file: null,
+      },
+
       isFilter: {
         name: '',
       },
 
       items: [],
+      itemActivity: [],
+      itemHandinActivity: [],
 
       pagination: {
         page: 1,
@@ -648,6 +992,16 @@ export default {
         total: 0,
       },
       paginationCourse: {
+        page: 1,
+        perPage: 10,
+        total: 0,
+      },
+      paginationActivity: {
+        page: 1,
+        perPage: 10,
+        total: 0,
+      },
+      paginationHandinActivity: {
         page: 1,
         perPage: 10,
         total: 0,
@@ -666,6 +1020,10 @@ export default {
       visibleModalDelete: false,
       visibleModalAssignStudent: false,
       visibleModalAssignCourse: false,
+      visibleModalActivity: false,
+      visibleModalHandinActivity: false,
+      visibleModalGradeActivity: false,
+
       isAction: '',
       idHandle: null,
       isProcess: false,
@@ -674,11 +1032,33 @@ export default {
         name: '',
         level: 1,
       },
+      isActivityHandle: {
+        id: '',
+        class_id: '',
+        teacher_id: '',
+        name: '',
+        description: '',
+      },
+      isGrade: {
+        id: '',
+        grade: 0,
+        comment: '',
+        pdf: '',
+        student: {
+          email: '',
+          id: '',
+          isBlind: '',
+          name: '',
+          phone: '',
+          status: '',
+          user_code: '',
+        },
+      },
     };
   },
   computed: {
     fields() {
-      return [
+      const HEADER = [
         {
           key: 'name',
           label: this.$t('CLASSES.TABLE_TITLE_NAME'),
@@ -686,19 +1066,47 @@ export default {
           thClass: 'base-th',
           tdClass: 'base-td',
         },
-        {
+      ];
+
+      if (getCurrentRole() === CONST_ROLE.LIST_ROLE.ADMIN || getCurrentRole() === CONST_ROLE.LIST_ROLE.TEACHER || getCurrentRole() === CONST_ROLE.LIST_ROLE.STUDENT) {
+        HEADER.push({
+          key: 'activity',
+          label: this.$t('CLASSES.TABLE_TITLE_ACTIVITY'),
+          thClass: 'base-th',
+          tdClass: 'base-td base-arrangement',
+        });
+
+        HEADER.push({
           key: 'arrangement',
           label: this.$t('CLASSES.TABLE_TITLE_ARRANGEMENT'),
           thClass: 'base-th',
           tdClass: 'base-td base-arrangement',
-        },
-        {
+        });
+      }
+
+      if (getCurrentRole() === CONST_ROLE.LIST_ROLE.ADMIN) {
+        HEADER.push({
           key: 'actions',
           lebael: this.$t('CLASSES.TABLE_TITLE_ACTIONS'),
           thClass: 'base-th',
           tdClass: 'base-td base-actions',
+        });
+      }
+
+      return HEADER;
+    },
+    fieldsActivity() {
+      const HEADER = [
+        {
+          key: 'name',
+          label: this.$t('CLASSES.TABLE_TITLE_NAME'),
+          sortable: true,
+          thClass: 'base-th',
+          tdClass: 'base-td',
         },
       ];
+
+      return HEADER;
     },
     locale() {
       const language = this.$store.getters.language;
@@ -720,6 +1128,12 @@ export default {
     },
     currentPageCourse() {
       return this.paginationCourse.page;
+    },
+    currentPageActivity() {
+      return this.paginationActivity.page;
+    },
+    currenPageHandinActivity() {
+      return this.paginationHandinActivity.page;
     },
   },
   watch: {
@@ -744,6 +1158,12 @@ export default {
 
       this.overlay.show = false;
     },
+    async currentPageActivity() {
+      await this.handleGetListActivity();
+    },
+    async currenPageHandinActivity() {
+
+    },
   },
   created() {
     this.initData();
@@ -755,25 +1175,53 @@ export default {
       this.overlay.show = false;
     },
     async handleGetAllClasses() {
-      const URL = URL_API['getAll'];
-
       const PARAMS = {
         page: this.pagination.page,
         per_page: this.pagination.perPage,
       };
 
-      try {
-        const res = await getAllClasses(URL, PARAMS);
+      let res;
 
-        if (res['status'] === 200) {
-          this.items = res['data']['data'];
-          this.pagination.page = res['data']['current_page'];
-          this.pagination.total = res['data']['total'];
-        } else {
-          NotifyClasses.server(res['message']);
+      try {
+        if (getCurrentRole() === CONST_ROLE.LIST_ROLE.ADMIN) {
+          const URL = URL_API['getAll'];
+          res = await getAllClasses(URL, PARAMS);
+
+          if (res) {
+            this.items = res['data']['data'];
+            this.pagination.page = res['data']['current_page'];
+            this.pagination.total = res['data']['total'];
+          } else {
+            NotifyClasses.server(res['message']);
+          }
         }
-      } catch {
+
+        if (getCurrentRole() === CONST_ROLE.LIST_ROLE.TEACHER) {
+          const URL = URL_API['getAllClassTeacher'];
+          res = await getAllClassTeacher(URL, PARAMS);
+          if (res) {
+            this.items = res['data'];
+            this.pagination.page = res['current_page'];
+            this.pagination.total = res['total'];
+          } else {
+            NotifyClasses.server(res['message']);
+          }
+        }
+
+        if (getCurrentRole() === CONST_ROLE.LIST_ROLE.STUDENT) {
+          const URL = URL_API['getAllClassStudent'];
+          res = await getAllClassStudent(URL, PARAMS);
+          if (res) {
+            this.items = res['data'];
+            this.pagination.page = res['current_page'];
+            this.pagination.total = res['total'];
+          } else {
+            NotifyClasses.server(res['message']);
+          }
+        }
+      } catch (error) {
         NotifyClasses.exception();
+        console.log(error);
       }
     },
     async handleGetOneClasses(id) {
@@ -1149,6 +1597,8 @@ export default {
 
         if (res['status'] === 200) {
           this.visibleModalAssignCourse = false;
+
+          await this.handleGetA;
           NotifyClasses.assignCourseSuccess();
         } else {
           NotifyClasses.server(res['message']);
@@ -1158,6 +1608,251 @@ export default {
       }
 
       this.isProcess = false;
+    },
+    async handleGetListActivity() {
+      const URL = `${URL_API.getAllActivity}`;
+      const PARAMS = {
+        class_id: this.isClassHandle.id,
+        page: this.paginationActivity.page,
+        per_page: this.paginationActivity.perPage,
+      };
+
+      try {
+        const res = await getAllActivity(URL, PARAMS);
+
+        this.itemActivity = res['data'];
+        this.paginationActivity.page = res.current_page;
+        this.paginationActivity.total = res.total;
+
+        let idx = 0;
+        const len = res['data'].length;
+
+        while (idx < len) {
+          await this.handleGetActivityDetail(res['data'][idx]['id'], idx);
+
+          idx++;
+        }
+      } catch (error) {
+        console.log(error);
+        NotifyClasses.server(error['response']['data']['message']);
+      }
+    },
+    async handleGetActivityDetail(id, index) {
+      try {
+        const URL = URL_API.getActionDetail;
+        const PARAMS = {
+          action_id: id,
+        };
+
+        const res = await getActionDetail(URL, PARAMS);
+
+        if (res['handin']) {
+          this.itemActivity[index].grade = res['handin']['grade'];
+          this.itemActivity[index].comment = res['handin']['comment'];
+          this.itemActivity[index].file_path = res['handin']['file_path'];
+        } else {
+          this.itemActivity[index].grade = '';
+          this.itemActivity[index].comment = '';
+          this.itemActivity[index].file_path = '';
+        }
+      } catch (error) {
+        console.log(`Error get deatil action: ${id}`);
+      }
+    },
+    async onClickActivity(item) {
+      this.isResetModalActivity();
+
+      this.isClassHandle.id = item.id;
+      this.isClassHandle.name = item.name;
+      this.isClassHandle.level = 1;
+
+      await this.handleGetListActivity(item.id);
+
+      this.visibleModalActivity = true;
+    },
+    isResetModalActivity() {
+      const isActivity = {
+        name: '',
+        description: '',
+      };
+
+      this.isActivity = isActivity;
+    },
+    onClickCancelActivity() {
+      this.visibleModalActivity = false;
+    },
+    async onClickSubmitActivity() {
+      const URL = URL_API.postActivity;
+      const DATA = {
+        class_id: this.isClassHandle.id,
+        name: this.isActivity.name,
+        description: this.isActivity.description,
+      };
+
+      if (validateActivity(DATA)) {
+        try {
+          const res = await postActivity(URL, DATA);
+
+          if (res) {
+            this.visibleModalActivity = false;
+            NotifyClasses.createActivitySuccess();
+          } else {
+            NotifyClasses.server(res['message']);
+          }
+        } catch (error) {
+          console.log(error);
+          NotifyClasses.server(error['response']['data']['message']);
+        }
+      } else {
+        NotifyClasses.validateCreateActivity();
+      }
+    },
+    onClickHandinActivity(activity) {
+      this.visibleModalHandinActivity = true;
+      this.isActivityHandle.id = activity.id;
+      this.isActivityHandle.class_id = activity.class_id;
+      this.isActivityHandle.teacher_id = activity.teacher_id;
+      this.isActivityHandle.name = activity.name;
+      this.isActivityHandle.description = activity.description;
+    },
+    onClickCancelHandinActivity() {
+      this.visibleModalHandinActivity = false;
+    },
+    isResetModalHandinActivity() {
+      const isHandinActivity = {
+        description: '',
+        file: null,
+      };
+
+      if (isAvailable(document.getElementById('input-handin-activity'), 'value')) {
+        document.getElementById('input-handin-activity').value = null;
+      }
+
+      this.isHandinActivity = isHandinActivity;
+    },
+    async onClickSubmitHandinActivity() {
+      const URL = URL_API.postHandinActivity;
+
+      const DATA = new FormData();
+      DATA.append('action_id', this.isActivityHandle.id);
+      DATA.append('class_id', this.isActivityHandle.class_id);
+      DATA.append('description', this.isHandinActivity.description);
+      DATA.append('files[0]', this.isHandinActivity.file);
+
+      try {
+        await postHandinActivity(URL, DATA);
+
+        this.visibleModalHandinActivity = false;
+        this.isResetModalHandinActivity();
+
+        NotifyClasses.handinActivitySuccess();
+      } catch (error) {
+        console.log(error);
+        NotifyClasses.exception();
+        this.visibleModalHandinActivity = false;
+        this.isResetModalHandinActivity();
+      }
+    },
+    clickChooseFile() {
+      const FILE = document.getElementById('input-handin-activity');
+      FILE.click();
+    },
+    chooseFile(event) {
+      this.isHandinActivity.file = event.target.files[0];
+    },
+    async onClickGradeActivity(activity) {
+      this.visibleModalGradeActivity = true;
+
+      try {
+        const URL = URL_API.getAllHandinActivity;
+        const PARAMS = {
+          action_id: activity.id,
+          page: this.paginationHandinActivity.page,
+          per_page: this.paginationHandinActivity.perPage,
+        };
+
+        const res = await getAllHandinActivity(URL, PARAMS);
+
+        if (res) {
+          this.itemHandinActivity = res['data'];
+          this.paginationHandinActivity.page = res['current_page'];
+          this.paginationHandinActivity.total = res['total'];
+
+          this.isActivityHandle.id = activity.id;
+          this.isActivityHandle.class_id = activity.class_id;
+          this.isActivityHandle.teacher_id = activity.teacher_id;
+          this.isActivityHandle.name = activity.name;
+          this.isActivityHandle.description = activity.description;
+        } else {
+          NotifyClasses.exception();
+        }
+
+        console.log(res);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    onClickCloseGradeActivity() {
+      this.visibleModalGradeActivity = false;
+      this.resetViewHandin();
+    },
+    onClickViewHandin(handin) {
+      console.log(handin);
+      this.isGrade = {
+        id: handin.id ? handin.id : '',
+        grade: handin.grade ? handin.grade : 0,
+        comment: handin.comment ? handin.comment : '',
+        pdf: handin.file_path ? handin.file_path : '',
+        student: handin.student ? handin.student : {
+          email: '',
+          id: '',
+          isBlind: '',
+          name: '',
+          phone: '',
+          status: '',
+          user_code: '',
+        },
+      };
+    },
+    resetViewHandin() {
+      this.isGrade = {
+        id: '',
+        grade: 0,
+        comment: '',
+        pdf: '',
+        student: {
+          email: '',
+          id: '',
+          isBlind: '',
+          name: '',
+          phone: '',
+          status: '',
+          user_code: '',
+        },
+      };
+    },
+    async submitGrade() {
+      this.isProcess = true;
+
+      try {
+        const URL = URL_API.postSubmitGrade;
+        const DATA = {
+          student_handin_id: this.isGrade.id,
+          grade: this.isGrade.grade,
+          comment: this.isGrade.comment,
+        };
+
+        const res = await postSubmitGrade(URL, DATA);
+
+        if (res['status'] === 200) {
+          this.onClickGradeActivity(this.isActivityHandle);
+        }
+
+        this.isProcess = false;
+      } catch (error) {
+        this.isProcess = false;
+        console.log(error);
+      }
     },
   },
 };
@@ -1382,16 +2077,69 @@ export default {
     }
 }
 
+.modal-activity-content {
+    .item-input {
+
+        .item-activity {
+            .card-header {
+                padding: 0.5rem 0.75rem;
+            }
+
+            .card-body {
+                padding: 0.5rem 0.75rem;
+            }
+
+            margin-bottom: 15px;
+        }
+    }
+}
+
+.modal-handin-activity-content {
+    .item-input {
+        #input-handin-activity {
+            display: none;
+        }
+    }
+}
+
+.modal-grade-activity-content {
+
+    .list-student {
+      max-height: 350px;
+      overflow: auto;
+      margin-bottom: 10px;
+      padding: 10px;
+    }
+
+    .item-input {
+        .card-header {
+            padding: 0.5rem 0.75rem;
+            font-weight: bold;
+        }
+
+        .card-body {
+            padding: 0.5rem 0.75rem;
+        }
+
+        margin-bottom: 15px;
+    }
+}
+
 .icon-loading {
     font-size: 50px;
     color: $forest-green;
 }
 
 .item-input {
-    margin-bottom: 10px;
+    &:not(:last-child) {
+        margin-bottom: 10px;
+    }
 }
 .icon-date {
     color: $forest-green;
     font-size: 1.25rem;
+}
+.input-group-text {
+  border-color: transparent;
 }
 </style>

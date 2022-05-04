@@ -64,8 +64,8 @@ class CreateClasssTable extends Migration
             $table->id();
             $table->bigInteger('class_id')->unsigned();
             $table->bigInteger('teacher_id')->unsigned();
-            $table->string('name');
             $table->text('description');
+            $table->text('name');
             $table->timestamps();
 
             $table->foreign('teacher_id')->references('id')->on('users')
@@ -81,10 +81,10 @@ class CreateClasssTable extends Migration
             $table->id();
             $table->bigInteger('student_id')->unsigned();
             $table->bigInteger('action_id')->unsigned();
-            $table->string('name');
             $table->string('file_path')->nullable();
             $table->text('description');
             $table->integer('grade')->nullable();
+            $table->text('comment')->nullable();
             $table->timestamps();
 
             $table->foreign('action_id')->references('id')->on('class_action')

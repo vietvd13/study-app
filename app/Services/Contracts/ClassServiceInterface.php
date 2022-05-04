@@ -12,4 +12,12 @@ interface ClassServiceInterface extends BaseServiceInterface
 {
     public function addStudent($request);
     public function addCourse($request);
+    public function addClassAction($request);
+    public function ActionHandin($request);
+    public function ActionGrading($request);
+    public function allHandin($request);
+    public function getClassByTeacher($request);
+    public function listActionInClass($request);
+    public function ListClassStudent($request);
+    public function actionDetail($request);
 }

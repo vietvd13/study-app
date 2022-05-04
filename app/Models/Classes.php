@@ -30,4 +30,8 @@ class Classes extends Model
     public function courses() {
         return $this->belongsToMany('App\Models\Course', 'class_course', 'class_id', 'course_id')->withTimestamps();
     }
+
+    public function class_action() {
+        return $this->hasMany('App\Models\ClassAction', 'class_id', 'id');
+    }
 }

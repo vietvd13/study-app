@@ -54,4 +54,8 @@ class User extends Authenticatable
      */
 
     protected $guard_name = 'api';
+
+    public function classes() {
+        return $this->belongsToMany('App\Models\Classes', 'class_student', 'student_id', 'class_id')->withTimestamps();
+    }
 }

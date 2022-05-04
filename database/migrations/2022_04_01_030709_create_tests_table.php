@@ -16,11 +16,23 @@ class CreateTestsTable extends Migration
         Schema::create('tests', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('created_by')->unsigned();
+            $table->bigInteger('course_id')->unsigned();
+            $table->bigInteger('class_id')->unsigned();
             $table->integer('limit_time');
+            $table->boolean('blind_support')->default(false);
+            $table->string('test_name');
             $table->timestamps();
             $table->softDeletes();
 
             $table->foreign('created_by')->references('id')->on('users')
+            ->onDelete('cascade')
+            ->onUpdate('cascade');
+
+            $table->foreign('course_id')->references('id')->on('courses')
+            ->onDelete('cascade')
+            ->onUpdate('cascade');
+
+            $table->foreign('class_id')->references('id')->on('classes')
             ->onDelete('cascade')
             ->onUpdate('cascade');
         });
@@ -66,10 +78,9 @@ class CreateTestsTable extends Migration
             $table->bigInteger('question_id')->unsigned();
             $table->bigInteger('answer_id')->unsigned();
             $table->datetime('created_at');
-
+            $table->datetime('updated_at');
             $table->primary(['student_id', 'question_id', 'answer_id', 'created_at'], 'pk_student_test_answer');
 
-            $table->datetime('upadated_at');
 
             $table->foreign('student_id')->references('id')->on('users')
             ->onDelete('cascade')

@@ -1,10 +1,9 @@
 export default {
   TOAST: {
-    SUCCESS: 'Sucess',
+    SUCCESS: 'Success',
     WARNING: 'Warning',
     DANGER: 'Error',
   },
-
   ROUTER: {
     LOGIN: 'Account Login',
     PAGE_NOT_FOUND: 'Page Not Found',
@@ -13,6 +12,10 @@ export default {
     CLASSES: 'Classes Management',
     COURSE: 'Course Management',
     TEST: 'Test Management',
+    STUDENT_TEST: 'Student Test',
+    CHOOSE_CLASS: 'Choose Class',
+    CHOOSE_TEST: 'Choose Test',
+    DO_TEST: 'Do Test',
   },
   LOGIN: {
     TITLE: 'Account Login',
@@ -68,6 +71,7 @@ export default {
     BUTTON_SUBMIT: 'Submit',
     BUTTON_DELETE: 'Delete',
     BUTTON_CANCEL: 'Cancel',
+    BUTTON_CLOSE: 'Close',
   },
   CLASSES: {
     LABEL_FILTER_NAME: 'Name',
@@ -80,6 +84,7 @@ export default {
 
     TABLE_TITLE_NAME: 'Name',
     TABLE_TITLE_LEVEL: 'Level',
+    TABLE_TITLE_ACTIVITY: 'Activity',
     TABLE_TITLE_ARRANGEMENT: 'Arrangement',
     TABLE_TITLE_ACTIONS: 'Actions',
 
@@ -90,10 +95,13 @@ export default {
     MODAL_TITLE_DELETE: 'Delete an classes',
     MODAL_TITLE_ASSIGN_STUDENT: 'Arrange students',
     MODAL_TITLE_ASSIGN_COURSE: 'Arrange courses',
+    MODAL_TITLE_ACTIVITY: 'Activity',
     CONTENT_MODAL_DELETE: 'You will delete an classes from the system. Are you sure?',
 
     LABEL_FORM_NAME: 'Name',
     LABEL_FORM_LEVEL: 'Level',
+    LABEL_FORM_DESCRIPTION: 'Description',
+    LABEL_FORM_FILE: 'File',
 
     TITLE_LIST_STUDENT_IN_CLASS: 'Class: {name}',
     TITLE_LIST_STUDENT_IN_SYSTEM: 'List student in system',
@@ -107,14 +115,17 @@ export default {
     TITLE_LIST_COURSE_IN_SYSTEM: 'List course in system',
 
     PLACEHOLDER_FORM_NAME: 'Enter name',
+    PLACEHOLDER_FORM_DESCRIPTION: 'Enter description',
     PLACEHOLDER_FORM_LEVEL: 'Please select',
     PLACEHOLDER_SEARCH_USER_CODE: 'Seach by user code',
+    PLACEHOLDER_DOCS_FILE: 'Choose a file...',
 
     BUTTON_ADD: 'Add',
     BUTTON_REMOVE: 'Remove',
     BUTTON_SUBMIT: 'Submit',
     BUTTON_DELETE: 'Delete',
     BUTTON_CANCEL: 'Cancel',
+    BUTTON_CLOSE: 'Close',
 
     TEXT_YES: 'Yes',
     TEXT_NO: 'No',
@@ -126,6 +137,11 @@ export default {
     LABLE_TEACHER: 'Teacher',
 
     PLACEHOLDER_SELECT_TEACHER: 'Please select teacher',
+
+    ALERT_NO_SUBMIT: 'You have not submitted an activity assignment',
+    GRADE: 'Grade',
+    COMMENT: 'Comment',
+    NOT_GRADE: 'Not grade',
   },
   COURSE: {
     LABEL_FILTER_NAME: 'Name',
@@ -166,6 +182,57 @@ export default {
     BUTTON_SUBMIT: 'Submit',
     BUTTON_DELETE: 'Delete',
     BUTTON_CANCEL: 'Cancel',
+    BUTTON_CLOSE: 'Close',
+  },
+  TEST: {
+    BUTTON_ADD_NEW: 'Add new',
+
+    TITLE_MODAL_ADD: 'Add new test',
+    TITLE_MODAL_UPDATE: 'Update a test',
+
+    LABLE_FORM_NAME: 'Name',
+    LABLE_FORM_CLASS: 'Class',
+    LABEL_FORM_COURSE: 'Course',
+    LABEL_FORM_BLIND_SUPPORT: 'Blind support',
+    LABEL_FORM_LIMIT_TIME: 'Limit time',
+    LABEL_FORM_FILE: 'File',
+
+    PLACEHOLDER_FORM_NAME: 'Enter name',
+    PLACEHOLDER_FORM_CLASS: 'Please select class',
+    PLACEHOLDER_FORM_COURSE: 'Please select course',
+    PLACEHOLDER_FORM_LIMIT_TIME: 'Enter limit time',
+    PLACEHOLDER_FORM_FILE: 'Choose a file...',
+
+    TABLE_HEADER_TEST_NAME: 'Name',
+    TABLE_HEADER_CLASS: 'Class',
+    TABLE_HEADER_COURSE: 'Course',
+    TABLE_HEADER_LIMIT_TIME: 'Limit time',
+    TABLE_HEADER_BLIND_SUPPORT: 'Blind support',
+    TABLE_HEADER_ACTIONS: 'Actions',
+
+    TABLE_CONTENT_YES: 'Yes',
+    TABLE_CONTENT_NO: 'No',
+
+    TABLE_CONTENT_NO_DATA: 'No data',
+
+    BUTTON_SUBMIT: 'Submit',
+    BUTTON_DELETE: 'Delete',
+    BUTTON_CANCEL: 'Cancel',
+    BUTTON_CLOSE: 'Close',
+  },
+  CHOOSE_CLASS: {
+    TEXT_CLASS: 'Class',
+    TEXT_GO_TO_CLASS: 'Go to class',
+    TEXT_NO_DATA: 'No data',
+  },
+  CHOOSE_TEST: {
+    TEXT_TEST: 'Test',
+    TEXT_GO_TO_TEST: 'Go to test',
+    TEXT_NO_DATA: 'No data',
+  },
+  DO_TEST: {
+    TEXT_QUESTION: 'Question',
+    SUBMIT: 'Submit',
   },
   PAGE_NOT_FOUND: {
     DETAIL: "We can't seem to find the page you're looking for",
@@ -245,6 +312,10 @@ export default {
 
       ASSIGN_STUDENT_SUCCESS: 'You have successfully arranged students for the class',
       ASSIGN_COURSE_SUCCESS: 'You have successfully arranged courses for the class',
+
+      VALIDATE_CREATE_ACTIVITY: 'The activity information you received is incorrect',
+      CREATE_ACTIVITY_SUCCESS: 'You have successfully added an activity to your class',
+      HANDIN_ACTIVITY_SUCCESS: 'You have successfully submitted your assignment',
     },
     COURSE: {
       ADD_SUCCESS: 'You have successfully created course {name}',
@@ -259,6 +330,17 @@ export default {
 
       VALIDATE_NAME: 'Course name is incorrect',
       VALIDATE_UPLOAD_DOCS: 'You have not entered the correct information for uploading documents',
+    },
+    TEST: {
+      ADD_SUCCESS: 'You have added a new test to the system',
+      ADD_FAILD: 'You have added a new test that failed',
+      UPDATE_SUCCESS: 'You have successfully updated the test information',
+      UPDATE_FAILED: 'You have updated the information of the failed test',
+
+      VALIDATE_FORM: 'The test information you entered is not correct',
+    },
+    DO_TEST: {
+      SUMIT_ANSWER_VALIDATE: 'Please check your test again',
     },
   },
 };

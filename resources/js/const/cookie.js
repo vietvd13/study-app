@@ -1,5 +1,9 @@
 const LANGUAGE = 'LANGUAGE';
+const CHOOSE_CLASS = 'CHOOSE_CLASS';
+const CHOOSE_TEST = 'CHOOSE_TEST';
 
 export default {
   LANGUAGE,
+  CHOOSE_CLASS,
+  CHOOSE_TEST,
 };

@@ -12,6 +12,8 @@ use App\Repositories\Contracts\TestRepositoryInterface;
 use Repository\BaseRepository;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Auth;
+use App\Models\StudentAnswer;
+use App\Models\Answer;
 
 class TestRepository extends BaseRepository implements TestRepositoryInterface
 {
@@ -33,5 +35,57 @@ class TestRepository extends BaseRepository implements TestRepositoryInterface
         return Test::class;
     }
 
+    public function testDetailByTeachers(int $test_id) {
+
+    }
+
+    public function testDetailByStudent(int $test_id, int $student_id) {
+        $test = $this->model->where('id', $test_id)->first();
+        if ($test) {
+            $testContents = $test->with([
+                'questions' => function ($query) {
+                    $query->with([
+                        'answers' => function ($query) {
+                            $query->select(['id', 'answer', 'question_id']);
+                        }
+                    ])->select(['*']);
+                }
+            ])->first();
+            return [
+                'test' => $testContents,
+                'result' => $this->testResult($testContents, $student_id)
+            ];
+        }
+    }
+
+    public function listTestByClass(int $class_id, int $per_page) {
+        return $this->model->where('class_id', $class_id)->paginate($per_page);
+    }
+
+    public function listTestCreatedByTeacher(int $teacher_id, int $per_page) {
+        return $this->model->where('created_by', $teacher_id)->paginate($per_page);
+    }
+
+    private function testResult($testContents, $student_id) {
+        $questionsIds = [];
+        foreach ($testContents->questions as $question) {
+            $questionsIds[] = $question->id;
+        }
+        $studentAnswer = StudentAnswer::whereIn('question_id', $questionsIds)
+        ->where('student_id', $student_id)
+        ->orderBy('created_at', 'DESC')
+        ->get(['*']);
+
+        $answersIds = [];
+        foreach ($studentAnswer as $key => $answer) {
+            $answersIds[] = $answer->answer_id;
+        }
+
+        $answers = Answer::whereIn('id', $answersIds)->where('is_correct', 1)->get(['*']);
+        return [
+            'corrected' => $answers,
+            'correct_per_total' => count($answers) . " / " . count($questionsIds)
+        ];
+    }
 
 }

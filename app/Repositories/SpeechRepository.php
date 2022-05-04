@@ -28,8 +28,6 @@ class SpeechRepository extends BaseRepository implements SpeechRepositoryInterfa
 
     public function model()
     {
-        return Speech::class;
+        return Speech::class; 
     }
-
-
 }

@@ -1,5 +1,6 @@
 import {
   validaClassesName,
+  validateString,
 } from '@/utils/validate';
 
 const VALIDATE = {
@@ -63,4 +64,14 @@ export function validateAssingCourse(list) {
   }
 
   return count === list.length;
+}
+
+export function validateActivity(isActivity) {
+  let validate = false;
+
+  if (validateString(isActivity.name) && validateString(isActivity.description)) {
+    validate = true;
+  }
+
+  return validate;
 }

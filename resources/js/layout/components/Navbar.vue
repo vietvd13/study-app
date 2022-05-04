@@ -50,4 +50,10 @@ export default {
 <style lang="scss" scoped>
 	@import '@/scss/_variables';
 	@import '@/scss/modules/_layout.scss';
+
+  .nav-bar {
+    position: sticky;
+    top: 0;
+    z-index: 999;
+  }
 </style>

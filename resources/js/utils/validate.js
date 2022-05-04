@@ -49,3 +49,8 @@ export function validateString(string) {
   const re = /\S/;
   return re.test(string);
 }
+
+export function validateFileCSV(string) {
+  const re = /.*\.(csv)/;
+  return re.test(string);
+}

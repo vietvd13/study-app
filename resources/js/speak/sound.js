@@ -2,7 +2,7 @@ window.playSound = null;
 
 export function playSound(sound) {
   if (sound) {
-    window.playSound = new Audio(sound.path);
+    window.playSound = new Audio(sound);
     window.playSound.play();
   }
 }

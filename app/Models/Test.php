@@ -18,7 +18,14 @@ class Test extends Model
 
     protected $table = 'tests';
 
-    protected $fillable = [];
+    protected $fillable = [
+        'limit_time',
+        'test_name',
+        'blind_support',
+        'created_by',
+        'course_id',
+        'class_id'
+    ];
 
     protected $dates = ['deleted_at'];
 
@@ -26,4 +33,7 @@ class Test extends Model
         'data' => 'array'
     ];
 
+    public function questions() {
+        return $this->hasMany('App\Models\Question', 'test_id', 'id');
+    }
 }

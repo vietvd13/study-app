@@ -1,8 +1,4 @@
 <?php
-
-use App\Http\Controllers\Api\SpeechController;
-use App\Http\Controllers\Api\AuthController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 /*
 |--------------------------------------------------------------------------
@@ -17,6 +13,7 @@ use Illuminate\Support\Facades\Route;
 Route::namespace('Api')->group(function() {
     Route::post('/auth/login','AuthController@login');
     Route::middleware(['auth:sanctum'])->group(function () {
+        Route::post('navigation/voice', 'SpeechController@userIntent');
         Route::get('/auth/user','AuthController@user');
         Route::apiResource('/users', 'UserController');
         Route::get('/roles', 'UserController@roles');
@@ -26,10 +23,35 @@ Route::namespace('Api')->group(function() {
         Route::post('/classes/courses', 'ClassController@AddCourses');
         Route::get('user/students', 'UserController@students');
         Route::get('user/teacher', 'UserController@teacher');
+        Route::get('/classes/student/list', 'ClassController@getClassByStudent');
+        Route::get('class/teacher/list', 'ClassController@getClassByTeacher');
+
+        Route::prefix('class/action')->group(function () {
+            Route::post('create-action', 'ClassController@ClassAction');
+            Route::post('student/handin', 'ClassController@ActionHandin');
+            Route::post('teacher/grade', 'ClassController@ActionGrading');
+            Route::get('teacher/handin', 'ClassController@GetAllHandinTeacher');
+            Route::get('teacher/actions', 'ClassController@ListActionInClass');
+            Route::get('student/actions', 'ClassController@ListClassStudent');
+            Route::get('student/action-detail', 'ClassController@studentGetActionDetail');
+        });
 
         Route::apiResource('courses', 'CourseController');
-        Route::post('course/add-teacher', 'CourseController@AddTeacher');
-        Route::post('course/add-document', 'CourseController@courseDocuments');
-        Route::delete('course/delete-document', 'CourseController@deleteDocument');
+
+        Route::group(['prefix' => 'course'], function () {
+            Route::post('add-teacher', 'CourseController@AddTeacher');
+            Route::post('add-document', 'CourseController@courseDocuments');
+            Route::delete('delete-document', 'CourseController@deleteDocument');
+            Route::get('download', 'CourseController@downloadDocument');
+        });
+
+        Route::group(['prefix' => 'test'], function () {
+            Route::post('import', 'TestController@importTest');
+            Route::get('student/detail',  'TestController@testDetailTestByStudent');
+            Route::get('student/list-test',  'TestController@studentListTestByClass');
+            Route::get('teacher/list-test',  'TestController@listTestCreatedByTeacher');
+        });
+
+        Route::post('/test/student/answer', 'TestController@testAnswer');
     });
 });

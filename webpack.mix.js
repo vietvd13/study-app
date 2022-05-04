@@ -17,7 +17,7 @@ mix.webpackConfig(config);
 
 mix.js('resources/js/app.js', 'public/js')
 	.vue({ version: 2 })
-	.extract(['vue', 'axios', 'vuex', 'vue-router', 'vue-i18n', 'bootstrap-vue', 'audio-recorder-polyfill'])
+	.extract(['vue', 'axios', 'vuex', 'vue-router', 'vue-i18n', 'bootstrap-vue', 'audio-recorder-polyfill', 'vue-pdf-app'])
 	.sass('resources/sass/app.scss', 'public/css')
 	.options({
 		processCssUrls: true,

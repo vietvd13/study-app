@@ -1,7 +1,7 @@
 <template>
   <div class="display-item">
     <b-button class="btn-custom-green" @click="doLogout()">
-      {{ $t('NAVBAR.LOGOUT') }}
+      {{ name }}
     </b-button>
   </div>
 </template>
@@ -11,6 +11,11 @@ import NotifyLogout from '@/toast/modules/logout';
 
 export default {
   name: 'Logout',
+  computed: {
+    name() {
+      return this.$store.getters.name;
+    },
+  },
   methods: {
     doLogout() {
       this.$store.dispatch('auth/doLogout')

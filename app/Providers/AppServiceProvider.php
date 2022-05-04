@@ -39,6 +39,9 @@ use App\Services\Contracts\UserServiceInterface;
 
 use App\Repositories\Contracts\UserRepositoryInterface;
 use Repository\UserRepository;
+
+use App\Services\Contracts\TestServiceInterface;
+use Service\TestService;
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -79,7 +82,7 @@ class AppServiceProvider extends ServiceProvider
         // course
         $this->app->bind(CourseRepositoryInterface::class, CourseRepository::class);
         $this->app->bind(CourseServiceInterface::class, CourseService::class);
-        // end course
+        // end cours
     }
 
     /**

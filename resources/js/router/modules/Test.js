@@ -6,6 +6,7 @@ const Test = {
   meta: {
     title: 'ROUTER.TEST',
     icon: 'fas fa-book',
+    roles: ['ADMIN', 'TEACHER'],
   },
   component: Layout,
   redirect: { name: 'TestIndex' },

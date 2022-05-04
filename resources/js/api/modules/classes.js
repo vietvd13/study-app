@@ -31,3 +31,35 @@ export function assignStudent(url, data) {
 export function assignCourse(url, data) {
   return request.postRequest(url, data);
 }
+
+export function postActivity(url, data) {
+  return request.postRequest(url, data);
+}
+
+export function getAllActivity(url, params) {
+  return request.getRequest(url, params);
+}
+
+export function postHandinActivity(url, data) {
+  return request.postRequest(url, data);
+}
+
+export function getAllHandinActivity(url, params) {
+  return request.getRequest(url, params);
+}
+
+export function postSubmitGrade(url, data) {
+  return request.postRequest(url, data);
+}
+
+export function getAllClassTeacher(url, params) {
+  return request.getRequest(url, params);
+}
+
+export function getAllClassStudent(url, params) {
+  return request.getRequest(url, params);
+}
+
+export function getActionDetail(url, params) {
+  return request.getRequest(url, params);
+}

@@ -24,6 +24,7 @@ package-lock.json
 /public/stats.html
 /public/*.js
 /public/*.js.map
+/public
 /public/mix-manifest.json
 .DS_Store
 .vscode-upload.json

@@ -59,13 +59,19 @@ const mutations = {
 const actions = {
   generateRoutes({ commit }, { roles, permissions }) {
     return new Promise(resolve => {
-      const accessedRoutes = filterAsyncRoutes(asyncRoutes, roles, permissions);
+      let accessedRoutes;
+
+      if (roles.includes('ADMIN')) {
+        accessedRoutes = asyncRoutes || [];
+      } else {
+        accessedRoutes = filterAsyncRoutes(asyncRoutes, roles, permissions);
+      }
 
       commit('SET_ROUTES', accessedRoutes);
       resolve(accessedRoutes);
     });
   },
-  setClearDate({ commit }) {
+  setClearData({ commit }) {
     commit('SET_CLEAR_DATA');
   },
 };

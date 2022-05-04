@@ -52,6 +52,27 @@ return [
             'endpoint' => env('AWS_ENDPOINT'),
             'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
         ],
+
+        'documents' => [
+            'driver' => 'local',
+            'root' => storage_path('app/documents'),
+            'url' => env('APP_URL').'/documents',
+            'visibility' => 'public',
+        ],
+
+        'classactions' => [
+            'driver' => 'local',
+            'root' => storage_path('app/classactions'),
+            'url' => env('APP_URL').'/classactions',
+            'visibility' => 'public',
+        ],
+
+        'testfiles' => [
+            'driver' => 'local',
+            'root' => storage_path('app/testfiles'),
+            'url' => env('APP_URL').'/testfiles',
+            'visibility' => 'public',
+        ],
     ],
 
     /*
@@ -67,6 +88,11 @@ return [
 
     'links' => [
         public_path('storage') => storage_path('app/public'),
-    ],
+        public_path('classactions') => storage_path('app/classactions'),
+        public_path('documents') => storage_path('app/documents'),
+        public_path('testfiles') => storage_path('app/testfiles'),
+    ]
 
 ];
+
+

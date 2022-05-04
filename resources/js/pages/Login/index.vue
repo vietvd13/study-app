@@ -136,17 +136,17 @@ export default {
           this.$store.dispatch('auth/doLogin', Account)
             .then(() => {
               const ROLES = this.$store.getters.roles;
-              const ACCESS_ROUTES = this.$store.dispatch(
+              this.$store.dispatch(
                 'permissions/generateRoutes',
                 {
                   roles: ROLES,
                   permissions: [],
                 }
-              );
-
-              setRoutes(ACCESS_ROUTES);
-              this.$router.push('/');
-              NotifyLogin.loginSuccess();
+              ).then((ACCESS_ROUTES) => {
+                setRoutes(ACCESS_ROUTES);
+                this.$router.push('/');
+                NotifyLogin.loginSuccess();
+              });
             });
         })
         .catch((err) => {

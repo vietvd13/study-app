@@ -62,7 +62,7 @@ class TestService extends BaseService implements TestServiceInterface
                     }
 
                     if ($request->blind_support) {
-                        $testNameToAudio = $this->textToAudio($request->test_name);
+                        $testNameToAudio = $this->textToAudio("Số {$test_id}, ".$request->test_name);
                         sleep(5);
                         $contents = file_get_contents($testNameToAudio);
                         Storage::disk('local')->put("testfiles/testname/$test_id/test_name_{$test_id}.mp3", $contents);

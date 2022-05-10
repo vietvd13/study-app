@@ -51,4 +51,12 @@ class TestController extends Controller
     public function testAnswer(Request $request) {
         return $this->service->studentAnswerTest($request);
     }
+
+    public function studentViewGradeOfTheTest(Request $request) {
+        return $this->service->studentViewGradeOfTheTest($request);
+    }
+
+    public function teacherViewGradeOfATest(Request $request) {
+        return $this->service->teacherViewGradeOfATest($request);
+    }
 }

@@ -16,4 +16,6 @@ interface TestServiceInterface extends BaseServiceInterface
     public function studentListTestByClass($request);
     public function listTestCreatedByTeacher($request);
     public function studentAnswerTest($request);
+    public function studentViewGradeOfTheTest($request);
+    public function teacherViewGradeOfATest($request);
 }

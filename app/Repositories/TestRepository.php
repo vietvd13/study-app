@@ -40,20 +40,24 @@ class TestRepository extends BaseRepository implements TestRepositoryInterface
     }
 
     public function testDetailByStudent(int $test_id, int $student_id) {
-        $test = $this->model->where('id', $test_id)->first();
+        $test = $this->model->where('id', $test_id)->with([
+            'questions' => function ($query) {
+                $query->with([
+                    'answers' => function ($query) {
+                        $query->select(['id', 'answer', 'question_id']);
+                    }
+                ])->select(['*']);
+            }
+        ])->first();
         if ($test) {
-            $testContents = $test->with([
-                'questions' => function ($query) {
-                    $query->with([
-                        'answers' => function ($query) {
-                            $query->select(['id', 'answer', 'question_id']);
-                        }
-                    ])->select(['*']);
-                }
-            ])->first();
             return [
-                'test' => $testContents,
-                'result' => $this->testResult($testContents, $student_id)
+                'test' => $test,
+                'result' => $this->testResult($test, $student_id)
+            ];
+        } else {
+            return [
+                'code' => 200,
+                'message' => 'test not found'
             ];
         }
     }

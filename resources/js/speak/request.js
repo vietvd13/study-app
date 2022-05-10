@@ -5,6 +5,7 @@ import store from '@/store';
 import { MakeToast } from '@/toast/toastMessage';
 import { playSound, clearSound } from './sound';
 import CONST_CONTROL_VOICE from './const';
+import { getResultTest } from '@/api/modules/do_test';
 
 const USER_VOICE = 'user_voice';
 const URL = '/navigation/voice';
@@ -34,6 +35,20 @@ export async function handleRequestNavigation(event) {
       title: i18n.t('TOAST.DANGER'),
       content: i18n.t('NOTIFY.SYSTEM.EXCEPTION'),
     });
+  }
+}
+
+async function handleViewGrade(id) {
+  try {
+    const res = await getResultTest(`/test/student/view-grade`, {
+      test_id: id,
+      blind: true,
+    });
+
+    clearSound();
+    playSound(res['blind_support_file']);
+  } catch (error) {
+    console.log(error);
   }
 }
 
@@ -90,7 +105,7 @@ function goToScreen(response) {
 
       break;
     }
-      
+
     case CONST_CONTROL_VOICE['ACTION_CHOOSE_ANSWER']: {
       const CURRENT_PATH = router.currentRoute.fullPath;
 
@@ -109,12 +124,22 @@ function goToScreen(response) {
 
       break;
     }
-      
+
     case CONST_CONTROL_VOICE['ACTION_SUBMIT_TEST']: {
       let STEP = store.getters.submitTest;
       STEP = STEP + 1;
 
       store.dispatch('studentTest/setControlSubmitTest', STEP);
+
+      break;
+    }
+
+    case CONST_CONTROL_VOICE['ACTION_VIEW_GRADE']: {
+      const ID = parseInt(response['data']['value']);
+
+      if (ID > 0) {
+        handleViewGrade(ID);
+      }
 
       break;
     }

@@ -42,7 +42,7 @@ const mutations = {
   },
   SET_CONTROL_SUBMIT_TEST: (state, control) => {
     state.submit_test = control;
-  }
+  },
 };
 
 const actions = {
@@ -60,7 +60,7 @@ const actions = {
   },
   setControlSubmitTest({ commit }, control) {
     commit('SET_CONTROL_SUBMIT_TEST', control);
-  }
+  },
 };
 
 export default {

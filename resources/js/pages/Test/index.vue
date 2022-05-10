@@ -450,7 +450,7 @@ export default {
           DATA.append('blind_support', this.isTest.blind_support ? 1 : 0);
           DATA.append('file', this.isTest.file ? this.isTest.file : null);
 
-          const res = await postCreateTest(URL, DATA);
+          await postCreateTest(URL, DATA);
 
           this.visibleModalForm = false;
           this.isProcess = false;

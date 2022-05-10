@@ -229,6 +229,9 @@ export default {
     TEXT_TEST: 'Test',
     TEXT_GO_TO_TEST: 'Go to test',
     TEXT_NO_DATA: 'No data',
+
+    VIEW_GRADE: 'View grade',
+    CLOSE: 'Close',
   },
   DO_TEST: {
     TEXT_QUESTION: 'Question',

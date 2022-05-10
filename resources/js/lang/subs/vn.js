@@ -229,10 +229,16 @@ export default {
     TEXT_TEST: 'Test',
     TEXT_GO_TO_TEST: 'Go to test',
     TEXT_NO_DATA: 'No data',
+
+    VIEW_GRADE: 'View grade',
+    CLOSE: 'Close',
   },
   DO_TEST: {
     TEXT_QUESTION: 'Question',
     SUBMIT: 'Submit',
+
+    TITLE_VIEW_RESULT: 'Test result',
+    BUTTON_GO_TO_DASHBOARD: 'Go to dashboard',
   },
   PAGE_NOT_FOUND: {
     DETAIL: "We can't seem to find the page you're looking for",
@@ -271,6 +277,7 @@ export default {
   NOTIFY: {
     SYSTEM: {
       EXCEPTION: 'An unexpected error occurred',
+      VOICE_EXCEPTION: 'The command is not correct',
     },
     LOGIN: {
       LOGIN_SUCCESS: 'You have successfully logged into the system',
@@ -341,6 +348,8 @@ export default {
     },
     DO_TEST: {
       SUMIT_ANSWER_VALIDATE: 'Please check your test again',
+      NO_SUPPORT_BLIND: 'This test is not supported for the feature that assists visually impaired students',
+      ANSWER_CHOOSE_IS_NOT_CORRECT: 'The answer you have chosen is incorrect, please try again',
     },
   },
 };

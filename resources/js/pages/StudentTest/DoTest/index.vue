@@ -175,7 +175,7 @@ export default {
     },
     controlSubmit() {
       return this.$store.getters.submitTest;
-    }
+    },
   },
   watch: {
     controlQuestion: {
@@ -186,8 +186,10 @@ export default {
           if (this.blindSupport) {
             this.handleNextQuestion();
           } else {
-            clearSound();
-            playSound(CONST_CONTROL_VOICE['SOUND_NO_SUPPORT_BLIND']);
+            if (getBlind()) {
+              clearSound();
+              playSound(CONST_CONTROL_VOICE['SOUND_NO_SUPPORT_BLIND']);
+            }
             NotifyDoTest.noSupportBlind();
           }
         }
@@ -196,8 +198,10 @@ export default {
           if (this.blindSupport) {
             this.handleBackQuestion();
           } else {
-            clearSound();
-            playSound(CONST_CONTROL_VOICE['SOUND_NO_SUPPORT_BLIND']);
+            if (getBlind()) {
+              clearSound();
+              playSound(CONST_CONTROL_VOICE['SOUND_NO_SUPPORT_BLIND']);
+            }
             NotifyDoTest.noSupportBlind();
           }
         }
@@ -214,11 +218,16 @@ export default {
 
           if (ANSWER >= 0 && ANSWER < MAX_ANSWER) {
             this.listQuestions[this.current_question].current_answer = this.listQuestions[this.current_question]['answers'][CHOOSE_ANSWER.answer - 1]['id'];
-            clearSound();
-            playSound(CONST_CONTROL_VOICE['SOUND_CHOOSE_ANSWER_SUCCESS']);
+
+            if (getBlind()) {
+              clearSound();
+              playSound(CONST_CONTROL_VOICE['SOUND_CHOOSE_ANSWER_SUCCESS']);
+            }
           } else {
-            clearSound();
-            playSound(CONST_CONTROL_VOICE['SOUND_CHOOSE_ANSWER_NOT_CORRECT']);
+            if (getBlind()) {
+              clearSound();
+              playSound(CONST_CONTROL_VOICE['SOUND_CHOOSE_ANSWER_NOT_CORRECT']);
+            }
             NotifyDoTest.chooseAnswerNotCorrect();
           }
         }
@@ -227,7 +236,7 @@ export default {
     },
     controlSubmit() {
       this.handleSubmit();
-    }
+    },
   },
   created() {
     this.handleCheckFlow();
@@ -291,12 +300,19 @@ export default {
         }
 
         this.overlay.show = false;
-        clearSound();
-        playSound(res['test']['voice_file']);
+
+        if (getBlind()) {
+          clearSound();
+          playSound(res['test']['voice_file']);
+        }
       } catch (error) {
         this.overlay.show = false;
-        clearSound();
-        playSound(CONST_CONTROL_VOICE.SOUND_SYSTEM_EXCEPTION);
+
+        if (getBlind()) {
+          clearSound();
+          playSound(CONST_CONTROL_VOICE.SOUND_SYSTEM_EXCEPTION);
+        }
+
         NotifyDoTest.exception();
         console.log(error);
       }
@@ -399,14 +415,19 @@ export default {
         } catch (error) {
           this.overlay.show = false;
           console.log(error);
-          clearSound();
-          playSound(CONST_CONTROL_VOICE.SOUND_SYSTEM_EXCEPTION);
+
+          if (getBlind()) {
+            clearSound();
+            playSound(CONST_CONTROL_VOICE.SOUND_SYSTEM_EXCEPTION);
+          }
           NotifyDoTest.exception();
         }
       } else {
         this.overlay.show = false;
-        clearSound();
-        playSound(CONST_CONTROL_VOICE.SOUND_VALIDATE_SUBMIT_TEST);
+        if (getBlind()) {
+          clearSound();
+          playSound(CONST_CONTROL_VOICE.SOUND_VALIDATE_SUBMIT_TEST);
+        }
         NotifyDoTest.validateSubmitAnswer();
       }
     },
@@ -433,8 +454,10 @@ export default {
           this.modalTestResult = true;
 
           if (this.testResult.blind_support_file) {
-            clearSound();
-            playSound(this.testResult.blind_support_file);
+            if (getBlind()) {
+              clearSound();
+              playSound(this.testResult.blind_support_file);
+            }
           }
         }
       } catch (error) {

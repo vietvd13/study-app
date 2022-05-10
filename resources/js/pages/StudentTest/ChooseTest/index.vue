@@ -31,11 +31,16 @@
                     <h6 class="mb-0 text-center">{{ $t('CHOOSE_TEST.TEXT_TEST') }}</h6>
                   </template>
                   <div class="text-center">{{ item['test_name'] }}</div>
-                  <div class="text-center">{{ item['course_id'] }}</div>
+                  <!-- <div class="text-center">{{ item['course_id'] }}</div> -->
                   <template #footer>
                     <b-button block class="btn-custom-green" @click="onClickGoToTest(item['id'])">
                       <i class="far fa-paper-plane" style="margin-right: 5px" />
                       {{ $t('CHOOSE_TEST.TEXT_GO_TO_TEST') }}
+                    </b-button>
+
+                    <b-button block class="btn-custom-green" style="margin-top: 10px;" @click="handleViewResultTest(item['id'])">
+                      <i class="fas fa-file-certificate" style="margin-right: 5px" />
+                      {{ $t('CHOOSE_TEST.VIEW_GRADE') }}
                     </b-button>
                   </template>
                 </b-card>
@@ -45,6 +50,33 @@
         </b-row>
       </b-col>
     </div>
+
+    <b-modal
+      v-model="modalTestResult"
+      no-close-on-esc
+      no-close-on-backdrop
+      hide-header-close
+      body-class="modal-view-result-content"
+      footer-class="modal-view-result-footer"
+    >
+      <template #modal-header>
+        <h5>{{ $t('DO_TEST.TITLE_VIEW_RESULT') }}</h5>
+      </template>
+
+      <template #default>
+        <b-col>
+          <b-row>
+            <b-col>
+              <h1 class="text-center text-grade">{{ `${testResult.total_of_correct}/${testResult.total_of_questions}` }}</h1>
+            </b-col>
+          </b-row>
+        </b-col>
+      </template>
+
+      <template #modal-footer>
+        <b-button variant="outline-danger" @click="modalTestResult = !modalTestResult">{{ $t('CHOOSE_TEST.CLOSE') }}</b-button>
+      </template>
+    </b-modal>
   </b-overlay>
 </template>
 
@@ -52,9 +84,11 @@
 
 const URL_API = {
   getAllTestByClass: '/test/student/list-test',
+  getResultTest: '/test/student/view-grade',
 };
 
 import { getAllTestByClass } from '@/api/modules/choose_test';
+import { getResultTest } from '@/api/modules/do_test';
 
 export default {
   name: 'ChooseTest',
@@ -69,6 +103,14 @@ export default {
       },
 
       listTest: [],
+
+      modalTestResult: false,
+      testResult: {
+        total_of_questions: '',
+        total_of_answerd: '',
+        total_of_correct: '',
+        blind_support_file: '',
+      },
     };
   },
   created() {
@@ -116,6 +158,32 @@ export default {
           .catch((error) => {
             console.log(error);
           });
+      }
+    },
+    async handleViewResultTest(id) {
+      try {
+        const URL = URL_API.getResultTest;
+        const PARAMS = {
+          test_id: id,
+          blind: false,
+        };
+
+        const res = await getResultTest(URL, PARAMS);
+
+        if (res) {
+          console.log(res);
+
+          this.testResult = {
+            total_of_questions: res.total_of_questions,
+            total_of_answerd: res.total_of_answerd,
+            total_of_correct: res.total_of_correct,
+            blind_support_file: res.blind_support_file,
+          };
+
+          this.modalTestResult = true;
+        }
+      } catch (error) {
+        console.log(error);
       }
     },
   },

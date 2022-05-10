@@ -104,9 +104,6 @@ class TestService extends BaseService implements TestServiceInterface
             $questionIds = [];
             foreach ($testQuestion as $key => $ques) {
                 $questionIds[] = $ques->id;
-                foreach ($ques['answers'] as $key => &$ans) {
-                    $ans->selected = false;
-                }
             }
             $testQuestion = $testQuestion->toArray();
             $whoAnswerTheTest = StudentAnswer::whereIn('question_id', $questionIds)->get(['*'])->groupBy('student_id');
@@ -116,18 +113,18 @@ class TestService extends BaseService implements TestServiceInterface
             }
             $students = User::whereIn('id', $studentsIDs)->get(['*']);
             foreach ($students as &$student) {
-                $student->test_of_student = $testQuestion;
-                foreach ($student->test_of_student as $key => $question) {
+                $test = $testQuestion;
+                foreach ($test as $key => &$question) {
                     foreach ($question['answers'] as $key => &$ans) {
                         if (StudentAnswer::where('student_id', $student->id)->where('answer_id',  $ans['id'])->first()) {
                             $ans['selected'] = true;
-                        }
+                        } else $ans['selected'] = false;
                     }
                 }
+                $student->test_of_student = $test;
             }
             return $students;
         }
-
         return [
             'code' => 200,
             'message' => 'test not found'

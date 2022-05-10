@@ -1,6 +1,7 @@
 const SOUND_START_RECORD = '/storage/soundeffect/start-record.mp3';
 const SOUND_END_RECORD = '/storage/soundeffect/end-record.mp3';
 const SOUND_EXCEPTION = '/storage/soundeffect/exception.mp3';
+const SOUND_NO_SUPPORT_BLIND = '/storage/soundeffect/no-support-blind.mp3'
 
 const ACTION_STUDENT_LIST_TEST = 'student_list_test';
 const ACTION_STUDENT_LIST_TEST_TODAY = 'student_list_test_today';
@@ -12,6 +13,7 @@ export default {
   SOUND_START_RECORD,
   SOUND_END_RECORD,
   SOUND_EXCEPTION,
+  SOUND_NO_SUPPORT_BLIND,
 
   ACTION_STUDENT_LIST_TEST,
   ACTION_STUDENT_LIST_TEST_TODAY,

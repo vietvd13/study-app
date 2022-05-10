@@ -8,6 +8,9 @@ export default {
   validateSubmitAnswer() {
     Notification.notifyWarning(i18n.t('NOTIFY.DO_TEST.SUMIT_ANSWER_VALIDATE'));
   },
+  noSupportBlind() {
+    Notification.notifyWarning(i18n.t('NOTIFY.DO_TEST.NO_SUPPORT_BLIND'));
+  },
   exception() {
     Notification.notifyError(i18n.t('NOTIFY.SYSTEM.EXCEPTION'));
   },

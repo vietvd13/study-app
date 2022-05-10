@@ -344,6 +344,7 @@ export default {
     },
     DO_TEST: {
       SUMIT_ANSWER_VALIDATE: 'Please check your test again',
+      NO_SUPPORT_BLIND: 'This test is not supported for the feature that assists visually impaired students',
     },
   },
 };

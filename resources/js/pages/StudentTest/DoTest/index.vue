@@ -128,6 +128,8 @@ import NotifyDoTest from '@/toast/modules/doTest';
 
 import { validateSubmitAnswer } from './validate';
 
+import CONST_CONTROL_VOICE from '@/speak/const';
+
 const KEY = {
   up: {
     keyCode: 38,
@@ -175,11 +177,23 @@ export default {
         const CONTROL_QUESTION = this.$store.getters.controlQuestion;
 
         if (CONTROL_QUESTION['action'] === 'next_question') {
-          this.handleNextQuestion();
+          if (this.blindSupport) {
+            this.handleNextQuestion();
+          } else {
+            clearSound();
+            playSound(CONST_CONTROL_VOICE['SOUND_NO_SUPPORT_BLIND']);
+            NotifyDoTest.noSupportBlind();
+          }
         }
 
         if (CONTROL_QUESTION['action'] === 'back_question') {
-          this.handleBackQuestion();
+          if (this.blindSupport) {
+            this.handleBackQuestion();
+          } else {
+            clearSound();
+            playSound(CONST_CONTROL_VOICE['SOUND_NO_SUPPORT_BLIND']);
+            NotifyDoTest.noSupportBlind();
+          }
         }
       },
       deep: true,
@@ -191,11 +205,23 @@ export default {
     window.addEventListener('keydown', (event) => {
       if (getBlind() && this.overlay.show === false) {
         if (KEY.up.code === event.code && KEY.up.keyCode === event.keyCode) {
-          this.handleNextQuestion();
+          if (this.blindSupport) {
+            this.handleNextQuestion();
+          } else {
+            clearSound();
+            playSound(CONST_CONTROL_VOICE['SOUND_NO_SUPPORT_BLIND']);
+            NotifyDoTest.noSupportBlind();
+          }
         }
 
         if (KEY.down.code === event.code && KEY.down.keyCode === event.keyCode) {
-          this.handleBackQuestion();
+          if (this.blindSupport) {
+            this.handleBackQuestion();
+          } else {
+            clearSound();
+            playSound(CONST_CONTROL_VOICE['SOUND_NO_SUPPORT_BLIND']);
+            NotifyDoTest.noSupportBlind();
+          }
         }
       }
     });

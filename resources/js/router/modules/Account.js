@@ -17,7 +17,7 @@ const Account = {
       meta: {
         title: 'ROUTER.ACCOUNT',
       },
-      component: () => import(/* webpackChunkName: "AccountIndex" */ '@/pages/Account/index'),
+      component: () => import(/* webpackChunkName: "Account_Index" */ '@/pages/Account/index'),
     },
   ],
 };

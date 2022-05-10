@@ -233,6 +233,9 @@ export default {
   DO_TEST: {
     TEXT_QUESTION: 'Question',
     SUBMIT: 'Submit',
+
+    TITLE_VIEW_RESULT: 'Test result',
+    BUTTON_GO_TO_DASHBOARD: 'Go to dashboard',
   },
   PAGE_NOT_FOUND: {
     DETAIL: "We can't seem to find the page you're looking for",

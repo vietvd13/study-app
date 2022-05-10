@@ -17,7 +17,7 @@ const Test = {
       meta: {
         title: 'ROUTER.TEST',
       },
-      component: () => import(/* webpackChunkName: "TestIndex" */ '@/pages/Test/index'),
+      component: () => import(/* webpackChunkName: "Test_Index" */ '@/pages/Test/index'),
     },
   ],
 };

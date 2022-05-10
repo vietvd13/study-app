@@ -123,14 +123,19 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    @import "@/scss/_variables";
+  @import "@/scss/_variables";
 
-    .student-test {
-        padding: 10px;
-        height: calc(100vh - 57px);
+  .student-test {
+    padding: 10px;
+    height: calc(100vh - 57px);
 
-        .display-test {
-          margin-bottom: 10px;
-        }
+    .display-test {
+      margin-bottom: 10px;
     }
+  }
+
+  .icon-loading {
+    font-size: 50px;
+    color: $forest-green;
+  }
 </style>

@@ -655,7 +655,7 @@
                       </b-row>
                     </template>
 
-                    <template #footer>
+                    <template #footer v-if="hasRole(getCurrentRole(), [CONST_ROLE.LIST_ROLE.STUDENT])">
                       <b-row v-if="activity['file_path']">
                         <b-col>
                           <div class="item-input">
@@ -2078,66 +2078,68 @@ export default {
 }
 
 .modal-activity-content {
-    .item-input {
+  .item-input {
+    margin-bottom: 15px;
 
-        .item-activity {
-            .card-header {
-                padding: 0.5rem 0.75rem;
-            }
+    .item-activity {
+      .card-header {
+          padding: 0.5rem 0.75rem;
+      }
 
-            .card-body {
-                padding: 0.5rem 0.75rem;
-            }
+      .card-body {
+          padding: 0.5rem 0.75rem;
+      }
 
-            margin-bottom: 15px;
-        }
+      margin-bottom: 15px;
     }
+  }
 }
 
 .modal-handin-activity-content {
-    .item-input {
-        #input-handin-activity {
-            display: none;
-        }
-    }
+  .item-input {
+      #input-handin-activity {
+          display: none;
+      }
+
+      margin-bottom: 15px;
+  }
 }
 
 .modal-grade-activity-content {
+  .list-student {
+    max-height: 350px;
+    overflow: auto;
+    margin-bottom: 10px;
+    padding: 10px;
+  }
 
-    .list-student {
-      max-height: 350px;
-      overflow: auto;
-      margin-bottom: 10px;
-      padding: 10px;
+  .item-input {
+    .card-header {
+      padding: 0.5rem 0.75rem;
+      font-weight: bold;
     }
 
-    .item-input {
-        .card-header {
-            padding: 0.5rem 0.75rem;
-            font-weight: bold;
-        }
-
-        .card-body {
-            padding: 0.5rem 0.75rem;
-        }
-
-        margin-bottom: 15px;
+    .card-body {
+      padding: 0.5rem 0.75rem;
     }
+
+    margin-bottom: 15px;
+  }
 }
 
 .icon-loading {
-    font-size: 50px;
-    color: $forest-green;
+  font-size: 50px;
+  color: $forest-green;
 }
 
 .item-input {
-    &:not(:last-child) {
-        margin-bottom: 10px;
-    }
+  &:not(:last-child) {
+      margin-bottom: 10px;
+  }
 }
 .icon-date {
-    color: $forest-green;
-    font-size: 1.25rem;
+  color: $forest-green;
+  font-size: 1.25rem;
 }
 .input-group-text {
   border-color: transparent;

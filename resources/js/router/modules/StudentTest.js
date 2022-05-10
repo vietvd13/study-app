@@ -6,7 +6,7 @@ const StudentTest = {
   meta: {
     title: 'ROUTER.STUDENT_TEST',
     icon: 'fad fa-book-reader',
-    roles: ['ADMIN', 'STUDENT'],
+    roles: ['STUDENT'],
   },
   component: Layout,
   redirect: { name: 'ChooseClass' },
@@ -17,7 +17,7 @@ const StudentTest = {
       meta: {
         title: 'ROUTER.CHOOSE_CLASS',
       },
-      component: () => import(/* webpackChunkName: "ChooseClass" */ '@/pages/StudentTest/ChooseClass/index'),
+      component: () => import(/* webpackChunkName: "Choose_Class" */ '@/pages/StudentTest/ChooseClass/index'),
     },
     {
       path: 'choose-test',
@@ -25,7 +25,7 @@ const StudentTest = {
       meta: {
         title: 'ROUTER.CHOOSE_TEST',
       },
-      component: () => import(/* webpackChunkName: "ChooseTest" */ '@/pages/StudentTest/ChooseTest/index'),
+      component: () => import(/* webpackChunkName: "Choose_Test" */ '@/pages/StudentTest/ChooseTest/index'),
     },
     {
       path: 'do-test',
@@ -33,7 +33,7 @@ const StudentTest = {
       meta: {
         title: 'ROUTER.DO_TEST',
       },
-      component: () => import(/* webpackChunkName: "ChooseTest" */ '@/pages/StudentTest/DoTest/index'),
+      component: () => import(/* webpackChunkName: "Do_Test" */ '@/pages/StudentTest/DoTest/index'),
     },
   ],
 };

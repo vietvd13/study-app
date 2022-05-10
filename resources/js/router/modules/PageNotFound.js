@@ -7,7 +7,7 @@ const PageNotFound = {
   },
   hidden: true,
   component: () =>
-    import(/* webpackChunkName: "Page Not Found" */ '@/pages/PageNotFound/index.vue'),
+    import(/* webpackChunkName: "Page_Not_Found" */ '@/pages/PageNotFound/index.vue'),
 };
 
 export default PageNotFound;

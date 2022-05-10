@@ -452,11 +452,11 @@ export default {
 
           const res = await postCreateTest(URL, DATA);
 
-          console.log(res);
-
           this.visibleModalForm = false;
           this.isProcess = false;
           this.isResetModalForm();
+
+          this.initData();
 
           NotifyTest.addSuccess();
         } catch (error) {

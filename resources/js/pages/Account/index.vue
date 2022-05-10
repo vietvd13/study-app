@@ -781,11 +781,8 @@ export default {
 		}
 	}
 
-	.modal-account-footer {
-	}
-
-    .icon-loading {
-        font-size: 50px;
-        color: $forest-green;
-    }
+  .icon-loading {
+      font-size: 50px;
+      color: $forest-green;
+  }
 </style>

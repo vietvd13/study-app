@@ -81,6 +81,33 @@
       </b-col>
     </div>
 
+    <b-modal
+      v-model="modalTestResult"
+      no-close-on-esc
+      no-close-on-backdrop
+      hide-header-close
+      body-class="modal-view-result-content"
+      footer-class="modal-view-result-footer"
+    >
+      <template #modal-header>
+        <h5>{{ $t('DO_TEST.TITLE_VIEW_RESULT') }}</h5>
+      </template>
+
+      <template #default>
+        <b-col>
+          <b-row>
+            <b-col>
+              <h1 class="text-center text-grade">{{ `${testResult.total_of_correct}/${testResult.total_of_questions}` }}</h1>
+            </b-col>
+          </b-row>
+        </b-col>
+      </template>
+
+      <template #modal-footer>
+        <b-button class="btn-custom-green" @click="goToDashboard()">{{ $t('DO_TEST.BUTTON_GO_TO_DASHBOARD') }}</b-button>
+      </template>
+    </b-modal>
+
   </b-overlay>
 </template>
 
@@ -89,9 +116,10 @@
 const URL_API = {
   getOneTest: '/test/student/detail',
   postAnswerTest: '/test/student/answer',
+  getResultTest: '/test/student/view-grade',
 };
 
-import { getOneTest, postAnswerTest } from '@/api/modules/do_test';
+import { getOneTest, postAnswerTest, getResultTest } from '@/api/modules/do_test';
 
 import { playSound, clearSound } from '@/speak/sound';
 import { getBlind } from '@/speak/helper';
@@ -126,6 +154,14 @@ export default {
       listQuestions: [],
       blindSupport: 0,
       current_question: null,
+
+      modalTestResult: false,
+      testResult: {
+        total_of_questions: '',
+        total_of_answerd: '',
+        total_of_correct: '',
+        blind_support_file: ''
+      },
     };
   },
   computed: {
@@ -189,8 +225,6 @@ export default {
         };
 
         const res = await getOneTest(URL, PARAMS);
-
-        console.log(res);
 
         if (res) {
           this.listQuestions = res['test']['questions'];
@@ -262,6 +296,7 @@ export default {
       }
     },
     async handleSubmit() {
+      this.overlay.show = true;
       console.log(this.listQuestions);
 
       const DATA = [];
@@ -291,17 +326,66 @@ export default {
 
           if (res['status'] === 200) {
             NotifyDoTest.submitAnswerSuccess(res['message']);
+
+            try {
+              await this.handleViewResultTest();
+            } catch (error) {
+              console.log(error);
+              NotifyDoTest.exception();
+            }
           }
+
+          this.overlay.show = false;
         } catch (error) {
+          this.overlay.show = false;
           console.log(error);
           NotifyDoTest.exception();
         }
       } else {
+        this.overlay.show = false;
         NotifyDoTest.validateSubmitAnswer();
       }
 
       console.log(DATA);
     },
+    async handleViewResultTest () {
+      try {
+        const URL = URL_API.getResultTest;
+        const PARAMS = {
+          test_id: this.$store.getters.choose_test,
+          blind: this.$store.getters.blind,
+        };
+
+        const res = await getResultTest(URL, PARAMS);
+
+        if (res) {
+          console.log(res);
+
+          this.testResult = {
+            total_of_questions: res.total_of_questions,
+            total_of_answerd: res.total_of_answerd,
+            total_of_correct: res.total_of_correct,
+            blind_support_file: res.blind_support_file
+          }
+
+          this.modalTestResult = true;
+
+          if (this.testResult.blind_support_file) {
+            clearSound();
+            playSound(this.testResult.blind_support_file);
+          }
+        }
+
+        console.log(res);
+
+      } catch (error) {
+        console.log(error);
+        NotifyDoTest.exception();
+      }
+    },
+    goToDashboard() {
+      this.$router.push('/dashboard');
+    }
   },
 };
 </script>
@@ -374,5 +458,16 @@ export default {
         color: $white;
       }
     }
+  }
+
+  .modal-view-result-content {
+    .text-grade {
+      font-size: 70px;
+    }
+  }
+
+  .icon-loading {
+    font-size: 50px;
+    color: $forest-green;
   }
 </style>

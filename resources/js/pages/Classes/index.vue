@@ -655,7 +655,7 @@
                       </b-row>
                     </template>
 
-                    <template #footer v-if="hasRole(getCurrentRole(), [CONST_ROLE.LIST_ROLE.STUDENT])">
+                    <template v-if="hasRole(getCurrentRole(), [CONST_ROLE.LIST_ROLE.STUDENT])" #footer>
                       <b-row v-if="activity['file_path']">
                         <b-col>
                           <div class="item-input">

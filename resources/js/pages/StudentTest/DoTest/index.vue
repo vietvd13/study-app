@@ -160,7 +160,7 @@ export default {
         total_of_questions: '',
         total_of_answerd: '',
         total_of_correct: '',
-        blind_support_file: ''
+        blind_support_file: '',
       },
     };
   },
@@ -348,7 +348,7 @@ export default {
 
       console.log(DATA);
     },
-    async handleViewResultTest () {
+    async handleViewResultTest() {
       try {
         const URL = URL_API.getResultTest;
         const PARAMS = {
@@ -365,8 +365,8 @@ export default {
             total_of_questions: res.total_of_questions,
             total_of_answerd: res.total_of_answerd,
             total_of_correct: res.total_of_correct,
-            blind_support_file: res.blind_support_file
-          }
+            blind_support_file: res.blind_support_file,
+          };
 
           this.modalTestResult = true;
 
@@ -377,7 +377,6 @@ export default {
         }
 
         console.log(res);
-
       } catch (error) {
         console.log(error);
         NotifyDoTest.exception();
@@ -385,7 +384,7 @@ export default {
     },
     goToDashboard() {
       this.$router.push('/dashboard');
-    }
+    },
   },
 };
 </script>

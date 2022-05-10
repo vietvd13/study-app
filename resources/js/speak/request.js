@@ -3,6 +3,8 @@ import router from '@/router';
 import i18n from '@/lang';
 import store from '@/store';
 import { MakeToast } from '@/toast/toastMessage';
+import { playSound, clearSound } from './sound';
+import CONST_CONTROL_VOICE from './const';
 
 const USER_VOICE = 'user_voice';
 const URL = '/navigation/voice';
@@ -24,73 +26,67 @@ export async function handleRequestNavigation(event) {
 
 function goToScreen(response) {
   const action = response.action;
-  const LIST_ACTION = [
-    'student_list_test',
-    'student_list_test_today',
-    'next_question',
-    'back_question',
-    'open_test'
-  ];
 
-  if (LIST_ACTION.includes(action)) {
-    switch (action) {
-      case 'student_list_test': {
-        router.push('/test');
+  switch (action) {
+    case CONST_CONTROL_VOICE['ACTION_STUDENT_LIST_TEST']: {
+      router.push('/test');
 
-        break;
-      }
+      break;
+    }
 
-      case 'student_list_test_today': {
-        router.push('/test');
+    case CONST_CONTROL_VOICE['ACTION_STUDENT_LIST_TEST_TODAY']: {
+      router.push('/test');
 
-        break;
-      }
+      break;
+    }
 
-      case 'next_question': {
-        let STEP = store.getters.controlQuestion.step;
+    case CONST_CONTROL_VOICE['ACTION_NEXT_QUESTION']: {
+      let STEP = store.getters.controlQuestion.step;
 
-        store.dispatch('studentTest/setControlQuestion', {
-          step: STEP++,
-          action: 'next_question',
-        });
+      store.dispatch('studentTest/setControlQuestion', {
+        step: STEP++,
+        action: 'next_question',
+      });
 
-        break;
-      }
+      break;
+    }
 
-      case 'back_question': {
-        let STEP = store.getters.controlQuestion.step;
+    case CONST_CONTROL_VOICE['ACTION_BACK_QUESTION']: {
+      let STEP = store.getters.controlQuestion.step;
 
-        store.dispatch('studentTest/setControlQuestion', {
-          step: STEP++,
-          action: 'back_question',
-        });
+      store.dispatch('studentTest/setControlQuestion', {
+        step: STEP++,
+        action: 'back_question',
+      });
 
-        break;
-      }
+      break;
+    }
 
-      case 'open_test': {
-        const CURRENT_PATH = router.fullPath;
+    case CONST_CONTROL_VOICE['ACTION_OPEN_TEST']: {
+      const CURRENT_PATH = router.fullPath;
 
-        if (!['/login', '/page-not-found', '/student-test/do-test'].includes(CURRENT_PATH)) {
-          const ID = parseInt(response['data']['value']);
+      if (!['/login', '/page-not-found', '/student-test/do-test'].includes(CURRENT_PATH)) {
+        const ID = parseInt(response['data']['value']);
 
-          if (ID > 0) {
-            store.dispatch('studentTest/setChooseTest', ID);
-  
-            router.push('/student-test/do-test');
-          }
+        if (ID > 0) {
+          store.dispatch('studentTest/setChooseTest', ID);
+
+          router.push('/student-test/do-test');
         }
-
-        break;
       }
 
-      default: {
-        MakeToast({
-          variant: 'warning',
-          title: i18n.t('TOAST.WARNING'),
-          content: 'Hành động chưa được tạo',
-        });
-      }
+      break;
+    }
+
+    default: {
+      clearSound();
+      playSound(CONST_CONTROL_VOICE['SOUND_EXCEPTION']);
+
+      MakeToast({
+        variant: 'warning',
+        title: i18n.t('TOAST.WARNING'),
+        content: 'Hành động chưa được tạo',
+      });
     }
   }
 }

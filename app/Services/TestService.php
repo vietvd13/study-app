@@ -17,7 +17,8 @@ use App\Repositories\Contracts\TestRepositoryInterface;
 use Illuminate\Support\Facades\Storage;
 use App\Models\StudentAnswer;
 use Illuminate\Support\Carbon;
-
+use App\Models\Question;
+use App\Models\User;
 class TestService extends BaseService implements TestServiceInterface
 {
 
@@ -96,6 +97,43 @@ class TestService extends BaseService implements TestServiceInterface
         return $this->repository->listTestCreatedByTeacher($request->user()->id, $request->per_page);
     }
 
+    public function teacherViewGradeOfATest($request) {
+        $test = Test::where('id', $request->test_id)->first();
+        if ($test) {
+            $testQuestion = $test->questions()->with('answers')->get(['*']);
+            $questionIds = [];
+            foreach ($testQuestion as $key => $ques) {
+                $questionIds[] = $ques->id;
+                foreach ($ques['answers'] as $key => &$ans) {
+                    $ans->selected = false;
+                }
+            }
+            $testQuestion = $testQuestion->toArray();
+            $whoAnswerTheTest = StudentAnswer::whereIn('question_id', $questionIds)->get(['*'])->groupBy('student_id');
+            $studentsIDs = [];
+            foreach ($whoAnswerTheTest as $key => $answer) {
+                $studentsIDs[] = $answer[0]->student_id;
+            }
+            $students = User::whereIn('id', $studentsIDs)->get(['*']);
+            foreach ($students as &$student) {
+                $student->test_of_student = $testQuestion;
+                foreach ($student->test_of_student as $key => $question) {
+                    foreach ($question['answers'] as $key => &$ans) {
+                        if (StudentAnswer::where('student_id', $student->id)->where('answer_id',  $ans['id'])->first()) {
+                            $ans['selected'] = true;
+                        }
+                    }
+                }
+            }
+            return $students;
+        }
+
+        return [
+            'code' => 200,
+            'message' => 'test not found'
+        ];
+    }
+
     public function studentAnswerTest($request) {
         $questions_ids = [];
         $answers = $request->answers;
@@ -120,5 +158,70 @@ class TestService extends BaseService implements TestServiceInterface
                 'message' => 'Submit done'
             ];
         }
+    }
+
+    public function studentViewGradeOfTheTest($request) {
+        $student_id = $request->user()->id;
+        $test_id = $request->test_id;
+        $blind = $request->blind;
+        $questions = Question::where('test_id', $test_id)->with([
+            'answers' => function ($query) {
+                $query->where('is_correct',  1)->select();
+            }
+        ])->get(['*']);
+        $answerID = [];
+        $questionsIds = [];
+        foreach ($questions as $question) {
+            $answerID[] = $question->answers[0]->id;
+            $questionsIds[] = $question->id;
+        }
+        $correct = StudentAnswer::where('student_id', $student_id)
+        ->whereIn('answer_id',  $answerID)->get(['*']);
+
+        $totalOfAnswered = StudentAnswer::where('student_id', $student_id)
+        ->whereIn('question_id',  $questionsIds)
+        ->get(['*']);
+
+        return [
+            "total_of_questions" => count($questions),
+            "total_of_answerd" => count($totalOfAnswered),
+            "total_of_correct" => count($correct),
+            "blind_support_file" => ($blind == true) ? $this->gradeToText($test_id, [
+                "total_of_questions" => count($questions),
+                "total_of_answerd" => count($totalOfAnswered),
+                "total_of_correct" => count($correct)
+            ]) : null
+        ];
+    }
+
+    private function gradeToText($test_id, $grade) {
+        $test = Test::find($test_id);
+        if ($test) {
+            $text = "Bài kiểm tra {$test->test_name}, bạn đã hoàn thành {$grade['total_of_answerd']} trên tổng số
+            {$grade['total_of_questions']} câu hỏi của bài thi, bạn đã trả lời đúng {$grade['total_of_correct']} câu hỏi";
+            return $this->GradeToAudio($text);
+        }
+        return $this->GradeToAudio("Rất tiếc, không có thông tin");
+    }
+
+    private function GradeToAudio($text) {
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_URL => 'https://api.fpt.ai/hmi/tts/v5',
+        CURLOPT_CUSTOMREQUEST => 'POST',
+        CURLOPT_POSTFIELDS => $text,
+        CURLOPT_HTTPHEADER => array(
+            'api-key: 19LFh1Vudd9MKK7LsSbZdacGP3mS5XoI',
+            'speed: 0.5',
+            'voice: banmai'
+        ),
+        ));
+        $response = curl_exec($curl);
+        curl_close($curl);
+        $response = json_decode($response);
+        $fileAudio = $response->async;
+        return $fileAudio;
     }
 }

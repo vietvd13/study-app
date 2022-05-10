@@ -53,5 +53,7 @@ Route::namespace('Api')->group(function() {
         });
 
         Route::post('/test/student/answer', 'TestController@testAnswer');
+        Route::get('test/student/view-grade', 'TestController@studentViewGradeOfTheTest');
+        Route::get('test/teacher/view-grade', 'TestController@teacherViewGradeOfATest');
     });
 });

@@ -172,6 +172,9 @@ export default {
     },
     controlChooseAnswer() {
       return this.$store.getters.controlChooseAnswer;
+    },
+    controlSubmit() {
+      return this.$store.getters.submitTest;
     }
   },
   watch: {
@@ -211,14 +214,19 @@ export default {
 
           if (ANSWER >= 0 && ANSWER < MAX_ANSWER) {
             this.listQuestions[this.current_question].current_answer = this.listQuestions[this.current_question]['answers'][CHOOSE_ANSWER.answer - 1]['id'];
+            clearSound();
+            playSound(CONST_CONTROL_VOICE['SOUND_CHOOSE_ANSWER_SUCCESS']);
           } else {
             clearSound();
-            playSound(CONST_CONTROL_VOICE.SOUND_CHOOSE_ANSWER_NOT_CORRECT);
+            playSound(CONST_CONTROL_VOICE['SOUND_CHOOSE_ANSWER_NOT_CORRECT']);
             NotifyDoTest.chooseAnswerNotCorrect();
           }
         }
       },
       deep: true,
+    },
+    controlSubmit() {
+      this.handleSubmit();
     }
   },
   created() {
@@ -283,8 +291,13 @@ export default {
         }
 
         this.overlay.show = false;
+        clearSound();
+        playSound(res['test']['voice_file']);
       } catch (error) {
         this.overlay.show = false;
+        clearSound();
+        playSound(CONST_CONTROL_VOICE.SOUND_SYSTEM_EXCEPTION);
+        NotifyDoTest.exception();
         console.log(error);
       }
     },
@@ -345,7 +358,6 @@ export default {
     },
     async handleSubmit() {
       this.overlay.show = true;
-      console.log(this.listQuestions);
 
       const DATA = [];
 
@@ -387,14 +399,16 @@ export default {
         } catch (error) {
           this.overlay.show = false;
           console.log(error);
+          clearSound();
+          playSound(CONST_CONTROL_VOICE.SOUND_SYSTEM_EXCEPTION);
           NotifyDoTest.exception();
         }
       } else {
         this.overlay.show = false;
+        clearSound();
+        playSound(CONST_CONTROL_VOICE.SOUND_VALIDATE_SUBMIT_TEST);
         NotifyDoTest.validateSubmitAnswer();
       }
-
-      console.log(DATA);
     },
     async handleViewResultTest() {
       try {
@@ -423,8 +437,6 @@ export default {
             playSound(this.testResult.blind_support_file);
           }
         }
-
-        console.log(res);
       } catch (error) {
         console.log(error);
         NotifyDoTest.exception();

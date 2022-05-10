@@ -21,7 +21,8 @@ const state = {
   choose_answer: {
     step: 0,
     answer: null,
-  }
+  },
+  submit_test: 0,
 };
 
 const mutations = {
@@ -38,6 +39,9 @@ const mutations = {
   },
   SET_CONTROL_CHOOSE_ANSWER: (state, control) => {
     state.choose_answer = control;
+  },
+  SET_CONTROL_SUBMIT_TEST: (state, control) => {
+    state.submit_test = control;
   }
 };
 
@@ -53,6 +57,9 @@ const actions = {
   },
   setControlChooseAnswer({ commit }, control) {
     commit('SET_CONTROL_CHOOSE_ANSWER', control);
+  },
+  setControlSubmitTest({ commit }, control) {
+    commit('SET_CONTROL_SUBMIT_TEST', control);
   }
 };
 

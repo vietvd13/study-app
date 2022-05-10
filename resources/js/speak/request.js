@@ -17,8 +17,13 @@ export async function handleRequestNavigation(event) {
 
     const response = await postNavigation(URL, DATA);
 
-    console.log(response);
-    goToScreen(response);
+    if (response.status === 500) {
+      clearSound();
+      playSound(CONST_CONTROL_VOICE['SOUND_SYSTEM_EXCEPTION']);
+    } else {
+      console.log(response);
+      goToScreen(response);
+    }
   } catch (error) {
     console.log(error);
 
@@ -101,6 +106,15 @@ function goToScreen(response) {
           });
         }
       }
+
+      break;
+    }
+      
+    case CONST_CONTROL_VOICE['ACTION_SUBMIT_TEST']: {
+      let STEP = store.getters.submitTest;
+      STEP = STEP + 1;
+
+      store.dispatch('studentTest/setControlSubmitTest', STEP);
 
       break;
     }

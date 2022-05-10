@@ -24,7 +24,8 @@ class Test extends Model
         'blind_support',
         'created_by',
         'course_id',
-        'class_id'
+        'class_id',
+        'test_file'
     ];
 
     protected $dates = ['deleted_at'];

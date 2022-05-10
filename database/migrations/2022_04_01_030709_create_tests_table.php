@@ -21,6 +21,7 @@ class CreateTestsTable extends Migration
             $table->integer('limit_time');
             $table->boolean('blind_support')->default(false);
             $table->string('test_name');
+            $table->string('voice_file')->nullable();
             $table->timestamps();
             $table->softDeletes();
 

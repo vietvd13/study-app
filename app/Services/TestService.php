@@ -60,6 +60,16 @@ class TestService extends BaseService implements TestServiceInterface
                         ]);
                         Storage::deleteDirectory("/testfiles/{$test_id}");
                     }
+
+                    if ($request->blind_support) {
+                        $testNameToAudio = $this->textToAudio("Số {$test_id}, ".$request->test_name);
+                        sleep(5);
+                        $contents = file_get_contents($testNameToAudio);
+                        Storage::disk('local')->put("testfiles/testname/$test_id/test_name_{$test_id}.mp3", $contents);
+                        $test->voice_file = "testfiles/testname/$test_id/test_name_{$test_id}.mp3";
+                        $test->save();
+                    }
+
                     $pathFile = $this->uploadFile($fileImport, $fileImport->getClientOriginalName(), "testfiles/{$test_id}");
                     $queued = TestImport::dispatch([
                         'test_id' => $test_id,
@@ -194,14 +204,13 @@ class TestService extends BaseService implements TestServiceInterface
     private function gradeToText($test_id, $grade) {
         $test = Test::find($test_id);
         if ($test) {
-            $text = "Bài kiểm tra {$test->test_name}, bạn đã hoàn thành {$grade['total_of_answerd']} trên tổng số
-            {$grade['total_of_questions']} câu hỏi của bài thi, bạn đã trả lời đúng {$grade['total_of_correct']} câu hỏi";
-            return $this->GradeToAudio($text);
+            $text = "Bài kiểm tra {$test->test_name}, bạn đã hoàn thành {$grade['total_of_answerd']} trên tổng số {$grade['total_of_questions']} câu hỏi của bài thi, bạn đã trả lời đúng {$grade['total_of_correct']} câu hỏi";
+            return $this->textToAudio($text);
         }
-        return $this->GradeToAudio("Rất tiếc, không có thông tin");
+        return $this->textToAudio("Rất tiếc, không có thông tin");
     }
 
-    private function GradeToAudio($text) {
+    private function textToAudio($text) {
         $curl = curl_init();
 
         curl_setopt_array($curl, array(

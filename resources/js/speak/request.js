@@ -16,22 +16,24 @@ export async function handleRequestNavigation(event) {
     const response = await postNavigation(URL, DATA);
 
     console.log(response);
-    goToScreen(response.action);
+    goToScreen(response);
   } catch (error) {
     console.log(error);
   }
 }
 
-function goToScreen(page) {
+function goToScreen(response) {
+  const action = response.action;
   const LIST_ACTION = [
     'student_list_test',
     'student_list_test_today',
     'next_question',
     'back_question',
+    'open_test'
   ];
 
-  if (LIST_ACTION.includes(page)) {
-    switch (page) {
+  if (LIST_ACTION.includes(action)) {
+    switch (action) {
       case 'student_list_test': {
         router.push('/test');
 
@@ -62,6 +64,22 @@ function goToScreen(page) {
           step: STEP++,
           action: 'back_question',
         });
+
+        break;
+      }
+
+      case 'open_test': {
+        const CURRENT_PATH = router.fullPath;
+
+        if (!['/login', '/page-not-found', '/student-test/do-test'].includes(CURRENT_PATH)) {
+          const ID = parseInt(response['data']['value']);
+
+          if (ID > 0) {
+            store.dispatch('studentTest/setChooseTest', ID);
+  
+            router.push('/student-test/do-test');
+          }
+        }
 
         break;
       }

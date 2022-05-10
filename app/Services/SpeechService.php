@@ -47,7 +47,7 @@ class SpeechService extends BaseService implements SpeechServiceInterface
         );
         $res = json_decode($response->body());
         if ($res->data->intents[0]->confidence > 0.5){
-            if ($res->data->intents[0]->label == "open_test") {
+            if ($res->data->intents[0]->label == "open_test" || $res->data->intents[0]->label == "view_grade") {
                 return [
                     'status' => 200,
                     'action' => $res->data->intents[0]->label,

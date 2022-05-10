@@ -56,6 +56,20 @@ class SpeechService extends BaseService implements SpeechServiceInterface
                         "value" => $res->data->entities[0]->value
                     ]
                 ];
+            } else if (in_array($res->data->intents[0]->label, [
+                "answer_01",
+                "answer_02",
+                "answer_03",
+                "answer_04"
+            ])) {
+                return   [
+                    'status' => 200,
+                    'action' => "answer",
+                    'data' => [
+                        "type" => $res->data->entities[0]->entity,
+                        "value" => $res->data->entities[0]->value
+                    ]
+                ];
             }
             return [
                 'status' => 200,

@@ -11,6 +11,9 @@ export default {
   noSupportBlind() {
     Notification.notifyWarning(i18n.t('NOTIFY.DO_TEST.NO_SUPPORT_BLIND'));
   },
+  chooseAnswerNotCorrect() {
+    Notification.notifyWarning(i18n.t('NOTIFY.DO_TEST.ANSWER_CHOOSE_IS_NOT_CORRECT'));
+  },
   exception() {
     Notification.notifyError(i18n.t('NOTIFY.SYSTEM.EXCEPTION'));
   },

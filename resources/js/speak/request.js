@@ -21,6 +21,14 @@ export async function handleRequestNavigation(event) {
     goToScreen(response);
   } catch (error) {
     console.log(error);
+
+    clearSound();
+    playSound(CONST_CONTROL_VOICE.SOUND_SYSTEM_EXCEPTION);
+    MakeToast({
+      variant: 'danger',
+      title: i18n.t('TOAST.DANGER'),
+      content: i18n.t('NOTIFY.SYSTEM.EXCEPTION'),
+    });
   }
 }
 
@@ -63,7 +71,7 @@ function goToScreen(response) {
     }
 
     case CONST_CONTROL_VOICE['ACTION_OPEN_TEST']: {
-      const CURRENT_PATH = router.fullPath;
+      const CURRENT_PATH = router.currentRoute.fullPath;
 
       if (!['/login', '/page-not-found', '/student-test/do-test'].includes(CURRENT_PATH)) {
         const ID = parseInt(response['data']['value']);
@@ -77,6 +85,25 @@ function goToScreen(response) {
 
       break;
     }
+      
+    case CONST_CONTROL_VOICE['ACTION_CHOOSE_ANSWER']: {
+      const CURRENT_PATH = router.currentRoute.fullPath;
+
+      if (CURRENT_PATH === '/student-test/do-test') {
+        const ANSWER = parseInt(response['data']['value']);
+
+        if (ANSWER > 0) {
+          let STEP = store.getters.controlChooseAnswer.step;
+
+          store.dispatch('studentTest/setControlChooseAnswer', {
+            step: STEP++,
+            answer: ANSWER,
+          });
+        }
+      }
+
+      break;
+    }
 
     default: {
       clearSound();
@@ -85,7 +112,7 @@ function goToScreen(response) {
       MakeToast({
         variant: 'warning',
         title: i18n.t('TOAST.WARNING'),
-        content: 'Hành động chưa được tạo',
+        content: i18n.t('NOTIFY.SYSTEM.VOICE_EXCEPTION'),
       });
     }
   }

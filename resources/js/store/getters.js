@@ -15,6 +15,7 @@ const getters = {
   choose_class: state => state.studentTest.choose_class,
   choose_test: state => state.studentTest.choose_test,
   controlQuestion: state => state.studentTest.control_question,
+  controlChooseAnswer: state => state.studentTest.choose_answer,
 };
 
 export default getters;

@@ -170,6 +170,9 @@ export default {
     controlQuestion() {
       return this.$store.getters.controlQuestion;
     },
+    controlChooseAnswer() {
+      return this.$store.getters.controlChooseAnswer;
+    }
   },
   watch: {
     controlQuestion: {
@@ -198,6 +201,25 @@ export default {
       },
       deep: true,
     },
+    controlChooseAnswer: {
+      handler: function() {
+        const CHOOSE_ANSWER = this.$store.getters.controlChooseAnswer;
+
+        if (this.current_question >= 0) {
+          const ANSWER = CHOOSE_ANSWER.answer - 1;
+          const MAX_ANSWER = this.listQuestions[this.current_question]['answers'].length;
+
+          if (ANSWER >= 0 && ANSWER < MAX_ANSWER) {
+            this.listQuestions[this.current_question].current_answer = this.listQuestions[this.current_question]['answers'][CHOOSE_ANSWER.answer - 1]['id'];
+          } else {
+            clearSound();
+            playSound(CONST_CONTROL_VOICE.SOUND_CHOOSE_ANSWER_NOT_CORRECT);
+            NotifyDoTest.chooseAnswerNotCorrect();
+          }
+        }
+      },
+      deep: true,
+    }
   },
   created() {
     this.handleCheckFlow();

@@ -274,6 +274,12 @@ export default {
     TALBE_HEADER_VIEW_ACTIONS: 'Actions',
     MODAL_TITLE_GRADE: 'View result',
     BUTTON_CLOSE: 'Close',
+
+    USER_NAME: 'Username: ',
+    USER_CODE: 'User code: ',
+    EMAIL: 'Email: ',
+    PHONE: 'Phone: ',
+    ROLE: 'Role: ',
   },
   I18N: {
     CHANGE_LANGUAGE: {

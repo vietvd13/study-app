@@ -14,82 +14,131 @@
     </template>
 
     <div class="view-grade">
-      <b-col>
-        <b-card>
+      <div v-if="hasRole(getCurrentRole(), [CONST_ROLE.LIST_ROLE.STUDENT])">
+        <b-col>
           <b-row>
-            <b-col cols="12" sm="12" md="6" lg="6" xl="6">
-              <b-form-select
-                id="filter-class"
-                v-model="selectClass"
-              >
-                <b-form-select-option :value="null">
-                  {{ $t('DASHBOARD.PLEASE_SELECT') }}
-                </b-form-select-option>
-                <b-form-select-option
-                  v-for="itemClass in listClass"
-                  :key="itemClass.text"
-                  :value="itemClass.value"
-                >
-                  {{ itemClass.text }}
-                </b-form-select-option>
-              </b-form-select>
+            <b-col cols="12" sm="12" md="6" lg="6" xl="6" style="margin-bottom: 10px;">
+              <b-card>
+                <div>
+                  <span>
+                    <b>{{ $t('DASHBOARD.USER_NAME') }}</b>
+                    {{ userName }}
+                  </span>
+                </div>
+
+                <div>
+                  <span>
+                    <b>{{ $t('DASHBOARD.USER_CODE') }}</b>
+                    {{ userCode }}
+                  </span>
+                </div>
+
+                <div>
+                  <span>
+                    <b>{{ $t('DASHBOARD.EMAIL') }}</b>
+                    {{ userEmail }}
+                  </span>
+                </div>
+
+                <div>
+                  <span>
+                    <b>{{ $t('DASHBOARD.PHONE') }}</b>
+                    {{ userPhone }}
+                  </span>
+                </div>
+
+                <div>
+                  <span>
+                    <b>{{ $t('DASHBOARD.ROLE') }}</b>
+                    {{ userRole }}
+                  </span>
+                </div>
+              </b-card>
             </b-col>
 
-            <b-col cols="12" sm="12" md="6" lg="6" xl="6">
-              <b-form-select
-                id="filter-test"
-                v-model="selectTest"
-              >
-                <b-form-select-option :value="null">
-                  {{ $t('DASHBOARD.PLEASE_SELECT') }}
-                </b-form-select-option>
-                <b-form-select-option
-                  v-for="itemTest in listTest"
-                  :key="itemTest.text"
-                  :value="itemTest.value"
-                >
-                  {{ itemTest.text }}
-                </b-form-select-option>
-              </b-form-select>
+            <b-col cols="12" sm="12" md="6" lg="6" xl="6" style="margin-bottom: 10px;">
+              <b-card>
+                
+              </b-card>
             </b-col>
           </b-row>
-        </b-card>
+        </b-col>
+      </div>
 
-        <div style="margin-top: 10px;">
+      <div v-if="hasRole(getCurrentRole(), [CONST_ROLE.LIST_ROLE.ADMIN, CONST_ROLE.LIST_ROLE.TEACHER])">
+        <b-col>
           <b-card>
-            <b-table
-              id="table-grade"
-              bordered
-              striped
-              responsive
-              :no-sort-reset="true"
-              no-local-sorting
-              show-empty
-              :fields="fields"
-              :items="listGrade"
-            >
-              <template #cell(result)="data">
-                {{ data.item.grade }}
-              </template>
-
-              <template #cell(actions)="data">
-                <b-button
-                  class="btn-custom-green"
-                  @click="handleViewDetailGrade(data.item.id)"
+            <b-row>
+              <b-col cols="12" sm="12" md="6" lg="6" xl="6">
+                <b-form-select
+                  id="filter-class"
+                  v-model="selectClass"
                 >
-                  <i class="fas fa-eye" />
-                </b-button>
-              </template>
-
-              <template #empty>
-                <span class="d-flex justify-content-center">
-                  {{ $t('ACCOUNT.TABLE_CONTENT_NO_DATA') }}
-                </span>
-              </template>
-            </b-table>
+                  <b-form-select-option :value="null">
+                    {{ $t('DASHBOARD.PLEASE_SELECT') }}
+                  </b-form-select-option>
+                  <b-form-select-option
+                    v-for="itemClass in listClass"
+                    :key="itemClass.text"
+                    :value="itemClass.value"
+                  >
+                    {{ itemClass.text }}
+                  </b-form-select-option>
+                </b-form-select>
+              </b-col>
+              <b-col cols="12" sm="12" md="6" lg="6" xl="6">
+                <b-form-select
+                  id="filter-test"
+                  v-model="selectTest"
+                >
+                  <b-form-select-option :value="null">
+                    {{ $t('DASHBOARD.PLEASE_SELECT') }}
+                  </b-form-select-option>
+                  <b-form-select-option
+                    v-for="itemTest in listTest"
+                    :key="itemTest.text"
+                    :value="itemTest.value"
+                  >
+                    {{ itemTest.text }}
+                  </b-form-select-option>
+                </b-form-select>
+              </b-col>
+            </b-row>
           </b-card>
-        </div>
-      </b-col>
+          <div style="margin-top: 10px;">
+            <b-card>
+              <b-table
+                id="table-grade"
+                bordered
+                striped
+                responsive
+                :no-sort-reset="true"
+                no-local-sorting
+                show-empty
+                :fields="fields"
+                :items="listGrade"
+              >
+                <template #cell(result)="data">
+                  {{ data.item.grade }}
+                </template>
+                <template #cell(actions)="data">
+                  <b-button
+                    class="btn-custom-green"
+                    @click="handleViewDetailGrade(data.item.id)"
+                  >
+                    <i class="fas fa-eye" />
+                  </b-button>
+                </template>
+                <template #empty>
+                  <span class="d-flex justify-content-center">
+                    {{ $t('ACCOUNT.TABLE_CONTENT_NO_DATA') }}
+                  </span>
+                </template>
+              </b-table>
+            </b-card>
+          </div>
+        </b-col>
+      </div>
     </div>
 
     <b-modal
@@ -162,10 +211,17 @@ import {
   getResultTest,
 } from '@/api/modules/dashboard';
 
+import { hasRole, getCurrentRole } from '@/utils/hasRole';
+import CONST_ROLE from '@/const/role';
+
 export default {
   name: 'Dashboard',
   data() {
     return {
+      hasRole,
+      getCurrentRole,
+      CONST_ROLE,
+
       overlay: {
         show: false,
         variant: 'light',
@@ -240,6 +296,21 @@ export default {
         },
       ];
     },
+    userName() {
+      return this.$store.getters.name;
+    },
+    userCode() {
+      return this.$store.getters.userCode;
+    },
+    userEmail() {
+      return this.$store.getters.email;
+    },
+    userPhone() {
+      return this.$store.getters.phone;
+    },
+    userRole() {
+      return this.$store.getters.roles[0];
+    }
   },
   watch: {
     selectClass() {

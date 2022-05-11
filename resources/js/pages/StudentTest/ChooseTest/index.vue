@@ -149,7 +149,6 @@ export default {
       }
     },
     onClickGoToTest(id) {
-      console.log(id);
       if (id) {
         this.$store.dispatch('studentTest/setChooseTest', id)
           .then(() => {
@@ -171,8 +170,6 @@ export default {
         const res = await getResultTest(URL, PARAMS);
 
         if (res) {
-          console.log(res);
-
           this.testResult = {
             total_of_questions: res.total_of_questions,
             total_of_answerd: res.total_of_answerd,

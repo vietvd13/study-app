@@ -348,8 +348,6 @@ export default {
         if (res) {
           this.listTest = res['data'];
         }
-
-        console.log(res);
       } catch (error) {
         console.log(error);
       }

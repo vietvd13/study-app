@@ -130,6 +130,8 @@ import { validateSubmitAnswer } from './validate';
 
 import CONST_CONTROL_VOICE from '@/speak/const';
 
+import { sleep } from '@/utils/sleep';
+
 const KEY = {
   up: {
     keyCode: 38,
@@ -440,6 +442,8 @@ export default {
         };
 
         const res = await getResultTest(URL, PARAMS);
+
+        await sleep(3000);
 
         if (res) {
           console.log(res);

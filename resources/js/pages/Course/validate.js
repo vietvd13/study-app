@@ -50,8 +50,6 @@ export function validateUploadDocs(data) {
     return false;
   }
 
-  console.log(data);
-
   if (!validateString(data['description'])) {
     return false;
   }

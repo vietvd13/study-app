@@ -6,6 +6,7 @@ import { MakeToast } from '@/toast/toastMessage';
 import { playSound, clearSound } from './sound';
 import CONST_CONTROL_VOICE from './const';
 import { getResultTest } from '@/api/modules/do_test';
+import { sleep } from '@/utils/sleep';
 
 const USER_VOICE = 'user_voice';
 const URL = '/navigation/voice';
@@ -44,6 +45,8 @@ async function handleViewGrade(id) {
       test_id: id,
       blind: true,
     });
+
+    await sleep(3000);
 
     clearSound();
     playSound(res['blind_support_file']);

@@ -1786,8 +1786,6 @@ export default {
         } else {
           NotifyClasses.exception();
         }
-
-        console.log(res);
       } catch (error) {
         console.log(error);
       }
@@ -1797,7 +1795,6 @@ export default {
       this.resetViewHandin();
     },
     onClickViewHandin(handin) {
-      console.log(handin);
       this.isGrade = {
         id: handin.id ? handin.id : '',
         grade: handin.grade ? handin.grade : 0,

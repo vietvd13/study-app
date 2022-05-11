@@ -274,6 +274,12 @@ export default {
     TALBE_HEADER_VIEW_ACTIONS: 'Hành động',
     MODAL_TITLE_GRADE: 'Xem kết quả',
     BUTTON_CLOSE: 'Đóng',
+
+    USER_NAME: 'Họ và tên: ',
+    USER_CODE: 'Mã số: ',
+    EMAIL: 'Email: ',
+    PHONE: 'Điện thoại: ',
+    ROLE: 'Quyền hạng: ',
   },
   I18N: {
     CHANGE_LANGUAGE: {

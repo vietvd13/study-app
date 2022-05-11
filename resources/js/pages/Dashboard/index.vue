@@ -14,7 +14,7 @@
     </template>
 
     <div class="view-grade">
-      <div v-if="hasRole(getCurrentRole(), [CONST_ROLE.LIST_ROLE.STUDENT])">
+      <div>
         <b-col>
           <b-row>
             <b-col cols="12" sm="12" md="6" lg="6" xl="6" style="margin-bottom: 10px;">
@@ -53,12 +53,6 @@
                     {{ userRole }}
                   </span>
                 </div>
-              </b-card>
-            </b-col>
-
-            <b-col cols="12" sm="12" md="6" lg="6" xl="6" style="margin-bottom: 10px;">
-              <b-card>
-                
               </b-card>
             </b-col>
           </b-row>

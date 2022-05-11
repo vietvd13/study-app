@@ -252,6 +252,8 @@ export default {
     selectTest() {
       if (this.selectTest) {
         this.handleViewGrade();
+      } else {
+        this.listGrade = [];
       }
     },
   },

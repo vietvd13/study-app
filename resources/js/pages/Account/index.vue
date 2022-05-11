@@ -704,7 +704,7 @@ export default {
 
 	.account {
 		padding: 10px;
-        height: calc(100vh - 57px);
+    height: calc(100vh - 57px);
 
 		&__header {
 			margin-bottom: 10px;
@@ -782,7 +782,7 @@ export default {
 	}
 
   .icon-loading {
-      font-size: 50px;
-      color: $forest-green;
+    font-size: 50px;
+    color: $forest-green;
   }
 </style>

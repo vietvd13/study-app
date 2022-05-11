@@ -267,6 +267,14 @@ export default {
     ACTIVE: 'Active',
     INACTIVE: 'Inactive',
   },
+  DASHBOARD: {
+    PLEASE_SELECT: 'Please select',
+
+    TALBE_HEADER_VIEW_RESULT: 'Result',
+    TALBE_HEADER_VIEW_ACTIONS: 'Actions',
+    MODAL_TITLE_GRADE: 'View result',
+    BUTTON_CLOSE: 'Close',
+  },
   I18N: {
     CHANGE_LANGUAGE: {
       SUCCESS: 'Change language successfully',
